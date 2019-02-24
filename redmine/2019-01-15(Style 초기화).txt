@@ -1,0 +1,28 @@
+﻿1. 목적
+ 1) Style Attribute 저장 function
+
+2. 진행사항
+ 1) Style 생성 
+   1. Style & Attr Block 디자인 수정 필요
+     1) CSS 변경 (100%)
+     2) 페이지 펼치는 기능 구현 완료(100%)
+	   - 버그 수정 (title 클릭 시 title명 변경됨)
+	   
+   2. margin, padding, border와 같은 group style 자동적으로 맵핑될 수 있도록 기능 완료(100%)
+   
+ 2) Position 변경 시 function block 위치를 변경하는 기능 필요 (01/16 예정)
+
+****** 예외 사항 ******
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

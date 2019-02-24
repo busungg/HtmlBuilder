@@ -1,0 +1,39 @@
+﻿1. 목적
+ 1) Style Attribute 저장 function
+
+2. 진행사항
+ 1) Style 생성 
+   1. Style & Attr Block 디자인 수정 필요
+     1) CSS 변경 (100%)
+     2) 페이지 펼치는 기능 구현 완료(100%)
+	   - 버그 수정 (title 클릭 시 title명 변경됨)
+	   
+   2. margin, padding, border와 같은 group style 자동적으로 맵핑될 수 있도록 기능 완료(100%)
+
+ 2) 30px, 30px로 변경 후 block을 변경하다보면 stack이 엄청 쌓여서 문제가 발생 (100%)
+    (Maximum call stack size exceeded)
+    1) 원인: LayoutController.addLayout에서 Child Layout의 부모 ID를 업데이트 하지 않아 Layout이 늘어남
+    2) MoveBlock 했는데 레이아웃이 늘어남 이 문제의 원인은 무엇인가? (U.setBlock 확인중)
+       0: Layout {id: "div_1", parentLayoutId: "div_0", element: "div", x: 20, y: 80, …}
+       1: Layout {id: "div_1", parentLayoutId: "div_0", element: "div", x: 20, y: 80, …}
+       2: Layout {id: "div_0", parentLayoutId: "!content", element: "div", x: 20, y: 20, …}
+       3: Layout {id: "div_1", parentLayoutId: "div_0", element: "div", x: 20, y: 80, …}
+
+ 3) Position 변경 시 function block 위치를 변경하는 기능 필요 (01/20 예정)
+  -- LayoutController.updateLayout (Parent ID랑 ID가 변경되면서 계속 돌아가는거 아닐까?)
+  -- Maximum call stack size exceeded
+
+****** 예외 사항 ******
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

@@ -1,0 +1,30 @@
+1. 목적
+ 1) Style Attribute 저장 function
+
+2. 진행사항
+ 1) Attribute
+   1. ID, Title, Name
+     - 저장 부분 완료
+	 - 저장 후 Text bold 처리 구현 필요
+   2. Class
+     - Add 기능 구현
+	 - Delete 기능 구현
+	 
+   3. Class 변경 시 Layout도 재 변경 필요 - Resizing이 될 수 있기 때문
+ 
+
+****** 예외 사항 ******
+
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

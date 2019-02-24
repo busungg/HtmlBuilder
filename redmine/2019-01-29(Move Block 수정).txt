@@ -1,0 +1,25 @@
+﻿1. 목적
+ 1) Style Attribute 저장 function
+
+2. 진행사항
+ 1) 선택 후 Move Block시 Style 설정창이 보이는 버그
+
+ 2) Text 추가할 수 있는 Style 추가 - 01/30
+
+ 3) Html Export
+ 4) CSS Export
+
+****** 예외 사항 ******
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

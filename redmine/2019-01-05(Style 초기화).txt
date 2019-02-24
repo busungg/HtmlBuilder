@@ -1,0 +1,33 @@
+﻿1. 목적
+ 1) Style Attribute 저장 function
+
+2. 진행사항
+ 1) Style 생성 
+   1.Style 적용 function
+      1) Style input box 및 select box 초기화 function 필요 (100%) (01/05)
+      2) border bottom, top, left, right 변경 필요(01/02) - margin padding도 같은 현상으로 적용
+          1. 예시 - border 변경시 (top, bottom, left, right에 모두 적용)
+         	border-bottom-color: "rgb(255, 253, 221)" -color select로 변경 완료
+	border-bottom-style: "solid" - select로 변경
+	border-bottom-width: "1px"
+
+   2. Style & Attr Block 디자인 수정 필요
+     1) CSS 변경 (50%)
+     2) 페이지 펼치는 기능 구현 필요
+   
+ 2) Position 변경 시 function block 위치를 변경하는 기능 필요
+
+****** 예외 사항 ******
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

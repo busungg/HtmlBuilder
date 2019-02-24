@@ -1,0 +1,33 @@
+﻿1. 목적
+ 1) Style Attribute 저장 function
+
+2. 진행사항
+ 1) Position 변경 시 function block 위치를 변경하는 기능 필요 (01/27 예정) - 포기
+    1. Style 변경 시 width, height값이 줄어들고 x,y 값이 늘어남
+    2. Style 변경 후 Block 추가시 Width, Height값이 늘어나고 x,y 값이 줄어듬
+    
+ 3) 선택 후 Move Block시 Style 설정창이 보이는 버그
+
+ 4) 이동 시 제대로 이동하지 않는 것 수정
+    문제 확인: childNodes 확인 시 function Block도 포함된다.
+	1. PosIdx는 제대로 적용되므로 U.setBlock 확인 필요 - 
+	   수정 완료 ContentLayout ID와 같을 시 Index + 1하도록 수정
+	
+
+ 4) Html Export
+ 5) CSS Export
+
+****** 예외 사항 ******
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

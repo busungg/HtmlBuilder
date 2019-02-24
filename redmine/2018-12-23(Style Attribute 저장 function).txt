@@ -1,0 +1,58 @@
+﻿1. 목적
+ 1) Style Attribute 저장 function
+
+2. 진행사항
+ 1) Attribute
+   1. ID, Title, Name
+     - 저장 부분 완료
+	 - 저장 후 Text bold 처리 구현 필요
+ 
+ 2) Style 생성 
+   1. Element 타입에 따라 Style을 동적으로 생성하는 Function을 만들자
+
+   2. CSS와 Style은 서로 다른내용이며 CSS 상세내용은 보여주지 않는다.
+      Style이 들어가면 CSS내용을 덮어쓰는 느낌으로 변경
+
+   3. Style Block 생성 function
+
+   4. Style Block 상세내용 생성 function
+   
+   5. Style Block 상세내용 적용 function
+     1) Text 적용 완료
+	 2) Select Box 적용 완료
+	
+   6. Style & Attr Block 생성
+     1) Attribute로 구별하도록 수정
+       1. Attribute Naming 확인 필요
+       2. Event 적용방법 아이디어 확인 필요 (제일 중요)
+       3. Event 적용하여 Style, Attr 적용되도록 수정
+
+     2) H.menuAttr 수정 완료
+     3) U.getBlockStyle 수정 완료
+   
+   7. Attr, Style 적용 functon 생성
+     1) Attr 적용 function 수정완료
+     2) Style 적용 function 생성중
+       - Style input box 및 select box 초기화 function 필요
+
+   8. Style & Attr Block 디자인 수정 필요
+
+3. 필요
+ 1) Attr, Style에 해당하는 Dom은 Attr로 따로 관리한다.
+ 2) Dom 관리 Attr Naming명을 정해놓는 Default를 생성한다.
+
+****** 예외 사항 ******
+
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

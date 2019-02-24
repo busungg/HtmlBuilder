@@ -1,0 +1,26 @@
+1. 목적
+ 1) 리펙토링
+
+2. 진행사항
+ 1) layout
+   1. initCss 생성
+   2. contain 생성
+   3. getBlock 생성
+   
+ 2) U.containBlock 수정
+
+****** 예외 사항 ******
+
+함수명: functionNamesLikeThis
+변수명: variableNamesLikeThis
+클래스명: ClassNamesLikeThis
+Enum명: EnumNamesLikeThis
+메소드명: methodNamesLikeThis
+상수명: CONSTANT_VALUES_LIKE_THIS
+이름명: foo.namespaceNamesLikeThis.bar
+파일명: filenameslikethis.js
+
+//목적,내용,타입 순으로 변수명을 지정
+//selectLayout
+//deleteLayout
+//updateContentDiv

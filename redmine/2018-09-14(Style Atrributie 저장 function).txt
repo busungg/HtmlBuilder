@@ -1,0 +1,14 @@
+1. 목적
+ 1) 리펙토링
+
+2. 진행사항
+ 1) layout
+   1. layout class 생성 하여 상속 받을 수 있도록 수정한다.
+   2. layout class에 event를 저장한다.
+ 2) Update layout - Dom 정보를 확인하여 모두 Update하도록 수정
+ 3)  
+
+****** 예외 사항 ******
+1. Attribute 적용 부분까지 완료한뒤 리펙토링 진행 필요
+2. Prototype을 이용하여 각 Class를 상속하여 사용하도록 수정
+3. Google Style Guide를 사용하여 변수명 통일하도록 수정
