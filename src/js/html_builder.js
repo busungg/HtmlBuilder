@@ -42,6 +42,7 @@
           text: 'text',
           color: 'color'
         },
+
         HB_LAYOUT_ID: 'hb_layout_id',
 
         /*
@@ -173,8 +174,7 @@
         ],
 
         /*
-          1. list
-            1) User Preset 저장용도
+          1. attr
         */
         attr: [
           {
@@ -184,6 +184,7 @@
             multiple: false,
             list: false
           },
+
           {
             name:'name',
             title:'Name',
@@ -261,7 +262,6 @@
             4. border
             5. background
         */
-
         style_category: [
           {
             name: 'position',
@@ -1857,6 +1857,7 @@
             H.menuBlocks(menu);
             H.menuAttr(menu);
             H.menuStyle(menu);
+            H.menuSetting(menu);
 
           } catch(err) {
             console.log(err.message);
@@ -1994,7 +1995,8 @@
                   element: 'div',
                   attr: {
                     id: '#main-setting_block',
-                    class: 'hb_content-blocks'
+                    class: 'hb_content-blocks',
+                    style: 'display:none;'
                   }
                 }
               ]
@@ -2283,10 +2285,6 @@
 
 
         H.menuStyle = function(container) {
-          // title, div
-          // hb_attr-block, hb_title-block, hb_lbl
-          // hb_attr-list-block
-
           /*
             //Position
             {
@@ -2559,24 +2557,64 @@
 
         H.menuSetting = function(container) {
           try {
-            var _block;
+
+            var setting_option = [
+              {
+                name:'import_html',
+                title:'Import HTML'
+              },
+              {
+                name:'import_css',
+                title:'Import CSS'
+              },
+              {
+                name:'resolution',
+                title:'Change Resolution'
+              }
+            ];
 
             //settig 관련 하여 어떻게 동작할 것인지 확인 필요
             //Import html, css 동시에 할 수 있도록 Modal 적용
             //Export html, css 동시에 할 수 있도록 Modal 적용
             //Resolution Button으로 미리 정해두자
+            var _block, _title;
+            for(var i = 0, len = setting_option.length; i < len; i++) {
+              _block = {
+                element: 'div',
+                attr: {
+                  class: 'hb_setting-block'
+                },
+                child: []
+              };
 
-            /*
-            {
-            element: 'div',
-            attr: {
-              class: 'hb_nav',
-              id: '#main-nav'
-            },
-            */
+              _title = {
+                element: 'div',
+                attr: {
+                  class: 'hb_title-block'
+                },
+                child: [
+                  {
+                    element: 'label',
+                    attr: {
+                      class: 'hb_lbl'
+                    },
+                    text: setting_option[i].title
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_full'
+                    },
+                    text: setting_option[i].title
+                  }
+                ]
+              };
 
+              _title.child[1].attr[O.HB_ATTR_ID] = setting_option[i].name;
 
-            container.children[1].children[2].appendChild(U.builder(_block_content));
+              _block.child.push(_title);
+              container.children[1].children[2].appendChild(U.builder(_block));
+            }
 
           } catch(err) {
             console.log(err.message);

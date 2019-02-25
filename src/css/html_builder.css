@@ -433,3 +433,22 @@ body
 	margin-right: auto;
 	margin-left: auto;
 }
+
+/*--------------- MENU SETTING --------------*/
+.hb_setting-block
+{
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+}
+
+.hb_setting-block .hb_title-block
+{
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
