@@ -1744,8 +1744,14 @@
 
         U.changeResolution = function(width, height) {
           var content = document.getElementById(O.HB_CONTENT_DIV_ID);
-          content.style.width = width;
-          content.style.height = height;
+
+          if(width) {
+            content.style.width = width;  
+          } 
+
+          if(height) {
+            content.style.height = height;  
+          }
         };
         
       }(Utils, Options));
@@ -1995,7 +2001,7 @@
                   element: 'div',
                   attr: {
                     id: '#main-setting_block',
-                    class: 'hb_content-blocks',
+                    class: 'hb_content-attr',
                     style: 'display:none;'
                   }
                 }
@@ -2558,7 +2564,96 @@
         H.menuSetting = function(container) {
           try {
 
+            var settingEvent = function(e) {
+              var id = e.target.getAttribute(O.HB_ATTR_ID);
+              var apply_func = null;
+
+              if(id == 'import_html') {
+                apply_func = function (e) {
+                  var div = e.target.parentNode;
+                  var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+
+                  U.importHtml(textarea.value);
+
+                  div.remove();
+                };
+
+                H.menuSettingPopup(id, apply_func);
+              } else if(id == 'import_css') {
+                apply_func = function (e) {
+                  var div = e.target.parentNode;
+                  var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+
+                  U.importCss(textarea.value);
+
+                  div.remove();
+                };
+
+                H.menuSettingPopup(id, apply_func);
+              }
+            };
+
+            var settingResolutionEvent = function(e) {
+              var width = e.target.value;
+
+              console.log(width);
+
+              U.changeResolution(width, null);
+            };
+
             var setting_option = [
+              {
+                name:'resolution',
+                title:'Change Resolution',
+                child: [
+                  {
+                    element: 'label',
+                    attr: {
+                      class: 'hb_lbl'
+                    },
+                    text: 'Change Resolution'
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_setting-btn-phone',
+                      value: '320px'
+                    },
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingResolutionEvent
+                      }
+                    ]
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_setting-btn-tablet',
+                      value: '768px'
+                    },
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingResolutionEvent
+                      }
+                    ]
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_setting-btn-browser',
+                      value: '80%'
+                    },
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingResolutionEvent
+                      }
+                    ]
+                  }
+                ]
+              },
               {
                 name:'import_html',
                 title:'Import HTML'
@@ -2567,10 +2662,7 @@
                 name:'import_css',
                 title:'Import CSS'
               },
-              {
-                name:'resolution',
-                title:'Change Resolution'
-              }
+              
             ];
 
             //settig 관련 하여 어떻게 동작할 것인지 확인 필요
@@ -2591,8 +2683,11 @@
                 element: 'div',
                 attr: {
                   class: 'hb_title-block'
-                },
-                child: [
+                }
+              };
+
+              if(!setting_option[i].child) {
+                _title.child = [
                   {
                     element: 'label',
                     attr: {
@@ -2603,14 +2698,22 @@
                   {
                     element: 'button',
                     attr: {
-                      class: 'hb_full'
+                      class: 'hb_width-75'
                     },
-                    text: setting_option[i].title
+                    text: setting_option[i].title,
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingEvent
+                      }
+                    ]
                   }
-                ]
-              };
+                ];
 
-              _title.child[1].attr[O.HB_ATTR_ID] = setting_option[i].name;
+                _title.child[1].attr[O.HB_ATTR_ID] = setting_option[i].name;
+              } else {
+                _title.child = setting_option[i].child;
+              }
 
               _block.child.push(_title);
               container.children[1].children[2].appendChild(U.builder(_block));
@@ -2619,7 +2722,51 @@
           } catch(err) {
             console.log(err.message);
           }
-        }
+        };
+
+        H.menuSettingPopup = function(section, apply_func) {
+          try {
+
+            var close = function(e) {
+              div.remove();
+            };
+
+            var div = document.createElement('div');
+            div.setAttribute('class', 'hb_setting-popup');
+
+            var div_title = document.createElement('div');
+            div_title.setAttribute('class', 'hb_setting-popup-titlediv');
+            div_title.appendChild(document.createTextNode(section));
+
+            var button_cancel = document.createElement('button');
+            button_cancel.setAttribute('class', 'hb_setting-popup-clossbutton');
+            button_cancel.addEventListener('click', close);
+            div_title.appendChild(button_cancel);
+
+            var div_text = document.createElement('div');
+            div_text.setAttribute('class', 'hb_setting-popup-textdiv');
+
+            var textarea = document.createElement('textarea');
+            textarea.setAttribute('class', 'hb_setting-popup-textarea');
+            div_text.appendChild(textarea);
+
+            div.appendChild(div_title);
+            div.appendChild(div_text);
+
+            if(apply_func) {
+              var button_apply = document.createElement('button');
+              button_apply.setAttribute('class', 'hb_setting-popup-applybutton');
+              button_apply.appendChild(document.createTextNode('Apply'));
+              button_apply.addEventListener('click', apply_func);
+              div.appendChild(button_apply);
+            }
+            
+            document.body.appendChild(div);
+
+          } catch(err) {
+            console.log(err.message);
+          }
+        };
         
       }(HtmlBuilder, Utils, Options));
     
