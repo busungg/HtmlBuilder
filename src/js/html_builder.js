@@ -1673,14 +1673,14 @@
           1. Menu Block Draggable 선택
         */
         U.draggableMenuBlock = function(chk) {
-            try {
-                var blocks = document.getElementsByClassName('hb_btn-block');
-                for(var i = 0, len = blocks.length; i < len; i++) {
-                    blocks[i].setAttribute('draggable', chk);
-                }
-            } catch(err) {
-                console.log(err.message);
+          try {
+            var blocks = document.getElementsByClassName('hb_btn-block');
+            for(var i = 0, len = blocks.length; i < len; i++) {
+                blocks[i].setAttribute('draggable', chk);
             }
+          } catch(err) {
+            console.log(err.message);
+          }
         };
 
         /*
@@ -1689,15 +1689,19 @@
             2) Dom Element => Layout object
         */
         U.importHtml = function(htmlText) {
-          var content = document.getElementById(O.HB_CONTENT_DIV_ID);
-          var funcBlock = document.querySelectorAll('[class=hb_func-menu]')[0];
+          try {
+            var content = document.getElementById(O.HB_CONTENT_DIV_ID);
+            var funcBlock = document.querySelectorAll('[class=hb_func-menu]')[0];
 
-          content.innerHTML = htmlText;
-          
-          U.importLayout(content, null);
-          U.updateLayout(U.contentLayout);
+            content.innerHTML = htmlText;
+            
+            U.importLayout(content, null);
+            U.updateLayout(U.contentLayout);
 
-          content.insertBefore(funcBlock, content.children[0]);
+            content.insertBefore(funcBlock, content.children[0]);
+          } catch (err) {
+            console.log(err.message);
+          }
         };
 
         /*
@@ -1707,34 +1711,41 @@
             3) Layout 생성 하면서 Event 입력
         */
         U.importLayout = function(child, parent) {
-          var layout = null, parentLayout = null;
-          if(parent != null) {
-            parentLayoutId = parent.getAttribute(O.HB_LAYOUT_ID);
-            parentLayout = LayoutController.selectLayout(parentLayoutId, U.contentLayout);
+          try {
+            var layout = null, parentLayout = null;
+            if(parent != null) {
+              parentLayoutId = parent.getAttribute(O.HB_LAYOUT_ID);
+              parentLayout = LayoutController.selectLayout(parentLayoutId, U.contentLayout);
 
-            layout = new Layout();
-            layout.element = child.tagName.toLowerCase();
-            layout.id = layout.element + '_' + U.idIdx;
-            layout.parentLayoutId = parentLayoutId;
-            child.setAttribute(O.HB_LAYOUT_ID, layout.id);
+              layout = new Layout();
+              layout.element = child.tagName.toLowerCase();
+              layout.id = layout.element + '_' + U.idIdx;
+              layout.parentLayoutId = parentLayoutId;
+              child.setAttribute(O.HB_LAYOUT_ID, layout.id);
 
-            for(var idx in U.blockDefaultEvents) {
-              child.addEventListener(U.blockDefaultEvents[idx].type, U.blockDefaultEvents[idx].func);  
+              for(var idx in U.blockDefaultEvents) {
+                child.addEventListener(U.blockDefaultEvents[idx].type, U.blockDefaultEvents[idx].func);  
+              }
+
+              parentLayout.child.push(layout);
+              U.idIdx++;
             }
 
-            parentLayout.child.push(layout);
-            U.idIdx++;
-          }
-
-          for(var i = 0, len = child.children.length; i < len; i++) {
-            U.importLayout(child.children[i], child);
+            for(var i = 0, len = child.children.length; i < len; i++) {
+              U.importLayout(child.children[i], child);
+            }
+          } catch(err) {
+            console.log(err.message);
           }
         };
 
         U.importCss = function(cssText) {
-          var userCss = document.getElementById('user_css');
-          userCss.innerHTML = cssText;
-
+          try {
+            var userCss = document.getElementById('user_css');
+            userCss.innerHTML = cssText;
+          } catch (err) {
+            console.log(err.message);
+          }
           /*
           var sheet = document.getElementById("cssTest").sheet;
           console.log(sheet);
@@ -1743,14 +1754,29 @@
         };
 
         U.changeResolution = function(width, height) {
-          var content = document.getElementById(O.HB_CONTENT_DIV_ID);
+          try {
+            var content = document.getElementById(O.HB_CONTENT_DIV_ID);
 
-          if(width) {
-            content.style.width = width;  
-          } 
+            if(width) {
+              content.style.width = width;  
+            } 
 
-          if(height) {
-            content.style.height = height;  
+            if(height) {
+              content.style.height = height;  
+            }
+          } catch (err) {
+            console.log(err.message);
+          }
+        };
+
+        U.exportHtml = function() {
+          try {
+            var content = document.getElementById(O.HB_CONTENT_DIV_ID);
+
+            console.log(content.innerHTML);
+
+          } catch (err) {
+            console.log(err.message);
           }
         };
         
@@ -1771,6 +1797,8 @@
               c[name] = defaults[name];
             }
           }
+
+          H.config = c;
           
           try {
             //container
@@ -2596,8 +2624,6 @@
             var settingResolutionEvent = function(e) {
               var width = e.target.value;
 
-              console.log(width);
-
               U.changeResolution(width, null);
             };
 
@@ -2643,7 +2669,7 @@
                     element: 'button',
                     attr: {
                       class: 'hb_setting-btn-browser',
-                      value: '80%'
+                      value: H.config.width[0]
                     },
                     event: [
                       {
@@ -2769,12 +2795,9 @@
         };
         
       }(HtmlBuilder, Utils, Options));
-    
-    //테스트용
-    HtmlBuilder.importHtml = Utils.importHtml;
-    HtmlBuilder.importCss = Utils.importCss;
-    HtmlBuilder.changeResolution = Utils.changeResolution;
 
+    HtmlBuilder.exportHtml = Utils.exportHtml;
+    
     return HtmlBuilder;
   })
 );
