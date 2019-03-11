@@ -13,12 +13,6 @@
       //Default Setting
       var Options = {
         /*
-          Content Id
-        */
-        HB_CONTENT_DIV_ID: '!content',
-        HB_MENU_DIV_ID: '!menu',
-
-        /*
           Block ATTR
           1. attr
           2. style
@@ -1204,11 +1198,14 @@
 
                   //posIdx
                   if(parentLayout.child[U.newLayout.posIdx]) {
+                    parent.insertBefore(newChild, parent.children[U.newLayout.posIdx]);
+                    /*
                     if(U.contentLayout.id == parentLayout.id) {
                       parent.insertBefore(newChild, parent.children[U.newLayout.posIdx + 1]);
                     } else {
                       parent.insertBefore(newChild, parent.children[U.newLayout.posIdx]);
                     }
+                    */
                   } else {
                     parent.appendChild(newChild);
                   }
@@ -1228,11 +1225,14 @@
                   var selectedBlock = U.selectedLayout.getBlock();
 
                   if(parentLayout.child[U.newLayout.posIdx]){
+                    parent.insertBefore(selectedBlock, parent.children[U.newLayout.posIdx]);
+                    /*
                     if(U.contentLayout.id == parentLayout.id) {
                       parent.insertBefore(selectedBlock, parent.children[U.newLayout.posIdx + 1]);
                     } else {
                       parent.insertBefore(selectedBlock, parent.children[U.newLayout.posIdx]);
                     }
+                    */
                     //parent.insertBefore(selectedBlock, parent.childNodes[U.newLayout.posIdx]);
                   } else {
                     parent.appendChild(selectedBlock);
@@ -1380,7 +1380,7 @@
               var functionBlock = document.getElementsByClassName('hb_func-menu');
               if(U.selectedLayout) {
                 var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
-                functionBlock[0].setAttribute('style', 'position: absolute; left: ' + layout.x + 'px; top: ' + (layout.y - 20) + 'px;');
+                functionBlock[0].setAttribute('style', 'position: absolute; left: ' + (layout.x + U.contentLayout.x) + 'px; top: ' + (layout.y + U.contentLayout.y - 20) + 'px;');
               } else {
                 functionBlock[0].setAttribute('style', 'position: absolute; left: 0px; top: -100px;');
               }
@@ -1688,9 +1688,9 @@
             1) Text Parsing => Dom Element
             2) Dom Element => Layout object
         */
-        U.importHtml = function(htmlText) {
+        U.importHtml = function(id, htmlText) {
           try {
-            var content = document.getElementById(O.HB_CONTENT_DIV_ID);
+            var content = document.getElementById(id);
             var funcBlock = document.querySelectorAll('[class=hb_func-menu]')[0];
 
             content.innerHTML = htmlText;
@@ -1753,28 +1753,28 @@
           */
         };
 
-        U.changeResolution = function(width, height) {
+        U.changeResolution = function(id, width, height) {
           try {
-            var content = document.getElementById(O.HB_CONTENT_DIV_ID);
+            var content = document.getElementById(id);
 
             if(width) {
-              content.style.width = width;  
+              content.style.width = width;
             } 
 
             if(height) {
-              content.style.height = height;  
+              content.style.height = height;
             }
           } catch (err) {
             console.log(err.message);
           }
         };
 
-        U.exportHtml = function() {
+        U.exportHtml = function(id) {
           try {
-            var content = document.getElementById(O.HB_CONTENT_DIV_ID);
-
+            var content = document.getElementById(id);
+            
             console.log(content.innerHTML);
-
+            
           } catch (err) {
             console.log(err.message);
           }
@@ -1786,11 +1786,16 @@
         H.init = function(config) {
           var defaults = {
             container: '#container', //전체 화면
-            ids: [O.HB_CONTENT_DIV_ID, O.HB_MENU_DIV_ID],
+            ids: ['!content', '!menu'],
             width: ['80%', '18%'],
             height: ['100%', '100%']
           };
-
+          
+          /*
+                HB_CONTENT_DIV_ID: '!content',
+                HB_MENU_DIV_ID: '!menu',
+          */
+          
           var c = config || {};
           for (var name in defaults) {
             if (!(name in c)) {
@@ -1874,7 +1879,8 @@
              ]
             });
 
-            content.appendChild(selectedBlockFunc);
+            document.body.appendChild(selectedBlockFunc);
+            //content.appendChild(selectedBlockFunc);
 
             //menu
             var menu = U.builder({
@@ -2591,7 +2597,6 @@
 
         H.menuSetting = function(container) {
           try {
-
             var settingEvent = function(e) {
               var id = e.target.getAttribute(O.HB_ATTR_ID);
               var apply_func = null;
@@ -2601,7 +2606,7 @@
                   var div = e.target.parentNode;
                   var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
 
-                  U.importHtml(textarea.value);
+                  U.importHtml(H.config.ids[0], textarea.value);
 
                   div.remove();
                 };
@@ -2624,7 +2629,7 @@
             var settingResolutionEvent = function(e) {
               var width = e.target.value;
 
-              U.changeResolution(width, null);
+              U.changeResolution(H.config.ids[0], width, null);
             };
 
             var setting_option = [
