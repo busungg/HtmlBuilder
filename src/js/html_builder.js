@@ -1771,14 +1771,55 @@
 
         U.exportHtml = function(id) {
           try {
+            var html = null;
             var content = document.getElementById(id);
+            var tempContent = document.createElement('div');
+            tempContent.setAttribute('id', 'temp_export_html');
+            tempContent.setAttribute('style', 'x:0, y:-1000');
+            tempContent.innerHTML = content.innerHTML;
             
-            console.log(content.innerHTML);
+            document.body.appendChild(tempContent);
+            var blockArray = tempContent.querySelectorAll('['+ O.HB_LAYOUT_ID + ']');
+            
+            for(var i = 0, len = blockArray.length; i < len; i++) {
+                blockArray[i].removeAttribute(O.HB_LAYOUT_ID);
+            }
+            
+            html = tempContent.innerHTML;
+            document.body.removeChild(tempContent);
+            
+            return U.beautifyHtml(html);
             
           } catch (err) {
             console.log(err.message);
           }
         };
+        
+        U.beautifyHtml = function(html) {
+            var tab = ' '.repeat(4);
+            var indent = 0;
+            var tag = null, nextTag = null;
+            
+            var result = '';
+            
+            for(var pos = 0, len = html.length; pos < len - 1; pos++) {
+                tag = html[pos];
+                nextTag = html[pos+1];
+                
+                if(tag === '<' && nextTag !== '/') {
+                    result += '\n' + tab.repeat(indent);
+                    indent++;
+                } else if(tag === '<' && nextTag === '/') {
+                    if(--indent < 0) indent = 0;
+                    result += '\n' + tab.repeat(indent);
+                }
+                
+                result += tag;
+            }
+            result += html[len];
+            
+            return result;
+        }
         
       }(Utils, Options));
     
@@ -1790,11 +1831,6 @@
             width: ['80%', '18%'],
             height: ['100%', '100%']
           };
-          
-          /*
-                HB_CONTENT_DIV_ID: '!content',
-                HB_MENU_DIV_ID: '!menu',
-          */
           
           var c = config || {};
           for (var name in defaults) {
@@ -2623,6 +2659,14 @@
                 };
 
                 H.menuSettingPopup(id, apply_func);
+              } else if(id == 'export_html') {
+                  
+                apply_func = function(e) {
+                  var div = e.target.parentNode;
+                  div.remove();
+                };
+                
+                H.menuSettingPopup(id, apply_func, U.exportHtml(H.config.ids[0]));
               }
             };
 
@@ -2693,7 +2737,10 @@
                 name:'import_css',
                 title:'Import CSS'
               },
-              
+              {
+                name:'export_html',
+                title:'Export HTML'
+              }
             ];
 
             //settig 관련 하여 어떻게 동작할 것인지 확인 필요
@@ -2755,7 +2802,7 @@
           }
         };
 
-        H.menuSettingPopup = function(section, apply_func) {
+        H.menuSettingPopup = function(section, apply_func, text) {
           try {
 
             var close = function(e) {
@@ -2779,8 +2826,11 @@
 
             var textarea = document.createElement('textarea');
             textarea.setAttribute('class', 'hb_setting-popup-textarea');
+            if(text) {
+                textarea.value = text;
+            }
             div_text.appendChild(textarea);
-
+            
             div.appendChild(div_title);
             div.appendChild(div_text);
 
@@ -2801,8 +2851,6 @@
         
       }(HtmlBuilder, Utils, Options));
 
-    HtmlBuilder.exportHtml = Utils.exportHtml;
-    
     return HtmlBuilder;
   })
 );
