@@ -1808,15 +1808,16 @@
                 
                 if(tag === '<' && nextTag !== '/') {
                     result += '\n' + tab.repeat(indent);
-                    indent++;
+                    if(nextTag.toUpperCase() !== 'I') { //input, img self-closing
+                        indent++;
+                    }
                 } else if(tag === '<' && nextTag === '/') {
                     if(--indent < 0) indent = 0;
                     result += '\n' + tab.repeat(indent);
                 }
-                
                 result += tag;
             }
-            result += html[len];
+            result += html[len - 1];
             
             return result;
         }
