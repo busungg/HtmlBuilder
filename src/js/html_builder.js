@@ -1820,7 +1820,16 @@
             result += html[len - 1];
             
             return result;
-        }
+        };
+        
+        U.exportCss = function() {
+          try {
+            var userCss = document.getElementById('user_css');
+            return userCss.innerHTML;
+          } catch(err) {
+              console.log(err.message)
+          }
+        };
         
       }(Utils, Options));
     
@@ -2668,6 +2677,13 @@
                 };
                 
                 H.menuSettingPopup(id, apply_func, U.exportHtml(H.config.ids[0]));
+              } else if(id == 'export_css') {
+                apply_func = function(e) {
+                  var div = e.target.parentNode;
+                  div.remove();
+                };
+                
+                H.menuSettingPopup(id, apply_func, U.exportCss());
               }
             };
 
@@ -2741,6 +2757,10 @@
               {
                 name:'export_html',
                 title:'Export HTML'
+              },
+              {
+                name:'export_css',
+                title:'Export CSS'
               }
             ];
 
