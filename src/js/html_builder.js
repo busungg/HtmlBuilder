@@ -13,6 +13,11 @@
       //Default Setting
       var Options = {
         /*
+          CSS href
+        */
+        HB_DEFAULT_CSS_HREF: './css/html_builder.css', 
+
+        /*
           Block ATTR
           1. attr
           2. style
@@ -1825,6 +1830,12 @@
         U.exportCss = function() {
           try {
             var userCss = document.getElementById('user_css');
+
+            console.log(defaultCss);
+            console.log(defaultCss.value);
+
+            //basic Css
+
             return userCss.innerHTML;
           } catch(err) {
               console.log(err.message)
@@ -1944,6 +1955,18 @@
             H.menuAttr(menu);
             H.menuStyle(menu);
             H.menuSetting(menu);
+
+            //CSS Load
+            var head = docuemnt.getElementsByTagName('head')[0];
+
+            var deafultCss = document.createElement('style');
+            defaultCss.setAttribute('id', 'default_css');
+            defaultCss.setAttribute('type', 'text/css');
+
+            head.appendChild(defaultCss);
+
+            var reader  = new FileReader();
+            HB_DEFAULT_CSS_HREF
 
           } catch(err) {
             console.log(err.message);
