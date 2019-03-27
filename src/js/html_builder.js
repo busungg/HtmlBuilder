@@ -1,7 +1,8 @@
 (
   function(root, factory) {
     //Initialize
-    root.HtmlBuilder = factory(root);
+    root.HtmlBuilder = {};
+    root.HtmlBuilder.init = factory(root).init;
 
   } (typeof window !== 'undefined' ? window : this, function(win) {
       //HtmlBuilder
@@ -12,11 +13,6 @@
       
       //Default Setting
       var Options = {
-        /*
-          CSS href
-        */
-        HB_DEFAULT_CSS_HREF: './css/html_builder.css', 
-
         /*
           Block ATTR
           1. attr
@@ -45,6 +41,47 @@
         HB_LAYOUT_ID: 'hb_layout_id',
 
         /*
+          1. Default CSS
+        */
+        css: [
+            {
+              title: '.block_full',
+              content: {
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                'box-sizing': 'border-box'
+              }
+            },
+            {
+              title: '.block_half',
+              content: {
+                width: '50%',
+                height: '50%',
+                'box-sizing': 'border-box' 
+              }
+            },
+            {
+              title: '.block_border-basic',
+              content: {
+                border: '1px solid #000000'
+              }
+            },
+            {
+              title: '.block_padding-10px',
+              content: {
+                padding: '10px'
+              }
+            }, 
+            {
+              title: '.block_margin-10px',
+              content: {
+                margin: '10px'
+              }
+            }
+        ],
+
+        /*
           1. block 종류
             - Basic
             1) Div
@@ -67,7 +104,7 @@
             title: 'Div',
             element: 'div',
             attrs: {
-              class: ['hb_half', 'hb_border-basic', 'hb_padding-10px', 'hb_margin-10px']  
+              class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']  
             },
             icon: 'hb_btn-div'
           },
@@ -75,7 +112,7 @@
             title: 'P',
             element: 'p',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             text: 'P element text',
             icon: 'hb_btn-p'
@@ -85,7 +122,7 @@
             element: 'input',
             attrs: {
               type: 'text',
-              class: ['hb_border-basic']
+              class: ['block_border-basic']
             },
             icon: 'hb_btn-input'
           },
@@ -94,7 +131,7 @@
             element: 'input',
             attrs: {
               type: 'number',
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             icon: 'hb_btn-input'
           },
@@ -102,7 +139,7 @@
             title: 'Text Area',
             element: 'textarea',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             icon: 'hb_btn-text-area'
           },
@@ -110,7 +147,7 @@
             title: 'Link',
             element: 'a',
             attrs: {
-              class: ['hb_border-basic'],
+              class: ['block_border-basic'],
               target: '_blank'
             },
             text: 'A element text',
@@ -120,7 +157,7 @@
             title: 'Image',
             element: 'img',
             attrs: {
-              class: ['hb_half', 'hb_border-basic']  
+              class: ['block_half', 'block_border-basic']  
             },
             icon: 'hb_btn-img'
           },
@@ -128,7 +165,7 @@
             title: 'Select',
             element: 'select',
             attrs: {
-              class: ['hb_half', 'hb_border-basic']  
+              class: ['block_half', 'block_border-basic']  
             },
             icon: 'hb_btn-select'
           },
@@ -136,7 +173,7 @@
             title: 'Button',
             element: 'button',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             text: 'Button element text',
             icon: 'hb_btn-button'
@@ -145,7 +182,7 @@
             title: 'Label',
             element: 'label',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             text: 'Label element text',
             icon: 'hb_btn-label'
@@ -155,7 +192,7 @@
             element: 'input',
             attrs: {
               type: 'checkbox',
-              class: ['hb_border-basic'],
+              class: ['block_border-basic'],
               style: 'width:15px; height:15px;'
             },
             icon: 'hb_btn-check-box'
@@ -165,7 +202,7 @@
             element: 'input',
             attrs: {
               type: 'radio',
-              class: ['hb_border-basic'],  
+              class: ['block_border-basic'],  
               style: 'width:15px; height:15px;'
             },
             icon: 'hb_btn-radio'
@@ -1841,6 +1878,38 @@
               console.log(err.message)
           }
         };
+
+        /*
+          1. Rule
+            1) css is object
+            2) title = css title
+            3) content = css content
+          2. Format
+            {
+              title: 'border-10px'
+              content: {
+                border : '10px solid #ffffff'
+              }
+            }
+
+            =>
+
+            border-10px {
+              border: 10px solid #ffffff;
+            }
+        */
+        U.obj2Css = function(css) {
+          var cssText = '';
+          var tab = ' '.repeat(4);
+
+          cssText += (css.title + ': {\n');
+          for(attr in css.content) {
+            cssText += (tab + attr + ': ' + css.content[attr] + ';\n');
+          }
+          cssText += '}';
+
+          return cssText;
+        }
         
       }(Utils, Options));
     
@@ -1955,18 +2024,7 @@
             H.menuAttr(menu);
             H.menuStyle(menu);
             H.menuSetting(menu);
-
-            //CSS Load
-            var head = docuemnt.getElementsByTagName('head')[0];
-
-            var deafultCss = document.createElement('style');
-            defaultCss.setAttribute('id', 'default_css');
-            defaultCss.setAttribute('type', 'text/css');
-
-            head.appendChild(defaultCss);
-
-            var reader  = new FileReader();
-            HB_DEFAULT_CSS_HREF
+            H.cssSetting();
 
           } catch(err) {
             console.log(err.message);
@@ -2890,6 +2948,23 @@
 
           } catch(err) {
             console.log(err.message);
+          }
+        };
+
+        H.cssSetting = function() {
+          var head = document.getElementsByTagName('head')[0];
+
+          var defaultCss = document.createElement('style');
+          defaultCss.setAttribute('id', 'default_css');
+          defaultCss.setAttribute('type', 'text/css');
+
+          head.appendChild(defaultCss);
+
+          var defaultSheet = defaultCss.sheet;
+          
+          for(var i = 0, len = O.css.length; i < len; i++) {
+            console.log(U.obj2Css(O.css[i]));
+            defaultSheet.insertRule(U.obj2Css(O.css[i]), defaultSheet.cssRules.length);  
           }
         };
         
