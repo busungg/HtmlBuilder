@@ -1902,7 +1902,7 @@
           var cssText = '';
           var tab = ' '.repeat(4);
 
-          cssText += (css.title + ': {\n');
+          cssText += (css.title + ' {\n');
           for(attr in css.content) {
             cssText += (tab + attr + ': ' + css.content[attr] + ';\n');
           }
@@ -2959,12 +2959,8 @@
           defaultCss.setAttribute('type', 'text/css');
 
           head.appendChild(defaultCss);
-
-          var defaultSheet = defaultCss.sheet;
-          
           for(var i = 0, len = O.css.length; i < len; i++) {
-            console.log(U.obj2Css(O.css[i]));
-            defaultSheet.insertRule(U.obj2Css(O.css[i]), defaultSheet.cssRules.length);  
+            defaultCss.appendChild(document.createTextNode(U.obj2Css(O.css[i])));  
           }
         };
         
