@@ -275,6 +275,14 @@
             type: 'text',
             multiple: true,
             list: false
+          },
+
+          {
+            name:'style2css',
+            title:'Style to CSS',
+            type: 'text',
+            multiple: false,
+            list: false
           }
         ],
 
@@ -1781,20 +1789,7 @@
           }
         };
 
-        U.importCss = function(cssText) {
-          try {
-            var userCss = document.getElementById('user_css');
-            userCss.innerHTML = cssText;
-          } catch (err) {
-            console.log(err.message);
-          }
-          /*
-          var sheet = document.getElementById("cssTest").sheet;
-          console.log(sheet);
-          console.log(sheet.cssRules);
-          */
-        };
-
+        
         U.changeResolution = function(id, width, height) {
           try {
             var content = document.getElementById(id);
@@ -1863,10 +1858,20 @@
             
             return result;
         };
+
+        U.importCss = function(cssText) {
+          try {
+            var userCss = document.getElementById('user_css');
+            userCss.innerHTML = cssText;
+          } catch (err) {
+            console.log(err.message);
+          }
+        };
         
         U.exportCss = function() {
           try {
             var userCss = document.getElementById('user_css');
+            //defaultCss도 포함되어야 한다.
 
             console.log(defaultCss);
             console.log(defaultCss.value);
@@ -1909,7 +1914,28 @@
           cssText += '}';
 
           return cssText;
-        }
+        };
+
+        U.style2Css = function(cssName) {
+          var userCss = document.getElementById('user_css');
+          var userCssSheet = userCss.sheet;
+
+          var styles = U.getBlockStyle();
+          var cssObj = {title: cssName, content: {}};
+          for(var attr in styles) {
+            cssObj.content[attr] = styles[attr];
+          }
+
+          console.log(cssObj);
+          console.log(U.obj2Css(cssObj));
+
+
+          /*
+          var sheet = document.getElementById("cssTest").sheet;
+          console.log(sheet);
+          console.log(sheet.cssRules);
+          */
+        };
         
       }(Utils, Options));
     
@@ -2256,6 +2282,9 @@
               } else {
                 target.setAttribute(type, value);
               }
+            } else if(type == 'style2css') {
+              U.style2Css();
+
             } else {
               target.setAttribute(type, value);
             }
