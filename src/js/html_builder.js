@@ -1571,7 +1571,7 @@
         /*
           1. Get style options 
         */
-        U.getBlockStyle = function() {
+        U.getBlockStyle = function(group) {
           try {
             var styles = null;
 
@@ -1588,6 +1588,8 @@
               groupProperty['border-width'] = {checkSum: 0, value: null, group: true};
               groupProperty['border-color'] = {checkSum: 0, value: null, group: true};
               groupProperty['border-style'] = {checkSum: 0, value: null, group: true};
+
+              var direction = ['-left', '-right', '-top', '-bottom'];
 
               var i, len, groupName, propertyName, propertyValue;
               for(i = 0, len = blockStyles.length; i < len; i++) {
@@ -1612,9 +1614,17 @@
                 styles[propertyName] = propertyValue;
               }
 
-              for(i in groupProperty) {
-                if(groupProperty[i].checkSum == 4 && groupProperty[i].group) {
-                  styles[i] = groupProperty[i].value;
+              for(key in groupProperty) {
+                if(groupProperty[key].checkSum == 4 && groupProperty[key].group) {
+                  styles[key] = groupProperty[key].value;
+
+                  if(group) {
+                    groupName = key.split('-');
+                    for(i = 0, len = direction.length; i < len; i++) {
+                      propertyName = ((groupName.length > 1) ? (groupName[0] + direction[i] + '-' + groupName[1]) : (groupName[0] + direction[i]));
+                      styles[propertyName] = null;
+                    }
+                  }
                 }
               }
             }
@@ -1635,7 +1645,7 @@
 
         U.setBlockStyle = function() {
           try {
-              var styles = U.getBlockStyle();
+              var styles = U.getBlockStyle(false);
 
               var name, value, domValue, domUnit;
               // Init Style Html
@@ -1870,15 +1880,12 @@
         
         U.exportCss = function() {
           try {
+            var defaultCss = document.getElementById('default_css');
             var userCss = document.getElementById('user_css');
-            //defaultCss도 포함되어야 한다.
 
-            console.log(defaultCss);
-            console.log(defaultCss.value);
+            var css = (defaultCss.textContent + userCss.textContent);
 
-            //basic Css
-
-            return userCss.innerHTML;
+            return css;
           } catch(err) {
               console.log(err.message)
           }
@@ -1904,37 +1911,45 @@
             }
         */
         U.obj2Css = function(css) {
-          var cssText = '';
-          var tab = ' '.repeat(4);
+          try {
+            var cssText = '';
+            var tab = ' '.repeat(4);
 
-          cssText += (css.title + ' {\n');
-          for(attr in css.content) {
-            cssText += (tab + attr + ': ' + css.content[attr] + ';\n');
+            cssText += (css.title + ' {\n');
+            for(attr in css.content) {
+              cssText += (tab + attr + ': ' + css.content[attr] + ';\n');
+            }
+            cssText += '}';
+
+            return cssText;
+          } catch(err) {
+            console.log(err.message);
           }
-          cssText += '}';
-
-          return cssText;
         };
 
         U.style2Css = function(cssName) {
-          var userCss = document.getElementById('user_css');
-          var userCssSheet = userCss.sheet;
+          try {
+            var userCss = document.getElementById('user_css');
 
-          var styles = U.getBlockStyle();
-          var cssObj = {title: cssName, content: {}};
-          for(var attr in styles) {
-            cssObj.content[attr] = styles[attr];
+            var styles = U.getBlockStyle(true);          
+            var cssObj = {title: '.' + cssName, content: {}};
+            for(var attr in styles) {
+              if(styles[attr] != null) {
+                if(attr.indexOf('color') != -1) {
+                  cssObj.content[attr] = U.rgb2Hex(styles[attr]);
+                } else {
+                  cssObj.content[attr] = styles[attr];
+                }
+              }
+            }
+
+            userCss.appendChild(document.createTextNode(U.obj2Css(cssObj) + '\n\n'));
+            return true;
+
+          } catch(err) {
+            console.log(err.message);
+            return false;
           }
-
-          console.log(cssObj);
-          console.log(U.obj2Css(cssObj));
-
-
-          /*
-          var sheet = document.getElementById("cssTest").sheet;
-          console.log(sheet);
-          console.log(sheet.cssRules);
-          */
         };
         
       }(Utils, Options));
@@ -2283,8 +2298,14 @@
                 target.setAttribute(type, value);
               }
             } else if(type == 'style2css') {
-              U.style2Css();
+              if(U.style2Css(value)) {
+                target.setAttribute('style', '');
+                var classText = target.getAttribute('class');
+                target.setAttribute('class', classText + ' ' + value);
 
+                U.setBlockAttr();
+                U.setBlockStyle();
+              }
             } else {
               target.setAttribute(type, value);
             }
@@ -2987,9 +3008,10 @@
           defaultCss.setAttribute('id', 'default_css');
           defaultCss.setAttribute('type', 'text/css');
 
-          head.appendChild(defaultCss);
+          head.insertBefore(defaultCss, document.getElementById('user_css'));
+
           for(var i = 0, len = O.css.length; i < len; i++) {
-            defaultCss.appendChild(document.createTextNode(U.obj2Css(O.css[i])));  
+            defaultCss.appendChild(document.createTextNode(U.obj2Css(O.css[i]) + '\n\n'));
           }
         };
         
