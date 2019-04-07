@@ -1,0 +1,51 @@
+﻿1. 목적
+ 1) Html Import 기능 추가
+ 
+2. 진행사항 
+ HTML test: HtmlBuilder.importHtml("
+	<div id='1' class='hb_half hb_outline-solid'>
+		<div id='2' class='hb_half hb_outline-solid'>
+			<input id='3' class='hb_half hb_outline-solid'>
+			</input>
+		</div>
+	</div>
+	<div class='hb_half hb_outline-solid'>
+	</div>
+"
+);
+ 
+ CSS test: HtmlBuilder.importCss("
+	.user_margin-10px {
+				margin: 10px;
+	}
+");
+ 
+ 1) 각 세팅 기능 UI 작업 필요 (02/25 구현중)
+	HTML Import
+	CSS Import
+	Resolution Change
+	
+	1. Setting UI 구현 
+	  1) 각 Button 추가 완료
+
+	2. Setting UI CSS 변경 완료 (03/02)
+
+	3. Setting UI 이벤트 구현 필요 (03/02)
+               1) U.importHtml(htmlText)
+               2) U.importCss(cssText)
+              
+            4. Resolution 기능 구현 필요 (03/02)
+               1) 320px
+               2) 768px
+
+            5. Resolution 이벤트 구현 필요 (03/02)
+
+            5. Setting UI 팝업창 CSS 변경 필요 (03/02)
+ 
+ 2) Html Export
+ 3) CSS Export
+
+
+변경 점
+
+ 1) Block 클릭 시 Attribute 페이지 나오면 좋음

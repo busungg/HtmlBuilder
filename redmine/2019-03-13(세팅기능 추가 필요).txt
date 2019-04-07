@@ -1,0 +1,40 @@
+﻿1. 목적
+ 1) Html Export 기능 추가
+ 
+2. 진행사항 
+ HTML test: HtmlBuilder.importHtml("
+	<div id='1' class='hb_half hb_outline-solid'>
+		<div id='2' class='hb_half hb_outline-solid'>
+			<input id='3' class='hb_half hb_outline-solid'>
+			</input>
+		</div>
+	</div>
+	<div class='hb_half hb_outline-solid'>
+	</div>
+"
+);
+ 
+ CSS test: HtmlBuilder.importCss("
+	.user_margin-10px {
+				margin: 10px;
+	}
+");
+
+
+ 1) Html Export 
+   1. Export UI 구현
+   2. Export 시 HtmlBuilder에서 생성한 layout_id와 같은 attr 삭제 필요
+   3. Export 시 Html beautify 기능 필요
+     1) 문제점 -> input tag는 /> 기호가 없어서 정렬이 안되는 문제 발생 확인 필요
+
+ 2) CSS Export
+   1. Export 시 동일 style에 대해서 css로 export 할 수 있는 기능 필요? 
+     - style을 css로 변경할 수 있는 기능을 제공한다.
+
+ 3) Function block Y scroll bar 생성시 위치가 맞지 않는 버그 확인 필요
+ 4) 전체 UI 변경
+ 5) bootstrap 적용 버전도 구현 필요
+
+개선사항
+ 1) Block 클릭 시 Attribute 페이지 나오면 좋음
+ 2) 기존 Block 선택 후 Block 추가 페이지의 Block drag 및 select 시 기존 Block 선택이 취소 되는 기능 필요

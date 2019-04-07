@@ -45,6 +45,13 @@ body
 	box-sizing: border-box;	
 }
 
+.hb_width-75 {
+	position: : relative;
+	width: 75%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
 .hb_margin-5px {
 	margin: 2px;
 }
@@ -52,7 +59,6 @@ body
 .hb_margin-10px {
 	margin: 10px;
 }
-
 
 .hb_padding-5px {
 	padding: 5px;
@@ -223,7 +229,7 @@ body
 
 .hb_main-menu .hb_content-blocks
 {
-	width: 90%;
+	width: 95%;
 	text-align: center;
 }
 
@@ -432,4 +438,117 @@ body
 	width: 90%;
 	margin-right: auto;
 	margin-left: auto;
+}
+
+/*--------------- MENU SETTING --------------*/
+.hb_setting-block
+{
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+}
+
+.hb_setting-block .hb_title-block
+{
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_setting-btn-phone
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-phone.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_setting-btn-tablet
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-tablet.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_setting-btn-browser
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-computer.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/*--------------- MENU SETTING POPUP --------------*/
+.hb_setting-popup
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 70%;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	border: 2px solid #495267;
+	background-color: #3b4251;
+}
+
+.hb_setting-popup div {
+	box-sizing: border-box;
+	border-bottom: 1px solid #66728d;
+}
+
+.hb_setting-popup-titlediv
+{
+	width: 100%;
+	height: 10%;
+	color: #7787a9;
+}
+
+.hb_setting-popup-textdiv
+{
+	width: 100%;
+	height: 80%;
+	padding: 10px;
+}
+
+.hb_setting-popup-textarea
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.hb_setting-popup-applybutton
+{
+	margin: 10px;
+}
+
+.hb_setting-popup-clossbutton
+{
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin: 10px;
+	background-image: url("../icon/btn-cancel.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }

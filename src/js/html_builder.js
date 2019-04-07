@@ -1,7 +1,8 @@
 (
   function(root, factory) {
     //Initialize
-    root.HtmlBuilder = factory(root);
+    root.HtmlBuilder = {};
+    root.HtmlBuilder.init = factory(root).init;
 
   } (typeof window !== 'undefined' ? window : this, function(win) {
       //HtmlBuilder
@@ -12,12 +13,6 @@
       
       //Default Setting
       var Options = {
-        /*
-          Content Id
-        */
-        HB_CONTENT_DIV_ID: '!content',
-        HB_MENU_DIV_ID: '!menu',
-
         /*
           Block ATTR
           1. attr
@@ -42,7 +37,49 @@
           text: 'text',
           color: 'color'
         },
+
         HB_LAYOUT_ID: 'hb_layout_id',
+
+        /*
+          1. Default CSS
+        */
+        css: [
+            {
+              title: '.block_full',
+              content: {
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                'box-sizing': 'border-box'
+              }
+            },
+            {
+              title: '.block_half',
+              content: {
+                width: '50%',
+                height: '50%',
+                'box-sizing': 'border-box' 
+              }
+            },
+            {
+              title: '.block_border-basic',
+              content: {
+                border: '1px solid #000000'
+              }
+            },
+            {
+              title: '.block_padding-10px',
+              content: {
+                padding: '10px'
+              }
+            }, 
+            {
+              title: '.block_margin-10px',
+              content: {
+                margin: '10px'
+              }
+            }
+        ],
 
         /*
           1. block 종류
@@ -67,7 +104,7 @@
             title: 'Div',
             element: 'div',
             attrs: {
-              class: ['hb_half', 'hb_border-basic', 'hb_padding-10px', 'hb_margin-10px']  
+              class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']  
             },
             icon: 'hb_btn-div'
           },
@@ -75,7 +112,7 @@
             title: 'P',
             element: 'p',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             text: 'P element text',
             icon: 'hb_btn-p'
@@ -85,7 +122,7 @@
             element: 'input',
             attrs: {
               type: 'text',
-              class: ['hb_border-basic']
+              class: ['block_border-basic']
             },
             icon: 'hb_btn-input'
           },
@@ -94,7 +131,7 @@
             element: 'input',
             attrs: {
               type: 'number',
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             icon: 'hb_btn-input'
           },
@@ -102,7 +139,7 @@
             title: 'Text Area',
             element: 'textarea',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             icon: 'hb_btn-text-area'
           },
@@ -110,7 +147,7 @@
             title: 'Link',
             element: 'a',
             attrs: {
-              class: ['hb_border-basic'],
+              class: ['block_border-basic'],
               target: '_blank'
             },
             text: 'A element text',
@@ -120,7 +157,7 @@
             title: 'Image',
             element: 'img',
             attrs: {
-              class: ['hb_half', 'hb_border-basic']  
+              class: ['block_half', 'block_border-basic']  
             },
             icon: 'hb_btn-img'
           },
@@ -128,7 +165,7 @@
             title: 'Select',
             element: 'select',
             attrs: {
-              class: ['hb_half', 'hb_border-basic']  
+              class: ['block_half', 'block_border-basic']  
             },
             icon: 'hb_btn-select'
           },
@@ -136,7 +173,7 @@
             title: 'Button',
             element: 'button',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             text: 'Button element text',
             icon: 'hb_btn-button'
@@ -145,7 +182,7 @@
             title: 'Label',
             element: 'label',
             attrs: {
-              class: ['hb_border-basic']  
+              class: ['block_border-basic']  
             },
             text: 'Label element text',
             icon: 'hb_btn-label'
@@ -155,7 +192,7 @@
             element: 'input',
             attrs: {
               type: 'checkbox',
-              class: ['hb_border-basic'],
+              class: ['block_border-basic'],
               style: 'width:15px; height:15px;'
             },
             icon: 'hb_btn-check-box'
@@ -165,7 +202,7 @@
             element: 'input',
             attrs: {
               type: 'radio',
-              class: ['hb_border-basic'],  
+              class: ['block_border-basic'],  
               style: 'width:15px; height:15px;'
             },
             icon: 'hb_btn-radio'
@@ -173,8 +210,7 @@
         ],
 
         /*
-          1. list
-            1) User Preset 저장용도
+          1. attr
         */
         attr: [
           {
@@ -184,6 +220,7 @@
             multiple: false,
             list: false
           },
+
           {
             name:'name',
             title:'Name',
@@ -238,6 +275,14 @@
             type: 'text',
             multiple: true,
             list: false
+          },
+
+          {
+            name:'style2css',
+            title:'Style to CSS',
+            type: 'text',
+            multiple: false,
+            list: false
           }
         ],
 
@@ -261,7 +306,6 @@
             4. border
             5. background
         */
-
         style_category: [
           {
             name: 'position',
@@ -1204,11 +1248,14 @@
 
                   //posIdx
                   if(parentLayout.child[U.newLayout.posIdx]) {
+                    parent.insertBefore(newChild, parent.children[U.newLayout.posIdx]);
+                    /*
                     if(U.contentLayout.id == parentLayout.id) {
                       parent.insertBefore(newChild, parent.children[U.newLayout.posIdx + 1]);
                     } else {
                       parent.insertBefore(newChild, parent.children[U.newLayout.posIdx]);
                     }
+                    */
                   } else {
                     parent.appendChild(newChild);
                   }
@@ -1228,11 +1275,14 @@
                   var selectedBlock = U.selectedLayout.getBlock();
 
                   if(parentLayout.child[U.newLayout.posIdx]){
+                    parent.insertBefore(selectedBlock, parent.children[U.newLayout.posIdx]);
+                    /*
                     if(U.contentLayout.id == parentLayout.id) {
                       parent.insertBefore(selectedBlock, parent.children[U.newLayout.posIdx + 1]);
                     } else {
                       parent.insertBefore(selectedBlock, parent.children[U.newLayout.posIdx]);
                     }
+                    */
                     //parent.insertBefore(selectedBlock, parent.childNodes[U.newLayout.posIdx]);
                   } else {
                     parent.appendChild(selectedBlock);
@@ -1380,7 +1430,7 @@
               var functionBlock = document.getElementsByClassName('hb_func-menu');
               if(U.selectedLayout) {
                 var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
-                functionBlock[0].setAttribute('style', 'position: absolute; left: ' + layout.x + 'px; top: ' + (layout.y - 20) + 'px;');
+                functionBlock[0].setAttribute('style', 'position: absolute; left: ' + (layout.x + U.contentLayout.x) + 'px; top: ' + (layout.y + U.contentLayout.y - 20) + 'px;');
               } else {
                 functionBlock[0].setAttribute('style', 'position: absolute; left: 0px; top: -100px;');
               }
@@ -1521,7 +1571,7 @@
         /*
           1. Get style options 
         */
-        U.getBlockStyle = function() {
+        U.getBlockStyle = function(group) {
           try {
             var styles = null;
 
@@ -1538,6 +1588,8 @@
               groupProperty['border-width'] = {checkSum: 0, value: null, group: true};
               groupProperty['border-color'] = {checkSum: 0, value: null, group: true};
               groupProperty['border-style'] = {checkSum: 0, value: null, group: true};
+
+              var direction = ['-left', '-right', '-top', '-bottom'];
 
               var i, len, groupName, propertyName, propertyValue;
               for(i = 0, len = blockStyles.length; i < len; i++) {
@@ -1562,9 +1614,17 @@
                 styles[propertyName] = propertyValue;
               }
 
-              for(i in groupProperty) {
-                if(groupProperty[i].checkSum == 4 && groupProperty[i].group) {
-                  styles[i] = groupProperty[i].value;
+              for(key in groupProperty) {
+                if(groupProperty[key].checkSum == 4 && groupProperty[key].group) {
+                  styles[key] = groupProperty[key].value;
+
+                  if(group) {
+                    groupName = key.split('-');
+                    for(i = 0, len = direction.length; i < len; i++) {
+                      propertyName = ((groupName.length > 1) ? (groupName[0] + direction[i] + '-' + groupName[1]) : (groupName[0] + direction[i]));
+                      styles[propertyName] = null;
+                    }
+                  }
                 }
               }
             }
@@ -1585,7 +1645,7 @@
 
         U.setBlockStyle = function() {
           try {
-              var styles = U.getBlockStyle();
+              var styles = U.getBlockStyle(false);
 
               var name, value, domValue, domUnit;
               // Init Style Html
@@ -1673,14 +1733,14 @@
           1. Menu Block Draggable 선택
         */
         U.draggableMenuBlock = function(chk) {
-            try {
-                var blocks = document.getElementsByClassName('hb_btn-block');
-                for(var i = 0, len = blocks.length; i < len; i++) {
-                    blocks[i].setAttribute('draggable', chk);
-                }
-            } catch(err) {
-                console.log(err.message);
+          try {
+            var blocks = document.getElementsByClassName('hb_btn-block');
+            for(var i = 0, len = blocks.length; i < len; i++) {
+                blocks[i].setAttribute('draggable', chk);
             }
+          } catch(err) {
+            console.log(err.message);
+          }
         };
 
         /*
@@ -1688,16 +1748,20 @@
             1) Text Parsing => Dom Element
             2) Dom Element => Layout object
         */
-        U.importHtml = function(htmlText) {
-          var content = document.getElementById(O.HB_CONTENT_DIV_ID);
-          var funcBlock = document.querySelectorAll('[class=hb_func-menu]')[0];
+        U.importHtml = function(id, htmlText) {
+          try {
+            var content = document.getElementById(id);
+            var funcBlock = document.querySelectorAll('[class=hb_func-menu]')[0];
 
-          content.innerHTML = htmlText;
-          
-          U.importLayout(content, null);
-          U.updateLayout(U.contentLayout);
+            content.innerHTML = htmlText;
+            
+            U.importLayout(content, null);
+            U.updateLayout(U.contentLayout);
 
-          content.insertBefore(funcBlock, content.children[0]);
+            content.insertBefore(funcBlock, content.children[0]);
+          } catch (err) {
+            console.log(err.message);
+          }
         };
 
         /*
@@ -1707,45 +1771,185 @@
             3) Layout 생성 하면서 Event 입력
         */
         U.importLayout = function(child, parent) {
-          var layout = null, parentLayout = null;
-          if(parent != null) {
-            parentLayoutId = parent.getAttribute(O.HB_LAYOUT_ID);
-            parentLayout = LayoutController.selectLayout(parentLayoutId, U.contentLayout);
+          try {
+            var layout = null, parentLayout = null;
+            if(parent != null) {
+              parentLayoutId = parent.getAttribute(O.HB_LAYOUT_ID);
+              parentLayout = LayoutController.selectLayout(parentLayoutId, U.contentLayout);
 
-            layout = new Layout();
-            layout.element = child.tagName.toLowerCase();
-            layout.id = layout.element + '_' + U.idIdx;
-            layout.parentLayoutId = parentLayoutId;
-            child.setAttribute(O.HB_LAYOUT_ID, layout.id);
+              layout = new Layout();
+              layout.element = child.tagName.toLowerCase();
+              layout.id = layout.element + '_' + U.idIdx;
+              layout.parentLayoutId = parentLayoutId;
+              child.setAttribute(O.HB_LAYOUT_ID, layout.id);
 
-            for(var idx in U.blockDefaultEvents) {
-              child.addEventListener(U.blockDefaultEvents[idx].type, U.blockDefaultEvents[idx].func);  
+              for(var idx in U.blockDefaultEvents) {
+                child.addEventListener(U.blockDefaultEvents[idx].type, U.blockDefaultEvents[idx].func);  
+              }
+
+              parentLayout.child.push(layout);
+              U.idIdx++;
             }
 
-            parentLayout.child.push(layout);
-            U.idIdx++;
+            for(var i = 0, len = child.children.length; i < len; i++) {
+              U.importLayout(child.children[i], child);
+            }
+          } catch(err) {
+            console.log(err.message);
           }
+        };
 
-          for(var i = 0, len = child.children.length; i < len; i++) {
-            U.importLayout(child.children[i], child);
+        
+        U.changeResolution = function(id, width, height) {
+          try {
+            var content = document.getElementById(id);
+
+            if(width) {
+              content.style.width = width;
+            } 
+
+            if(height) {
+              content.style.height = height;
+            }
+          } catch (err) {
+            console.log(err.message);
           }
+        };
+
+        U.exportHtml = function(id) {
+          try {
+            var html = null;
+            var content = document.getElementById(id);
+            var tempContent = document.createElement('div');
+            tempContent.setAttribute('id', 'temp_export_html');
+            tempContent.setAttribute('style', 'x:0, y:-1000');
+            tempContent.innerHTML = content.innerHTML;
+            
+            document.body.appendChild(tempContent);
+            var blockArray = tempContent.querySelectorAll('['+ O.HB_LAYOUT_ID + ']');
+            
+            for(var i = 0, len = blockArray.length; i < len; i++) {
+                blockArray[i].removeAttribute(O.HB_LAYOUT_ID);
+            }
+            
+            html = tempContent.innerHTML;
+            document.body.removeChild(tempContent);
+            
+            return U.beautifyHtml(html);
+            
+          } catch (err) {
+            console.log(err.message);
+          }
+        };
+        
+        U.beautifyHtml = function(html) {
+            var tab = ' '.repeat(4);
+            var indent = 0;
+            var tag = null, nextTag = null;
+            
+            var result = '';
+            
+            for(var pos = 0, len = html.length; pos < len - 1; pos++) {
+                tag = html[pos];
+                nextTag = html[pos+1];
+                
+                if(tag === '<' && nextTag !== '/') {
+                    result += '\n' + tab.repeat(indent);
+                    if(nextTag.toUpperCase() !== 'I') { //input, img self-closing
+                        indent++;
+                    }
+                } else if(tag === '<' && nextTag === '/') {
+                    if(--indent < 0) indent = 0;
+                    result += '\n' + tab.repeat(indent);
+                }
+                result += tag;
+            }
+            result += html[len - 1];
+            
+            return result;
         };
 
         U.importCss = function(cssText) {
-          var userCss = document.getElementById('user_css');
-          userCss.innerHTML = cssText;
+          try {
+            var userCss = document.getElementById('user_css');
+            userCss.innerHTML = cssText;
+          } catch (err) {
+            console.log(err.message);
+          }
+        };
+        
+        U.exportCss = function() {
+          try {
+            var defaultCss = document.getElementById('default_css');
+            var userCss = document.getElementById('user_css');
 
-          /*
-          var sheet = document.getElementById("cssTest").sheet;
-          console.log(sheet);
-          console.log(sheet.cssRules);
-          */
+            var css = (defaultCss.textContent + userCss.textContent);
+
+            return css;
+          } catch(err) {
+              console.log(err.message)
+          }
         };
 
-        U.changeResolution = function(width, height) {
-          var content = document.getElementById(O.HB_CONTENT_DIV_ID);
-          content.style.width = width;
-          content.style.height = height;
+        /*
+          1. Rule
+            1) css is object
+            2) title = css title
+            3) content = css content
+          2. Format
+            {
+              title: 'border-10px'
+              content: {
+                border : '10px solid #ffffff'
+              }
+            }
+
+            =>
+
+            border-10px {
+              border: 10px solid #ffffff;
+            }
+        */
+        U.obj2Css = function(css) {
+          try {
+            var cssText = '';
+            var tab = ' '.repeat(4);
+
+            cssText += (css.title + ' {\n');
+            for(attr in css.content) {
+              cssText += (tab + attr + ': ' + css.content[attr] + ';\n');
+            }
+            cssText += '}';
+
+            return cssText;
+          } catch(err) {
+            console.log(err.message);
+          }
+        };
+
+        U.style2Css = function(cssName) {
+          try {
+            var userCss = document.getElementById('user_css');
+
+            var styles = U.getBlockStyle(true);          
+            var cssObj = {title: '.' + cssName, content: {}};
+            for(var attr in styles) {
+              if(styles[attr] != null) {
+                if(attr.indexOf('color') != -1) {
+                  cssObj.content[attr] = U.rgb2Hex(styles[attr]);
+                } else {
+                  cssObj.content[attr] = styles[attr];
+                }
+              }
+            }
+
+            userCss.appendChild(document.createTextNode(U.obj2Css(cssObj) + '\n\n'));
+            return true;
+
+          } catch(err) {
+            console.log(err.message);
+            return false;
+          }
         };
         
       }(Utils, Options));
@@ -1754,17 +1958,19 @@
         H.init = function(config) {
           var defaults = {
             container: '#container', //전체 화면
-            ids: [O.HB_CONTENT_DIV_ID, O.HB_MENU_DIV_ID],
+            ids: ['!content', '!menu'],
             width: ['80%', '18%'],
             height: ['100%', '100%']
           };
-
+          
           var c = config || {};
           for (var name in defaults) {
             if (!(name in c)) {
               c[name] = defaults[name];
             }
           }
+
+          H.config = c;
           
           try {
             //container
@@ -1840,7 +2046,8 @@
              ]
             });
 
-            content.appendChild(selectedBlockFunc);
+            document.body.appendChild(selectedBlockFunc);
+            //content.appendChild(selectedBlockFunc);
 
             //menu
             var menu = U.builder({
@@ -1857,6 +2064,8 @@
             H.menuBlocks(menu);
             H.menuAttr(menu);
             H.menuStyle(menu);
+            H.menuSetting(menu);
+            H.cssSetting();
 
           } catch(err) {
             console.log(err.message);
@@ -1994,7 +2203,8 @@
                   element: 'div',
                   attr: {
                     id: '#main-setting_block',
-                    class: 'hb_content-blocks'
+                    class: 'hb_content-attr',
+                    style: 'display:none;'
                   }
                 }
               ]
@@ -2086,6 +2296,15 @@
                 target.value = value;
               } else {
                 target.setAttribute(type, value);
+              }
+            } else if(type == 'style2css') {
+              if(U.style2Css(value)) {
+                target.setAttribute('style', '');
+                var classText = target.getAttribute('class');
+                target.setAttribute('class', classText + ' ' + value);
+
+                U.setBlockAttr();
+                U.setBlockStyle();
               }
             } else {
               target.setAttribute(type, value);
@@ -2283,10 +2502,6 @@
 
 
         H.menuStyle = function(container) {
-          // title, div
-          // hb_attr-block, hb_title-block, hb_lbl
-          // hb_attr-list-block
-
           /*
             //Position
             {
@@ -2559,36 +2774,248 @@
 
         H.menuSetting = function(container) {
           try {
-            var _block;
+            var settingEvent = function(e) {
+              var id = e.target.getAttribute(O.HB_ATTR_ID);
+              var apply_func = null;
+
+              if(id == 'import_html') {
+                apply_func = function (e) {
+                  var div = e.target.parentNode;
+                  var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+
+                  U.importHtml(H.config.ids[0], textarea.value);
+
+                  div.remove();
+                };
+
+                H.menuSettingPopup(id, apply_func);
+              } else if(id == 'import_css') {
+                apply_func = function (e) {
+                  var div = e.target.parentNode;
+                  var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+
+                  U.importCss(textarea.value);
+
+                  div.remove();
+                };
+
+                H.menuSettingPopup(id, apply_func);
+              } else if(id == 'export_html') {
+                  
+                apply_func = function(e) {
+                  var div = e.target.parentNode;
+                  div.remove();
+                };
+                
+                H.menuSettingPopup(id, apply_func, U.exportHtml(H.config.ids[0]));
+              } else if(id == 'export_css') {
+                apply_func = function(e) {
+                  var div = e.target.parentNode;
+                  div.remove();
+                };
+                
+                H.menuSettingPopup(id, apply_func, U.exportCss());
+              }
+            };
+
+            var settingResolutionEvent = function(e) {
+              var width = e.target.value;
+
+              U.changeResolution(H.config.ids[0], width, null);
+            };
+
+            var setting_option = [
+              {
+                name:'resolution',
+                title:'Change Resolution',
+                child: [
+                  {
+                    element: 'label',
+                    attr: {
+                      class: 'hb_lbl'
+                    },
+                    text: 'Change Resolution'
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_setting-btn-phone',
+                      value: '320px'
+                    },
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingResolutionEvent
+                      }
+                    ]
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_setting-btn-tablet',
+                      value: '768px'
+                    },
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingResolutionEvent
+                      }
+                    ]
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_setting-btn-browser',
+                      value: H.config.width[0]
+                    },
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingResolutionEvent
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                name:'import_html',
+                title:'Import HTML'
+              },
+              {
+                name:'import_css',
+                title:'Import CSS'
+              },
+              {
+                name:'export_html',
+                title:'Export HTML'
+              },
+              {
+                name:'export_css',
+                title:'Export CSS'
+              }
+            ];
 
             //settig 관련 하여 어떻게 동작할 것인지 확인 필요
             //Import html, css 동시에 할 수 있도록 Modal 적용
             //Export html, css 동시에 할 수 있도록 Modal 적용
             //Resolution Button으로 미리 정해두자
+            var _block, _title;
+            for(var i = 0, len = setting_option.length; i < len; i++) {
+              _block = {
+                element: 'div',
+                attr: {
+                  class: 'hb_setting-block'
+                },
+                child: []
+              };
 
-            /*
-            {
-            element: 'div',
-            attr: {
-              class: 'hb_nav',
-              id: '#main-nav'
-            },
-            */
+              _title = {
+                element: 'div',
+                attr: {
+                  class: 'hb_title-block'
+                }
+              };
 
+              if(!setting_option[i].child) {
+                _title.child = [
+                  {
+                    element: 'label',
+                    attr: {
+                      class: 'hb_lbl'
+                    },
+                    text: setting_option[i].title
+                  },
+                  {
+                    element: 'button',
+                    attr: {
+                      class: 'hb_width-75'
+                    },
+                    text: setting_option[i].title,
+                    event: [
+                      {
+                        type: 'click',
+                        func: settingEvent
+                      }
+                    ]
+                  }
+                ];
 
-            container.children[1].children[2].appendChild(U.builder(_block_content));
+                _title.child[1].attr[O.HB_ATTR_ID] = setting_option[i].name;
+              } else {
+                _title.child = setting_option[i].child;
+              }
+
+              _block.child.push(_title);
+              container.children[1].children[2].appendChild(U.builder(_block));
+            }
 
           } catch(err) {
             console.log(err.message);
           }
-        }
+        };
+
+        H.menuSettingPopup = function(section, apply_func, text) {
+          try {
+
+            var close = function(e) {
+              div.remove();
+            };
+
+            var div = document.createElement('div');
+            div.setAttribute('class', 'hb_setting-popup');
+
+            var div_title = document.createElement('div');
+            div_title.setAttribute('class', 'hb_setting-popup-titlediv');
+            div_title.appendChild(document.createTextNode(section));
+
+            var button_cancel = document.createElement('button');
+            button_cancel.setAttribute('class', 'hb_setting-popup-clossbutton');
+            button_cancel.addEventListener('click', close);
+            div_title.appendChild(button_cancel);
+
+            var div_text = document.createElement('div');
+            div_text.setAttribute('class', 'hb_setting-popup-textdiv');
+
+            var textarea = document.createElement('textarea');
+            textarea.setAttribute('class', 'hb_setting-popup-textarea');
+            if(text) {
+                textarea.value = text;
+            }
+            div_text.appendChild(textarea);
+            
+            div.appendChild(div_title);
+            div.appendChild(div_text);
+
+            if(apply_func) {
+              var button_apply = document.createElement('button');
+              button_apply.setAttribute('class', 'hb_setting-popup-applybutton');
+              button_apply.appendChild(document.createTextNode('Apply'));
+              button_apply.addEventListener('click', apply_func);
+              div.appendChild(button_apply);
+            }
+            
+            document.body.appendChild(div);
+
+          } catch(err) {
+            console.log(err.message);
+          }
+        };
+
+        H.cssSetting = function() {
+          var head = document.getElementsByTagName('head')[0];
+
+          var defaultCss = document.createElement('style');
+          defaultCss.setAttribute('id', 'default_css');
+          defaultCss.setAttribute('type', 'text/css');
+
+          head.insertBefore(defaultCss, document.getElementById('user_css'));
+
+          for(var i = 0, len = O.css.length; i < len; i++) {
+            defaultCss.appendChild(document.createTextNode(U.obj2Css(O.css[i]) + '\n\n'));
+          }
+        };
         
       }(HtmlBuilder, Utils, Options));
-    
-    //테스트용
-    HtmlBuilder.importHtml = Utils.importHtml;
-    HtmlBuilder.importCss = Utils.importCss;
-    HtmlBuilder.changeResolution = Utils.changeResolution;
 
     return HtmlBuilder;
   })
