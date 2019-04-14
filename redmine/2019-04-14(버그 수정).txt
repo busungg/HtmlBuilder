@@ -1,0 +1,20 @@
+﻿1. 목적
+ 1) 버그 수정
+ 2) 리펙토링
+ 
+2. 진행사항
+ 1) Import & Export Html, CSS 팝업창 UI 변경
+   1. 제목 수정 완료 (100%)
+   2. Apply Button 유무 적용 완료 (100%)
+ 
+ 2) Function Block 위치가 scroll bar 생성시 해당 Block에 위치하지 않는 버그
+   1. Scrollbar 위치 적용 필요 - Scroll Left, Top 추가 계산 하도록 수정 완료 (100%)
+   2. Function Block 표시 후 Scrollbar 사용 시 Function Block 위치 재조정 필요 (90%)
+     - 위치 조정 필요
+     - Event 최초 설정 필요
+
+ 3) Copy Block 기능 버그 수정 
+
+3. 개선사항
+ 1) Block 클릭 시 Attribute 페이지 나오면 좋음
+ 2) 기존 Block 선택 후 Block 추가 페이지의 Block drag 및 select 시 기존 Block 선택이 취소 되는 기능 필요
