@@ -1403,7 +1403,8 @@
                     element: copiedLayout.element,
                     attr: {
                       type: (originalBlock.attributes['type'] ? originalBlock.attributes['type'].value : null),
-                      class: originalBlock.classList.value
+                      class: originalBlock.classList.value,
+                      style: originalBlock.style.cssText
                     },
                     event: U.blockDefaultEvents
                   };
@@ -1437,7 +1438,6 @@
 
                 functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
 
-                console.log(body.attachedScroll);
                 if(!body.attachedScroll) {
                   body.attachedScroll = true;
                   body.addEventListener('scroll', function(e) {
