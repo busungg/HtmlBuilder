@@ -1406,6 +1406,7 @@
                       class: originalBlock.classList.value,
                       style: originalBlock.style.cssText
                     },
+                    text: originalBlock.textContent,
                     event: U.blockDefaultEvents
                   };
               _copiedBlock.attr[O.HB_LAYOUT_ID] = copiedLayout.id;
@@ -1772,14 +1773,12 @@
         U.importHtml = function(id, htmlText) {
           try {
             var content = document.getElementById(id);
-            var funcBlock = document.querySelectorAll('[class=hb_func-menu]')[0];
-
             content.innerHTML = htmlText;
             
+            U.contentLayout.child = []; //init child
             U.importLayout(content, null);
             U.updateLayout(U.contentLayout);
 
-            content.insertBefore(funcBlock, content.children[0]);
           } catch (err) {
             console.log(err.message);
           }
@@ -1856,6 +1855,10 @@
             html = tempContent.innerHTML;
             document.body.removeChild(tempContent);
             
+            if(html === '') {
+              return '';
+            }
+
             return U.beautifyHtml(html);
             
           } catch (err) {
@@ -2809,7 +2812,7 @@
                   div.remove();
                 };
 
-                H.menuSettingPopup('Import HTML', apply_func);
+                H.menuSettingPopup('Import HTML', apply_func, U.exportHtml(H.config.ids[0]));
               } else if(id == 'import_css') {
                 apply_func = function (e) {
                   var div = e.target.parentNode;
@@ -2820,7 +2823,8 @@
                   div.remove();
                 };
 
-                H.menuSettingPopup('Import CSS', apply_func);
+                var userCss = document.getElementById('user_css');
+                H.menuSettingPopup('Import CSS', apply_func, userCss.textContent);
               } else if(id == 'export_html') {
 
                 H.menuSettingPopup('Export HTML', null, U.exportHtml(H.config.ids[0]));
