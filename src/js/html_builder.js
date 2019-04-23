@@ -1753,12 +1753,28 @@
         
         /*
           1. Menu Block Draggable 선택
+            1) set draggable true or false
+            2) set show menu
         */
         U.draggableMenuBlock = function(chk) {
           try {
             var blocks = document.getElementsByClassName('hb_btn-block');
             for(var i = 0, len = blocks.length; i < len; i++) {
                 blocks[i].setAttribute('draggable', chk);
+            }
+
+            var content = document.getElementById('#main-content');
+            var children = content.children;
+            for(var i = 0; i < children.length; i++) {
+              children[i].style.display = 'none';
+
+              if(!chk && (children[i].getAttribute('id') === '#main-attr_block')) {
+                children[i].style.display = 'block';
+              }
+
+              if(chk && (children[i].getAttribute('id') === '#main-content_block')) {
+                children[i].style.display = 'block'; 
+              }
             }
           } catch(err) {
             console.log(err.message);
