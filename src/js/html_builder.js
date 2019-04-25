@@ -2270,6 +2270,17 @@
                 },
                 event: [
                   {
+                    type: 'mousedown',
+                    func: function(e) {
+                      if(U.selectedLayout) {
+                        U.selectBlock({
+                          target: U.selectedLayout.getBlock()
+                        });
+                        U.setFunctionBlock();
+                      }
+                    }
+                  },
+                  {
                     type: 'drag',
                     func: function(e) {
                       U.moveBlock(e); 
