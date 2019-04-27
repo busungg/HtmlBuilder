@@ -519,7 +519,10 @@ body
 {
 	width: 100%;
 	height: 10%;
-	color: #7787a9;
+	color: #c3cee2;
+	font: 15px;
+	font-weight: bold;
+	padding-left: 10px;
 }
 
 .hb_setting-popup-textdiv

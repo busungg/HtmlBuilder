@@ -1403,8 +1403,10 @@
                     element: copiedLayout.element,
                     attr: {
                       type: (originalBlock.attributes['type'] ? originalBlock.attributes['type'].value : null),
-                      class: originalBlock.classList.value
+                      class: originalBlock.classList.value,
+                      style: originalBlock.style.cssText
                     },
+                    text: originalBlock.textContent,
                     event: U.blockDefaultEvents
                   };
               _copiedBlock.attr[O.HB_LAYOUT_ID] = copiedLayout.id;
@@ -1427,10 +1429,30 @@
         */
         U.setFunctionBlock = function() {
             try {
+
               var functionBlock = document.getElementsByClassName('hb_func-menu');
               if(U.selectedLayout) {
+                var body = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.contentLayout.id));
                 var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
-                functionBlock[0].setAttribute('style', 'position: absolute; left: ' + (layout.x + U.contentLayout.x) + 'px; top: ' + (layout.y + U.contentLayout.y - 20) + 'px;');
+                var x = (layout.x + U.contentLayout.x - body.scrollLeft);
+                var y = (layout.y + U.contentLayout.y - body.scrollTop);
+
+                functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
+
+                if(!body.attachedScroll) {
+                  body.attachedScroll = true;
+                  body.addEventListener('scroll', function(e) {
+                    if(U.selectedLayout) {
+                      var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
+                      var x = (layout.x + U.contentLayout.x - e.target.scrollLeft);
+                      var y = (layout.y + U.contentLayout.y - e.target.scrollTop);
+
+                      var functionBlock = document.getElementsByClassName('hb_func-menu');
+                      functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
+                    }
+                  });
+                }
+
               } else {
                 functionBlock[0].setAttribute('style', 'position: absolute; left: 0px; top: -100px;');
               }
@@ -1731,12 +1753,28 @@
         
         /*
           1. Menu Block Draggable 선택
+            1) set draggable true or false
+            2) set show menu
         */
         U.draggableMenuBlock = function(chk) {
           try {
             var blocks = document.getElementsByClassName('hb_btn-block');
             for(var i = 0, len = blocks.length; i < len; i++) {
                 blocks[i].setAttribute('draggable', chk);
+            }
+
+            var content = document.getElementById('#main-content');
+            var children = content.children;
+            for(var i = 0; i < children.length; i++) {
+              children[i].style.display = 'none';
+
+              if(!chk && (children[i].getAttribute('id') === '#main-attr_block')) {
+                children[i].style.display = 'block';
+              }
+
+              if(chk && (children[i].getAttribute('id') === '#main-content_block')) {
+                children[i].style.display = 'block'; 
+              }
             }
           } catch(err) {
             console.log(err.message);
@@ -1751,14 +1789,12 @@
         U.importHtml = function(id, htmlText) {
           try {
             var content = document.getElementById(id);
-            var funcBlock = document.querySelectorAll('[class=hb_func-menu]')[0];
-
             content.innerHTML = htmlText;
             
+            U.contentLayout.child = []; //init child
             U.importLayout(content, null);
             U.updateLayout(U.contentLayout);
 
-            content.insertBefore(funcBlock, content.children[0]);
           } catch (err) {
             console.log(err.message);
           }
@@ -1835,6 +1871,10 @@
             html = tempContent.innerHTML;
             document.body.removeChild(tempContent);
             
+            if(html === '') {
+              return '';
+            }
+
             return U.beautifyHtml(html);
             
           } catch (err) {
@@ -2229,6 +2269,17 @@
                   draggable: true
                 },
                 event: [
+                  {
+                    type: 'mousedown',
+                    func: function(e) {
+                      if(U.selectedLayout) {
+                        U.selectBlock({
+                          target: U.selectedLayout.getBlock()
+                        });
+                        U.setFunctionBlock();
+                      }
+                    }
+                  },
                   {
                     type: 'drag',
                     func: function(e) {
@@ -2788,7 +2839,7 @@
                   div.remove();
                 };
 
-                H.menuSettingPopup(id, apply_func);
+                H.menuSettingPopup('Import HTML', apply_func, U.exportHtml(H.config.ids[0]));
               } else if(id == 'import_css') {
                 apply_func = function (e) {
                   var div = e.target.parentNode;
@@ -2799,22 +2850,14 @@
                   div.remove();
                 };
 
-                H.menuSettingPopup(id, apply_func);
+                var userCss = document.getElementById('user_css');
+                H.menuSettingPopup('Import CSS', apply_func, userCss.textContent);
               } else if(id == 'export_html') {
-                  
-                apply_func = function(e) {
-                  var div = e.target.parentNode;
-                  div.remove();
-                };
-                
-                H.menuSettingPopup(id, apply_func, U.exportHtml(H.config.ids[0]));
+
+                H.menuSettingPopup('Export HTML', null, U.exportHtml(H.config.ids[0]));
               } else if(id == 'export_css') {
-                apply_func = function(e) {
-                  var div = e.target.parentNode;
-                  div.remove();
-                };
                 
-                H.menuSettingPopup(id, apply_func, U.exportCss());
+                H.menuSettingPopup('Export CSS', null, U.exportCss());
               }
             };
 
@@ -2895,10 +2938,6 @@
               }
             ];
 
-            //settig 관련 하여 어떻게 동작할 것인지 확인 필요
-            //Import html, css 동시에 할 수 있도록 Modal 적용
-            //Export html, css 동시에 할 수 있도록 Modal 적용
-            //Resolution Button으로 미리 정해두자
             var _block, _title;
             for(var i = 0, len = setting_option.length; i < len; i++) {
               _block = {
@@ -2978,6 +3017,7 @@
 
             var textarea = document.createElement('textarea');
             textarea.setAttribute('class', 'hb_setting-popup-textarea');
+            textarea.setAttribute('style', 'resize: none');
             if(text) {
                 textarea.value = text;
             }

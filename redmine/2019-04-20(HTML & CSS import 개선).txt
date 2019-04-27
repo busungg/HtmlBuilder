@@ -1,0 +1,21 @@
+﻿1. 목적
+ 1) 버그 수정
+ 2) 리펙토링
+ 
+2. 진행사항
+ 1) Import HTML
+   1. 현재 적용된 HTML이 나오도록 수정 완료 (100%)
+   2. Import 시 Layout Object 초기화 수정 완료 (100%)
+   3. Block 없을 시 undefined 나오는 버그 수정 완료 (100%)
+
+ 2) Import CSS
+   1. 현재 적용된 CSS 나오도록 수정 완료 (User CSS만 표현됨) (100%)
+
+ 3) Copy Block
+   1. 내부 텍스트도 복사 되도록 수정 완료 (100%)
+   2. TextContent는 child의 Text까지 복사한다. 
+      이 기능에 대해서는 어떻게 처리 해야 하는가?
+
+3. 개선사항
+ 1) Block 클릭 시 Attribute 페이지 나오면 좋음
+ 2) 기존 Block 선택 후 Block 추가 페이지의 Block drag 및 select 시 기존 Block 선택이 취소 되는 기능 필요
