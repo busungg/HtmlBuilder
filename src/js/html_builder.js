@@ -274,7 +274,7 @@
             title:'Class',
             type: 'text',
             multiple: true,
-            list: false
+            list: false,
           },
 
           {
@@ -282,7 +282,8 @@
             title:'Style to CSS',
             type: 'text',
             multiple: false,
-            list: false
+            list: false,
+            button: true
           }
         ],
 
@@ -2323,11 +2324,13 @@
 
         H.menuAttr = function(container) {
           /**
-          *  Check save event
+          *  Check change event
           *  1. Id, Title, Name save check
           *  2. If they are checked, program shows alarm
           **/
-          var saveEvent = function(e) {
+          var changeEvent = function(e) {
+            //만약 null text가 들어오면 해당 attr은 삭제 한다.
+
             var target = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.selectedLayout.id));
             var type = e.target.getAttribute(O.HB_ATTR_ID);
             var value = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, type, O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value;
@@ -2348,7 +2351,22 @@
               } else {
                 target.setAttribute(type, value);
               }
-            } else if(type == 'style2css') {
+            } else {
+              target.setAttribute(type, value);
+            }
+          };
+
+          /**
+          *  Check save event
+          *  1. style to css
+          *  2. If they are checked, program shows alarm
+          **/
+          var saveEvent = function(e) {
+            var target = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.selectedLayout.id));
+            var type = e.target.getAttribute(O.HB_ATTR_ID);
+            var value = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, type, O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value;
+
+            if(type == 'style2css') {
               if(U.style2Css(value)) {
                 target.setAttribute('style', '');
                 var classText = target.getAttribute('class');
@@ -2439,10 +2457,20 @@
                     attr: {
                       type: 'text',
                       class: 'hb_input'
-                    }
+                    } 
                   }
                 ]
               };
+
+              if(!O.attr[i].button) {
+                _title.child[1].event = [
+                                          {
+                                            type: 'change',
+                                            func: changeEvent
+                                          }
+                                        ];
+
+              }
 
               _title.child[1].attr[O.HB_ATTR_ID] = O.attr[i].name;
               _title.child[1].attr[O.HB_ATTR_TYPE] = O.HB_ATTR_TYPE_OPTION.text;
@@ -2504,7 +2532,7 @@
                 _title_list.child[0].attr[O.HB_ATTR_ID] = O.attr[i].name;
                 _title_list.child[0].attr[O.HB_ATTR_TYPE] = O.HB_ATTR_TYPE_OPTION.select;
 
-              } else {
+              } else if(O.attr[i].button) {
                 _title.child.push(
                     {
                       element: 'button',
