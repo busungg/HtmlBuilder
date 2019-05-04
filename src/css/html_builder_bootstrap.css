@@ -403,10 +403,32 @@ body
 
 .hb_title-block .hb_btn
 {
-	float: right;
-	width: 25px;
-	height: 25px;
-	margin-right: 5px;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+
+	width: 90%;
+	height: 20px;
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_title-block .hb_btn:hover
+{
+	color: #fff;
+  	background-color: #5a6268;
+  	border-color: #545b62;
 }
 
 .hb_title-block .hb_select

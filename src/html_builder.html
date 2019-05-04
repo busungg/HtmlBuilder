@@ -2,17 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!--
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    -->
-
-
-    <link rel="stylesheet" href="./css/html_builder_bootstrap.css">
     <style id="user_css" type="text/css"></style>
-    <script type="text/javascript" src="./js/html_builder.js"></script>
+    <script type="text/javascript" src="./js/html_builder.js" attr-type="html_builder"></script>
   </head>
   <body>
     <div style="margin-bottom: 5px;">
@@ -30,24 +21,96 @@
 
   <script type="text/javascript">
       (function(){
-         //select design
-        var head = document.getElementById('#hb_head');
-        var select_design = document.getElementById('#hb_select_design');
-        if(select_design.value === 'bootstrap') {
-          
-        } else if(select_design.value === 'plain') {
 
+        //loading call back 함수 필요
+        var css_content = {
+          bootstrap: [
+            {
+              element: 'link',
+              src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+            },
+            
+            {
+              element: 'script',
+              src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
+            },
+            {
+              element: 'script',
+              src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+            },
+
+            {
+              element: 'script',
+              src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
+            },
+            {
+              element: 'link',
+              src: './css/html_builder_bootstrap.css'
+            }
+          ],
+          plain: [
+            {
+              element: 'link',
+              src: './css/html_builder.css'
+            }
+          ]
+        };
+
+        var setCssfunc = function(type) {
+          var script_for_htmlbuilder = document.querySelectorAll('[attr-type=html_builder]')[0];
+
+          var oldType;
+          switch(type) {
+            case 'bootstrap':
+              oldType = 'plain';
+            break;
+
+            case 'plain':
+              oldType = 'bootstrap';
+            break;
+          }
+
+          var css_list = css_content[type];
+          var remove_list = document.querySelectorAll('[attr-type=' + oldType + ']');
+
+          var head = document.getElementsByTagName("HEAD")[0];
+          var idx = 0, element = null;
+          for(idx = 0; idx < remove_list.length; idx++) {
+            head.removeChild(remove_list[idx]);
+          }
+
+          for(idx = 0; idx < css_list.length; idx++) {
+            element = document.createElement(css_list[idx].element);
+            if(css_list[idx].element === 'link') {
+              element.setAttribute('rel', 'stylesheet');
+              element.setAttribute('href', css_list[idx].src);
+            } else {
+              element.setAttribute('type', 'text/javascript');
+              element.setAttribute('src', css_list[idx].src);
+            }
+            element.setAttribute('attr-type', type);
+            head.insertBefore(element, script_for_htmlbuilder);
+          }
         }
 
+        //select design
+        var select_design = document.getElementById('#hb_select_design');
+        setCssfunc(select_design.value);
+
         select_design.addEventListener('change', function(e) {
-          if(e.target.value === 'bootstrap') {
-
-          } else if(e.target.value === 'plain') {
-
-          }
+          setCssfunc(select_design.value);
         });
 
-        HtmlBuilder.init();
+        //css부터 모두 로딩 하고 나서 처리 필요
+        var script_for_htmlbuilder = document.querySelectorAll('[attr-type=html_builder]')[0];
+        if(typeof html_builder_loaded_check != "undefined") {
+          HtmlBuilder.init();
+        } else {
+          script_for_htmlbuilder.addEventListener("load", function(event) {
+                                        HtmlBuilder.init();
+                                      });
+        }
+
       })();
   </script>
 </html>

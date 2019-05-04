@@ -1,3 +1,5 @@
+var html_builder_loaded_check = 'checked';
+
 (
   function(root, factory) {
     //Initialize
@@ -2108,6 +2110,8 @@
             H.menuSetting(menu);
             H.cssSetting();
 
+            console.log(U.contentLayout);
+
           } catch(err) {
             console.log(err.message);
           } finally {
@@ -2480,8 +2484,9 @@
                     {
                       element: 'button',
                       attr: {
-                        class: 'hb_btn hb_btn-add'
+                        class: 'hb_btn'
                       },
+                      text: 'Add class',
                       event: [
                         {
                           type: 'click',
@@ -2499,8 +2504,9 @@
                     {
                       element: 'button',
                       attr: {
-                        class: 'hb_btn hb_btn-delete'
+                        class: 'hb_btn'
                       },
+                      text: 'Delete class',
                       event: [
                         {
                           type: 'click',
@@ -2537,8 +2543,9 @@
                     {
                       element: 'button',
                       attr: {
-                        class: 'hb_btn hb_btn-save'
+                        class: 'hb_btn'
                       },
+                      text: 'Save',
                       event: [
                         {
                           type: 'click',
