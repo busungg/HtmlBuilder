@@ -1,5 +1,3 @@
-var html_builder_loaded_check = 'checked';
-
 (
   function(root, factory) {
     //Initialize
@@ -277,6 +275,7 @@ var html_builder_loaded_check = 'checked';
             type: 'text',
             multiple: true,
             list: false,
+            button: true
           },
 
           {
@@ -2026,22 +2025,23 @@ var html_builder_loaded_check = 'checked';
                     id: c.ids[0],
                     style: ('width:' + c.width[0] + ';height:' + c.height[0] + '; float:left; overflow: auto;'),
                     class: 'hb_content hb_full hb_padding-10px hb_border-basic'
-                },
-                event: [
-                    {
-                        type: 'resize',
-                        func: function() {
-                            U.update_layout(U.layout[0]);
-                        }
-                    }
-                ]
-                
+                }
             };
             _content.attr[O.HB_LAYOUT_ID] = c.ids[0];
             var content = U.builder(_content);
             container.appendChild(content);
             U.initContentLayout(c.ids[0], content.getBoundingClientRect());
             
+            //for content div resize check -- Resize 이벤트 호출은 Window에서만 가능 이부분을 효과 적으로 만들 수 있다면?
+            window.setInterval(function() {
+                                var content = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, H.config.ids[0]));
+                                var contentRect = content.getBoundingClientRect();
+                                
+                                if(U.contentLayout.width != contentRect.width || U.contentLayout.height != contentRect.height){
+                                  U.updateLayout(U.contentLayout);  
+                                }
+                              }, 1000);
+
             //selected ui function
             var selectedBlockFunc = U.builder({
              element: 'div',
@@ -2109,8 +2109,6 @@ var html_builder_loaded_check = 'checked';
             H.menuStyle(menu);
             H.menuSetting(menu);
             H.cssSetting();
-
-            console.log(U.contentLayout);
 
           } catch(err) {
             console.log(err.message);
