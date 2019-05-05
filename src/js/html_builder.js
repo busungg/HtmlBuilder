@@ -724,7 +724,7 @@
               }
             },
             {
-              type: 'click',
+              type: 'mousedown',
               func: function(e) {
                 U.selectBlock(e);
                 U.setFunctionBlock();
@@ -1913,8 +1913,8 @@
 
         U.importCss = function(cssText) {
           try {
-            var userCss = document.getElementById('user_css');
-            userCss.innerHTML = cssText;
+            var cssElement = document.getElementById(HtmlBuilder.config.css);
+            cssElement.innerHTML = cssText;
           } catch (err) {
             console.log(err.message);
           }
@@ -1922,10 +1922,8 @@
         
         U.exportCss = function() {
           try {
-            var defaultCss = document.getElementById('default_css');
-            var userCss = document.getElementById('user_css');
-
-            var css = (defaultCss.textContent + userCss.textContent);
+            var cssElement = document.getElementById(HtmlBuilder.config.css);
+            var css = cssElement.textContent;
 
             return css;
           } catch(err) {
@@ -1971,7 +1969,7 @@
 
         U.style2Css = function(cssName) {
           try {
-            var userCss = document.getElementById('user_css');
+            var cssElement = document.getElementById(HtmlBuilder.config.css);
 
             var styles = U.getBlockStyle(true);          
             var cssObj = {title: '.' + cssName, content: {}};
@@ -1985,7 +1983,7 @@
               }
             }
 
-            userCss.appendChild(document.createTextNode(U.obj2Css(cssObj) + '\n\n'));
+            cssElement.appendChild(document.createTextNode(U.obj2Css(cssObj) + '\n\n'));
             return true;
 
           } catch(err) {
@@ -1999,10 +1997,11 @@
       (function(H, U, O) {
         H.init = function(config) {
           var defaults = {
-            container: '#container', //전체 화면
+            container: '#hb_container', //전체 화면
             ids: ['!content', '!menu'],
             width: ['80%', '18%'],
-            height: ['100%', '100%']
+            height: ['100%', '100%'],
+            css: '#hb_css'
           };
           
           var c = config || {};
@@ -2883,8 +2882,8 @@
                   div.remove();
                 };
 
-                var userCss = document.getElementById('user_css');
-                H.menuSettingPopup('Import CSS', apply_func, userCss.textContent);
+                var cssElement = document.getElementById(H.config.css);
+                H.menuSettingPopup('Import CSS', apply_func, cssElement.textContent);
               } else if(id == 'export_html') {
 
                 H.menuSettingPopup('Export HTML', null, U.exportHtml(H.config.ids[0]));
@@ -3078,10 +3077,10 @@
           var head = document.getElementsByTagName('head')[0];
 
           var defaultCss = document.createElement('style');
-          defaultCss.setAttribute('id', 'default_css');
+          defaultCss.setAttribute('id', H.config.css);
           defaultCss.setAttribute('type', 'text/css');
 
-          head.insertBefore(defaultCss, document.getElementById('user_css'));
+          head.insertBefore(defaultCss, document.querySelectorAll('[attr-type=html_builder]')[0]);
 
           for(var i = 0, len = O.css.length; i < len; i++) {
             defaultCss.appendChild(document.createTextNode(U.obj2Css(O.css[i]) + '\n\n'));
