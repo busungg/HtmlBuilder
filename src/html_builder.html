@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <style id="user_css" type="text/css"></style>
+
+    <link attr-type="cssOrder"/> <!-- for CSS order -->
     <script type="text/javascript" src="./js/html_builder.js" attr-type="html_builder"></script>
   </head>
   <body>
@@ -55,7 +56,7 @@
         };
 
         var setCssfunc = function(type) {
-          var script_for_htmlbuilder = document.querySelectorAll('[attr-type=html_builder]')[0];
+          var cssOrder = document.querySelectorAll('[attr-type=cssOrder]')[0];
 
           var oldType;
           switch(type) {
@@ -87,7 +88,7 @@
               element.setAttribute('src', css_list[idx].src);
             }
             element.setAttribute('attr-type', type);
-            head.insertBefore(element, script_for_htmlbuilder);
+            head.insertBefore(element, cssOrder);
           }
         }
 
@@ -100,6 +101,7 @@
         });
 
         HtmlBuilder.init();
+
       })();
   </script>
 </html>

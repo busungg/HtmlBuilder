@@ -150,6 +150,13 @@ body
 	width:50%;
 	height:100%;
 	outline: none;
+
+	border: 1px solid #4f555a;
+	background-color: #9da8b2;
+}
+
+.hb_func-menu .hb_btn-func:hover {
+	background-color: #b5c1cc;
 }
 
 .hb_btn-delete
@@ -157,7 +164,7 @@ body
 	background-image: url("../icon/btn-delete.svg");
 	background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 90% 90%;
 }
 
 .hb_btn-copy
@@ -165,7 +172,7 @@ body
 	background-image: url("../icon/btn-copy.svg");
 	background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 90% 90%;
 }
 
 .hb_btn-add

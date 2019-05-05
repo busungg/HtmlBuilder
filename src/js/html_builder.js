@@ -2,11 +2,13 @@
   function(root, factory) {
     //Initialize
     root.HtmlBuilder = {};
-    root.HtmlBuilder.init = factory(root).init;
 
+    var libObject = factory(root);
+    root.HtmlBuilder.init = libObject.init;
+    
   } (typeof window !== 'undefined' ? window : this, function(win) {
       //HtmlBuilder
-      var HtmlBuilder = {}; 
+      var HtmlBuilder = {};
       
       //Utils
       var Utils = {}; 
@@ -1437,7 +1439,7 @@
                 var body = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.contentLayout.id));
                 var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
                 var x = (layout.x + U.contentLayout.x - body.scrollLeft);
-                var y = (layout.y + U.contentLayout.y - body.scrollTop);
+                var y = (layout.y + U.contentLayout.y - body.scrollTop) - 21;
 
                 functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
 
@@ -1447,7 +1449,7 @@
                     if(U.selectedLayout) {
                       var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
                       var x = (layout.x + U.contentLayout.x - e.target.scrollLeft);
-                      var y = (layout.y + U.contentLayout.y - e.target.scrollTop);
+                      var y = (layout.y + U.contentLayout.y - e.target.scrollTop) - 21;
 
                       var functionBlock = document.getElementsByClassName('hb_func-menu');
                       functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
