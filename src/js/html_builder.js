@@ -836,6 +836,10 @@
         * @return true or false
         **/
         Layout.prototype.contain = function(x, y) {
+          if(this.element !== 'div') {
+            return false;
+          }
+
           if(this.x <= x && x <= (this.x + this.width) &&
               this.y <= y && y <= (this.y + this.height)) {
             return true;
