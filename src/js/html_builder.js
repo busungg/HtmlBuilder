@@ -2,11 +2,14 @@
   function(root, factory) {
     //Initialize
     root.HtmlBuilder = {};
-    root.HtmlBuilder.init = factory(root).init;
 
+    var libObject = factory(root);
+    root.HtmlBuilder.init = libObject.init;
+    root.HtmlBuilder.getLayout = libObject.getLayout;
+    
   } (typeof window !== 'undefined' ? window : this, function(win) {
       //HtmlBuilder
-      var HtmlBuilder = {}; 
+      var HtmlBuilder = {};
       
       //Utils
       var Utils = {}; 
@@ -122,7 +125,7 @@
             element: 'input',
             attrs: {
               type: 'text',
-              class: ['block_border-basic']
+              class: ['block_border-basic', 'form-control']
             },
             icon: 'hb_btn-input'
           },
@@ -131,7 +134,7 @@
             element: 'input',
             attrs: {
               type: 'number',
-              class: ['block_border-basic']  
+              class: ['block_border-basic', 'form-control']  
             },
             icon: 'hb_btn-input'
           },
@@ -139,7 +142,7 @@
             title: 'Text Area',
             element: 'textarea',
             attrs: {
-              class: ['block_border-basic']  
+              class: ['block_border-basic', 'form-control']  
             },
             icon: 'hb_btn-text-area'
           },
@@ -157,7 +160,7 @@
             title: 'Image',
             element: 'img',
             attrs: {
-              class: ['block_half', 'block_border-basic']  
+              class: ['block_half', 'block_border-basic', 'img-thumbnail']  
             },
             icon: 'hb_btn-img'
           },
@@ -173,7 +176,7 @@
             title: 'Button',
             element: 'button',
             attrs: {
-              class: ['block_border-basic']  
+              class: ['block_border-basic', 'btn', 'btn-primary']  
             },
             text: 'Button element text',
             icon: 'hb_btn-button'
@@ -274,7 +277,8 @@
             title:'Class',
             type: 'text',
             multiple: true,
-            list: false
+            list: false,
+            button: true
           },
 
           {
@@ -282,7 +286,8 @@
             title:'Style to CSS',
             type: 'text',
             multiple: false,
-            list: false
+            list: false,
+            button: true
           }
         ],
 
@@ -722,7 +727,7 @@
               }
             },
             {
-              type: 'click',
+              type: 'mousedown',
               func: function(e) {
                 U.selectBlock(e);
                 U.setFunctionBlock();
@@ -1435,7 +1440,7 @@
                 var body = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.contentLayout.id));
                 var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
                 var x = (layout.x + U.contentLayout.x - body.scrollLeft);
-                var y = (layout.y + U.contentLayout.y - body.scrollTop);
+                var y = (layout.y + U.contentLayout.y - body.scrollTop) - 21;
 
                 functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
 
@@ -1445,7 +1450,7 @@
                     if(U.selectedLayout) {
                       var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
                       var x = (layout.x + U.contentLayout.x - e.target.scrollLeft);
-                      var y = (layout.y + U.contentLayout.y - e.target.scrollTop);
+                      var y = (layout.y + U.contentLayout.y - e.target.scrollTop) - 21;
 
                       var functionBlock = document.getElementsByClassName('hb_func-menu');
                       functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
@@ -1911,8 +1916,8 @@
 
         U.importCss = function(cssText) {
           try {
-            var userCss = document.getElementById('user_css');
-            userCss.innerHTML = cssText;
+            var cssElement = document.getElementById(HtmlBuilder.config.css);
+            cssElement.innerHTML = cssText;
           } catch (err) {
             console.log(err.message);
           }
@@ -1920,10 +1925,8 @@
         
         U.exportCss = function() {
           try {
-            var defaultCss = document.getElementById('default_css');
-            var userCss = document.getElementById('user_css');
-
-            var css = (defaultCss.textContent + userCss.textContent);
+            var cssElement = document.getElementById(HtmlBuilder.config.css);
+            var css = cssElement.textContent;
 
             return css;
           } catch(err) {
@@ -1969,7 +1972,7 @@
 
         U.style2Css = function(cssName) {
           try {
-            var userCss = document.getElementById('user_css');
+            var cssElement = document.getElementById(HtmlBuilder.config.css);
 
             var styles = U.getBlockStyle(true);          
             var cssObj = {title: '.' + cssName, content: {}};
@@ -1983,7 +1986,7 @@
               }
             }
 
-            userCss.appendChild(document.createTextNode(U.obj2Css(cssObj) + '\n\n'));
+            cssElement.appendChild(document.createTextNode(U.obj2Css(cssObj) + '\n\n'));
             return true;
 
           } catch(err) {
@@ -1995,12 +1998,17 @@
       }(Utils, Options));
     
       (function(H, U, O) {
+        H.getLayout = function() {
+          return U.contentLayout;
+        }
+
         H.init = function(config) {
           var defaults = {
-            container: '#container', //전체 화면
+            container: '#hb_container', //전체 화면
             ids: ['!content', '!menu'],
             width: ['80%', '18%'],
-            height: ['100%', '100%']
+            height: ['100%', '100%'],
+            css: '#hb_css'
           };
           
           var c = config || {};
@@ -2023,22 +2031,25 @@
                     id: c.ids[0],
                     style: ('width:' + c.width[0] + ';height:' + c.height[0] + '; float:left; overflow: auto;'),
                     class: 'hb_content hb_full hb_padding-10px hb_border-basic'
-                },
-                event: [
-                    {
-                        type: 'resize',
-                        func: function() {
-                            U.update_layout(U.layout[0]);
-                        }
-                    }
-                ]
-                
+                }
             };
             _content.attr[O.HB_LAYOUT_ID] = c.ids[0];
             var content = U.builder(_content);
             container.appendChild(content);
             U.initContentLayout(c.ids[0], content.getBoundingClientRect());
             
+            //for content div resize check -- Resize 이벤트 호출은 Window에서만 가능 이부분을 효과 적으로 만들 수 있다면?
+            window.setInterval(function() {
+                                var content = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, H.config.ids[0]));
+                                var contentRect = content.getBoundingClientRect();
+                                var width = (content.scrollWidth ? content.scrollWidth : contentRect.width);
+                                var height = (content.scrollHeight ? content.scrollHeight : contentRect.height);
+
+                                if(U.contentLayout.width != width || U.contentLayout.height != height){
+                                  U.updateLayout(U.contentLayout);  
+                                }
+                              }, 1000);
+
             //selected ui function
             var selectedBlockFunc = U.builder({
              element: 'div',
@@ -2323,11 +2334,13 @@
 
         H.menuAttr = function(container) {
           /**
-          *  Check save event
+          *  Check change event
           *  1. Id, Title, Name save check
           *  2. If they are checked, program shows alarm
           **/
-          var saveEvent = function(e) {
+          var changeEvent = function(e) {
+            //만약 null text가 들어오면 해당 attr은 삭제 한다.
+
             var target = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.selectedLayout.id));
             var type = e.target.getAttribute(O.HB_ATTR_ID);
             var value = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, type, O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value;
@@ -2348,7 +2361,22 @@
               } else {
                 target.setAttribute(type, value);
               }
-            } else if(type == 'style2css') {
+            } else {
+              target.setAttribute(type, value);
+            }
+          };
+
+          /**
+          *  Check save event
+          *  1. style to css
+          *  2. If they are checked, program shows alarm
+          **/
+          var saveEvent = function(e) {
+            var target = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.selectedLayout.id));
+            var type = e.target.getAttribute(O.HB_ATTR_ID);
+            var value = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, type, O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value;
+
+            if(type == 'style2css') {
               if(U.style2Css(value)) {
                 target.setAttribute('style', '');
                 var classText = target.getAttribute('class');
@@ -2439,10 +2467,20 @@
                     attr: {
                       type: 'text',
                       class: 'hb_input'
-                    }
+                    } 
                   }
                 ]
               };
+
+              if(!O.attr[i].button) {
+                _title.child[1].event = [
+                                          {
+                                            type: 'change',
+                                            func: changeEvent
+                                          }
+                                        ];
+
+              }
 
               _title.child[1].attr[O.HB_ATTR_ID] = O.attr[i].name;
               _title.child[1].attr[O.HB_ATTR_TYPE] = O.HB_ATTR_TYPE_OPTION.text;
@@ -2452,8 +2490,9 @@
                     {
                       element: 'button',
                       attr: {
-                        class: 'hb_btn hb_btn-add'
+                        class: 'hb_btn'
                       },
+                      text: 'Add class',
                       event: [
                         {
                           type: 'click',
@@ -2471,8 +2510,9 @@
                     {
                       element: 'button',
                       attr: {
-                        class: 'hb_btn hb_btn-delete'
+                        class: 'hb_btn'
                       },
+                      text: 'Delete class',
                       event: [
                         {
                           type: 'click',
@@ -2504,13 +2544,14 @@
                 _title_list.child[0].attr[O.HB_ATTR_ID] = O.attr[i].name;
                 _title_list.child[0].attr[O.HB_ATTR_TYPE] = O.HB_ATTR_TYPE_OPTION.select;
 
-              } else {
+              } else if(O.attr[i].button) {
                 _title.child.push(
                     {
                       element: 'button',
                       attr: {
-                        class: 'hb_btn hb_btn-save'
+                        class: 'hb_btn'
                       },
+                      text: 'Save',
                       event: [
                         {
                           type: 'click',
@@ -2850,8 +2891,8 @@
                   div.remove();
                 };
 
-                var userCss = document.getElementById('user_css');
-                H.menuSettingPopup('Import CSS', apply_func, userCss.textContent);
+                var cssElement = document.getElementById(H.config.css);
+                H.menuSettingPopup('Import CSS', apply_func, cssElement.textContent);
               } else if(id == 'export_html') {
 
                 H.menuSettingPopup('Export HTML', null, U.exportHtml(H.config.ids[0]));
@@ -3045,10 +3086,10 @@
           var head = document.getElementsByTagName('head')[0];
 
           var defaultCss = document.createElement('style');
-          defaultCss.setAttribute('id', 'default_css');
+          defaultCss.setAttribute('id', H.config.css);
           defaultCss.setAttribute('type', 'text/css');
 
-          head.insertBefore(defaultCss, document.getElementById('user_css'));
+          head.insertBefore(defaultCss, document.querySelectorAll('[attr-type=html_builder]')[0]);
 
           for(var i = 0, len = O.css.length; i < len; i++) {
             defaultCss.appendChild(document.createTextNode(U.obj2Css(O.css[i]) + '\n\n'));
