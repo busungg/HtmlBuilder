@@ -5,6 +5,7 @@
 
     var libObject = factory(root);
     root.HtmlBuilder.init = libObject.init;
+    root.HtmlBuilder.getLayout = libObject.getLayout;
     
   } (typeof window !== 'undefined' ? window : this, function(win) {
       //HtmlBuilder
@@ -124,7 +125,7 @@
             element: 'input',
             attrs: {
               type: 'text',
-              class: ['block_border-basic']
+              class: ['block_border-basic', 'form-control']
             },
             icon: 'hb_btn-input'
           },
@@ -133,7 +134,7 @@
             element: 'input',
             attrs: {
               type: 'number',
-              class: ['block_border-basic']  
+              class: ['block_border-basic', 'form-control']  
             },
             icon: 'hb_btn-input'
           },
@@ -141,7 +142,7 @@
             title: 'Text Area',
             element: 'textarea',
             attrs: {
-              class: ['block_border-basic']  
+              class: ['block_border-basic', 'form-control']  
             },
             icon: 'hb_btn-text-area'
           },
@@ -159,7 +160,7 @@
             title: 'Image',
             element: 'img',
             attrs: {
-              class: ['block_half', 'block_border-basic']  
+              class: ['block_half', 'block_border-basic', 'img-thumbnail']  
             },
             icon: 'hb_btn-img'
           },
@@ -175,7 +176,7 @@
             title: 'Button',
             element: 'button',
             attrs: {
-              class: ['block_border-basic']  
+              class: ['block_border-basic', 'btn', 'btn-primary']  
             },
             text: 'Button element text',
             icon: 'hb_btn-button'
@@ -1997,6 +1998,10 @@
       }(Utils, Options));
     
       (function(H, U, O) {
+        H.getLayout = function() {
+          return U.contentLayout;
+        }
+
         H.init = function(config) {
           var defaults = {
             container: '#hb_container', //전체 화면
