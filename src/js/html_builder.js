@@ -2042,8 +2042,10 @@
             window.setInterval(function() {
                                 var content = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, H.config.ids[0]));
                                 var contentRect = content.getBoundingClientRect();
-                                
-                                if(U.contentLayout.width != contentRect.width || U.contentLayout.height != contentRect.height){
+                                var width = (content.scrollWidth ? content.scrollWidth : contentRect.width);
+                                var height = (content.scrollHeight ? content.scrollHeight : contentRect.height);
+
+                                if(U.contentLayout.width != width || U.contentLayout.height != height){
                                   U.updateLayout(U.contentLayout);  
                                 }
                               }, 1000);
