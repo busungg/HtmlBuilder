@@ -733,7 +733,21 @@
                 U.setFunctionBlock();
                 U.setBlockAttr();
                 U.setBlockStyle();
+
+                if(e.target.tagName === 'SELECT') { //for select box drag
+                  e.target.setAttribute('disabled', 'disabled');
+                }
+
+                //disalbed 하니깐 mouseup event가 먹지 않는 문제가 발생 한다.
+
                 e.stopPropagation();
+              }
+            },
+            {
+              type: 'mouseup',
+              func: function(e) {
+                console.log('mouseup');
+                console.log(e.target);
               }
             },
             {
@@ -746,9 +760,15 @@
             {
               type: 'dragend',
               func: function(e) {
+                console.log('dragend');
+                console.log(e.target);
                 U.setBlock();
                 U.setFunctionBlock();
                 U.draggableMenuBlock(true);
+                if(e.target.tagName === 'SELECT') {
+                  e.target.removeAttribute('disabled');
+                }
+
                 e.stopPropagation();
               }
             }
@@ -1338,6 +1358,13 @@
               selectedBlock.classList.remove('hb_selected');
               selectedBlock.removeAttribute('draggable');
 
+              /*
+              //for selectbox draggable - drag start 할때만 처리 필요
+              if(selectedBlock.tagName === 'SELECT') {
+                selectedBlock.removeAttribute('disabled');
+              }
+              */
+
               if(U.selectedLayout.id == e.target.attributes[O.HB_LAYOUT_ID].value) {
                 U.selectedLayout = null;
                 U.draggableMenuBlock(true);
@@ -1352,6 +1379,12 @@
             e.target.setAttribute('draggable', 'true');
             e.target.classList.add('hb_selected');
             e.target.classList.add('hb_selectable');
+
+            /*
+            if(e.target.tagName === 'SELECT') { //for select box drag
+              e.target.setAttribute('disabled', 'true');
+            }
+            */
 
             U.draggableMenuBlock(false);
           } catch(err) {
