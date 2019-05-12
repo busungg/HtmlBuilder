@@ -647,6 +647,20 @@ body
 .hb_setting-popup-applybutton
 {
 	margin: 10px;
+
+	user-select: none;
+	font-weight: bold;
+	font-size: 13px;
+	color: #2d2d2d;
+	border: 1px solid #76818b;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+}
+
+.hb_setting-popup-applybutton:hover
+{
+	background-color: #b5c1cc;
 }
 
 .hb_setting-popup-clossbutton
@@ -658,5 +672,15 @@ body
 	background-image: url("../icon/btn-cancel.svg");
 	background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 80% 80%;
+    user-select: none;
+    border: 1px solid #76818b;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+}
+
+.hb_setting-popup-clossbutton:hover
+{
+	background-color: #b5c1cc;
 }
