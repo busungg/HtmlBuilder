@@ -809,6 +809,17 @@
           return document.querySelectorAll(query);
         };
 
+        U.getJustTextContent = function(element) {
+          var copyElement = element.cloneNode(true);
+          var childrenList = copyElement.children;
+
+          while(childrenList.length != 0) {
+            childrenList[0].remove();
+          }
+
+          return copyElement.textContent;
+        };
+
 
         /* ----------------------------------Layout --------------------------------------*/
 
@@ -1434,7 +1445,7 @@
                       class: originalBlock.classList.value,
                       style: originalBlock.style.cssText
                     },
-                    text: originalBlock.textContent,
+                    text: U.getJustTextContent(originalBlock),
                     event: U.blockDefaultEvents
                   };
               _copiedBlock.attr[O.HB_LAYOUT_ID] = copiedLayout.id;
