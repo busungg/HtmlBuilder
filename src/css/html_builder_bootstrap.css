@@ -118,22 +118,22 @@ body
 
 .hb_border-top-move
 {
-	border-top: 3px solid #f4aa42 !important;
+	box-shadow: 0px -3px 0px #f4aa42 !important;
 }
 
 .hb_border-bottom-move
 {
-	border-bottom: 3px solid #f4aa42 !important;
+	box-shadow: 0px 3px 0px #f4aa42 !important; 
 }
 
 .hb_border-left-move
 {
-	border-left: 3px solid #f4aa42 !important;
+	box-shadow: -3px 0px 0px #f4aa42 !important;
 }
 
 .hb_border-right-move
 {
-	border-right: 3px solid #f4aa42 !important;
+	box-shadow: 3px 0px 0px #f4aa42 !important;
 }
 
 /*--------------- FUNCTION BLOCK --------------*/
@@ -194,11 +194,11 @@ body
 
 /*--------------- CONTENT --------------*/
 .hb_selectable {
-	border: 3px dashed #1da57a !important;
+	outline: 3px dashed #1da57a !important;
 }
 
 .hb_selected {
-	border: 5px solid #1da57a !important;
+	outline: 3px solid #1da57a !important;
 }
 
 
