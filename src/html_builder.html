@@ -11,6 +11,8 @@
         <option value="bootstrap">bootstrap</option>
         <option value="plain">plain</option>
       </select>
+
+      <button id="#hb_btn_preview" class="btn btn-secondary btn-sm">Preview</button>
     </div>
 
     <div id="#hb_container" style="width:100%; height:90%;">
@@ -100,6 +102,11 @@
         });
 
         HtmlBuilder.init();
+
+        var btn_preview = document.getElementById('#hb_btn_preview');
+        btn_preview.addEventListener('click', function(){
+          HtmlBuilder.showPreview();
+        });
 
       })();
   </script>
