@@ -6,6 +6,7 @@
     var libObject = factory(root);
     root.HtmlBuilder.init = libObject.init;
     root.HtmlBuilder.getLayout = libObject.getLayout;
+    root.HtmlBuilder.showPreview = libObject.showPreview;
     
   } (typeof window !== 'undefined' ? window : this, function(win) {
       //HtmlBuilder
@@ -733,6 +734,21 @@
                 U.setFunctionBlock();
                 U.setBlockAttr();
                 U.setBlockStyle();
+
+                if(e.target.tagName === 'SELECT') { //for select box drag
+                  e.target.disabled = true;
+                }
+
+                e.stopPropagation();
+              }
+            },
+            {
+              type: 'pointerup',
+              func: function(e) {
+                if(e.target.tagName === 'SELECT') { //for select box drag
+                  e.target.disabled = false;
+                }
+
                 e.stopPropagation();
               }
             },
@@ -746,6 +762,10 @@
             {
               type: 'dragend',
               func: function(e) {
+                if(e.target.tagName === 'SELECT') { //for select box drag
+                  e.target.disabled = false;
+                }
+
                 U.setBlock();
                 U.setFunctionBlock();
                 U.draggableMenuBlock(true);
@@ -788,6 +808,17 @@
           }
 
           return document.querySelectorAll(query);
+        };
+
+        U.getJustTextContent = function(element) {
+          var copyElement = element.cloneNode(true);
+          var childrenList = copyElement.children;
+
+          while(childrenList.length != 0) {
+            childrenList[0].remove();
+          }
+
+          return copyElement.textContent;
         };
 
 
@@ -836,6 +867,10 @@
         * @return true or false
         **/
         Layout.prototype.contain = function(x, y) {
+          if(this.element !== 'div') {
+            return false;
+          }
+
           if(this.x <= x && x <= (this.x + this.width) &&
               this.y <= y && y <= (this.y + this.height)) {
             return true;
@@ -1411,7 +1446,7 @@
                       class: originalBlock.classList.value,
                       style: originalBlock.style.cssText
                     },
-                    text: originalBlock.textContent,
+                    text: U.getJustTextContent(originalBlock),
                     event: U.blockDefaultEvents
                   };
               _copiedBlock.attr[O.HB_LAYOUT_ID] = copiedLayout.id;
@@ -3094,6 +3129,37 @@
           for(var i = 0, len = O.css.length; i < len; i++) {
             defaultCss.appendChild(document.createTextNode(U.obj2Css(O.css[i]) + '\n\n'));
           }
+        };
+
+        H.showPreview = function() {
+          preview_window = window.open('', 'Preview', 'width=800,height=800');
+          
+          var head = document.getElementsByTagName('HEAD')[0];
+          var copy_head = head.cloneNode(true).children;
+          var preview_head = preview_window.document.getElementsByTagName('HEAD')[0];
+          var preview_body = preview_window.document.getElementsByTagName('BODY')[0];
+
+          var removeArray = [];
+          for(var i = 0, len = copy_head.length; i < len; i++) {
+            try{
+              if(copy_head[i].getAttribute('attr-type') === 'html_builder') {
+                removeArray.push(copy_head[i]);  
+              }
+            } catch(err){
+              removeArray.push(copy_head[i]);
+            }
+          }
+
+          while (removeArray.length > 0) {
+            removeArray[removeArray.length - 1].remove();
+            removeArray.splice(removeArray.length -1, 1);
+          }
+
+          while (copy_head.length > 0) {
+            preview_head.appendChild(copy_head[0]);
+          }
+
+          preview_body.innerHTML = U.exportHtml(H.config.ids[0]);
         };
         
       }(HtmlBuilder, Utils, Options));
