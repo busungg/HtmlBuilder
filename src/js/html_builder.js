@@ -355,7 +355,7 @@
             name: 'position',
             title: 'Position',
             type: 'select',
-            options: ['', 'static', 'relative', 'absolute'],
+            options: ['', 'static', 'relative', 'fixed', 'absolute', 'sticky'],
             units: [],
             category: 'position'
           },
@@ -961,24 +961,21 @@
             if(layout) {
               var child = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, layout.id));
               var childRect = child.getBoundingClientRect();
-              var style = window.getComputedStyle(child); //CSS 속성까지 적용 된다.
-              var parentLayout, parentStyle, posParent = child.parentElement;
+              var style = window.getComputedStyle(child);
               
-              while(posParent) {
-                parentStyle = window.getComputedStyle(posParent);
-                if(parentStyle.position === 'relative' || parentStyle.position === 'absolute') {
-                    break;
-                }
-
-                posParent = posParent.parentElement;
-              }
-
-              if(posParent) {
-                  parentLayout = LayoutController.selectLayout(posParent.getAttribute('hb_layout_id'), U.contentLayout);
+              if(style.position === 'relative') {
+                if(layout.parentLayoutId != null) {
+                  var parentLayout = LayoutController.selectLayout(layout.parentLayoutId, U.contentLayout);    
                   layout.x = (child.offsetLeft ? (child.offsetLeft + parentLayout.x) : parentLayout.x);
                   layout.y = (child.offsetTop ? (child.offsetTop + parentLayout.y) : parentLayout.y);
                   layout.width = (child.scrollWidth ? child.scrollWidth : childRect.width);
                   layout.height = (child.scrollHeight ? child.scrollHeight : childRect.height);
+                } else {
+                  layout.x = (child.offsetLeft ? child.offsetLeft  : childRect.left);
+                  layout.y = (child.offsetTop ? child.offsetTop : childRect.top);
+                  layout.width = (child.scrollWidth ? child.scrollWidth : childRect.width);
+                  layout.height = (child.scrollHeight ? child.scrollHeight : childRect.height);
+                }
               } else {
                 layout.x = (child.offsetLeft ? child.offsetLeft : childRect.left);
                 layout.y = (child.offsetTop ? child.offsetTop : childRect.top);
@@ -1477,8 +1474,8 @@
               if(U.selectedLayout) {
                 var body = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.contentLayout.id));
                 var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
-                var x = (layout.x - body.scrollLeft);
-                var y = (layout.y - body.scrollTop) - 21;
+                var x = (layout.x + U.contentLayout.x - body.scrollLeft);
+                var y = (layout.y + U.contentLayout.y - body.scrollTop) - 21;
 
                 functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
 
@@ -1487,8 +1484,8 @@
                   body.addEventListener('scroll', function(e) {
                     if(U.selectedLayout) {
                       var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
-                      var x = (layout.x - e.target.scrollLeft);
-                      var y = (layout.y - e.target.scrollTop) - 21;
+                      var x = (layout.x + U.contentLayout.x - e.target.scrollLeft);
+                      var y = (layout.y + U.contentLayout.y - e.target.scrollTop) - 21;
 
                       var functionBlock = document.getElementsByClassName('hb_func-menu');
                       functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
