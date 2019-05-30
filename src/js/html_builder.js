@@ -2068,7 +2068,7 @@
                 attr: {
                     id: c.ids[0],
                     style: ('width:' + c.width[0] + ';height:' + c.height[0] + '; float:left; overflow: auto;'),
-                    class: 'hb_content hb_full hb_padding-10px hb_border-basic'
+                    class: 'hb_content hb_full hb_border-basic'
                 }
             };
             _content.attr[O.HB_LAYOUT_ID] = c.ids[0];
