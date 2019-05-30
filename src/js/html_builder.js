@@ -812,10 +812,9 @@
 
         U.getJustTextContent = function(element) {
           var copyElement = element.cloneNode(true);
-          var childrenList = copyElement.children;
 
-          while(childrenList.length != 0) {
-            childrenList[0].remove();
+          while(copyElement.firstElementChild) {
+            copyElement.removeChild(copyElement.firstElementChild);
           }
 
           return copyElement.textContent;
@@ -1897,11 +1896,10 @@
 
         U.exportHtml = function(id) {
           try {
-            var html = null;
+            var html = {result: ''};
             var content = document.getElementById(id);
             var tempContent = document.createElement('div');
-            tempContent.setAttribute('id', 'temp_export_html');
-            tempContent.setAttribute('style', 'x:0, y:-1000');
+            tempContent.setAttribute('style', 'position: absolute; x:0; y:-1000;');
             tempContent.innerHTML = content.innerHTML;
             
             document.body.appendChild(tempContent);
@@ -1911,45 +1909,56 @@
                 blockArray[i].removeAttribute(O.HB_LAYOUT_ID);
             }
             
-            html = tempContent.innerHTML;
+            U.beautifyHtml(tempContent, ' '.repeat(4), -1, html);
             document.body.removeChild(tempContent);
-            
-            if(html === '') {
+
+            if(html.result === '') {
               return '';
             }
 
-            return U.beautifyHtml(html);
-            
+            return html.result;
           } catch (err) {
             console.log(err.message);
           }
         };
         
-        U.beautifyHtml = function(html) {
-            var tab = ' '.repeat(4);
-            var indent = 0;
-            var tag = null, nextTag = null;
-            
-            var result = '';
-            
-            for(var pos = 0, len = html.length; pos < len - 1; pos++) {
-                tag = html[pos];
-                nextTag = html[pos+1];
-                
-                if(tag === '<' && nextTag !== '/') {
-                    result += '\n' + tab.repeat(indent);
-                    if(nextTag.toUpperCase() !== 'I') { //input, img self-closing
-                        indent++;
-                    }
-                } else if(tag === '<' && nextTag === '/') {
-                    if(--indent < 0) indent = 0;
-                    result += '\n' + tab.repeat(indent);
-                }
-                result += tag;
+        /*
+          use recursive function
+          param: parent dom element
+
+          * delete top, bottom 
+        */
+        U.beautifyHtml = function(parent, tab, tabIdx, html) {
+          if(tabIdx == -1 && parent.children.length == 0) {
+            return;
+          }
+
+          if(tabIdx != -1) {
+            var clone = parent.cloneNode(true);
+            while (clone.firstElementChild) {
+                clone.removeChild(clone.firstElementChild);
             }
-            result += html[len - 1];
-            
-            return result;
+
+            var tags = clone.outerHTML.replace(/\n/g,'').split('</');
+            html.result += ('\n' + tab.repeat(tabIdx) + tags[0]);
+          }
+
+          if(parent.children.length == 0) {
+            if(tags.length == 2) {
+              html.result += ('\n' + tab.repeat(tabIdx) + '</' + tags[1]);
+            }
+            return;
+          } else {
+            for(var i = 0, len = parent.children.length; i < len; i++) {
+              U.beautifyHtml(parent.children[i], tab, tabIdx + 1, html);
+            }
+
+            if(tabIdx != -1) {
+              if(tags.length == 2) {
+                html.result += ('\n' + tab.repeat(tabIdx) + '</' + tags[1]);
+              }
+            }
+          }
         };
 
         U.importCss = function(cssText) {
