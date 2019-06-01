@@ -1,0 +1,29 @@
+{
+  "name": "htmlbuilder",
+  "version": "1.0.0",
+  "description": "package for htmlbuilder v_1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/busungg/HtmlBuilder.git"
+  },
+  "keywords": [
+    "web",
+    "builder",
+    "javascript"
+  ],
+  "author": "busungg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/busungg/HtmlBuilder/issues"
+  },
+  "homepage": "https://github.com/busungg/HtmlBuilder#readme",
+  "dependencies": {
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
+  }
+}
