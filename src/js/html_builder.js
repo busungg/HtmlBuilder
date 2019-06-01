@@ -66,6 +66,14 @@
               }
             },
             {
+              title: '.block_select_half_25px',
+              content: {
+                width: '50%',
+                height: '25px',
+                'box-sizing' : 'border-box'
+              }
+            },
+            {
               title: '.block_border-basic',
               content: {
                 border: '1px solid #000000'
@@ -169,7 +177,7 @@
             title: 'Select',
             element: 'select',
             attrs: {
-              class: ['block_half', 'block_border-basic']  
+              class: ['block_select_half_25px', 'block_border-basic']  
             },
             icon: 'hb_btn-select'
           },
@@ -215,6 +223,8 @@
 
         /*
           1. attr
+          2. attr 구성 수정 - 옵션 처리 필요
+          3. H.menuAttr
         */
         attr: [
           {
