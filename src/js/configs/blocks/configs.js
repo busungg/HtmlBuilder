@@ -29,7 +29,7 @@ module.exports = [
         title: 'P',
         element: 'p',
         attrs: {
-            class: ['block_border-basic']  
+            class: ['block_border-basic']
         },
         text: 'P element text',
         icon: 'hb_btn-p'

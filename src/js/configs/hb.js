@@ -2,6 +2,9 @@
     1. Default HB layout options
 */
 module.exports = {
+    //적용 type 분리 필요
+
+
     ATTR_ID: 'hb_attr_id',
     ATTR_TYPE: 'hb_attr_type',
     ATTR_TYPE_OPTION: {
