@@ -31,10 +31,10 @@ const setCategoryContent = function(category) {
 }
 
 /**
- * set attribute view
+ * init attribute view
  * @param {Element} parent 
  */
-const setView = function(parent) {
+const iniTView = function(parent) {
 
 };
 

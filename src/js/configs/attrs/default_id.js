@@ -3,10 +3,10 @@
 **/
 
 module.exports = {
-  ID: 'hb_attr_id',
-  TYPE: 'hb_attr_set_type', //text, text-unit...
+  ATTR_NAME: 'hb_attr_name',
   ATTR_TYPE: 'hb_attr_type', //style, attr, exception
-  ATTR_TYPE_OPTION : {
+  ATTR_SET_TYPE: 'hb_attr_set_type', //units, select, ...
+  ATTR_SET_OPTION : {
     units: 'units',
     select: 'select',
     text: 'text',
