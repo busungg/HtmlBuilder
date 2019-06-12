@@ -134,7 +134,7 @@ const configs = [
     name: 'style2css',
     title: 'Style to CSS',
     type: 'text-button',
-    attr_type: 'exception',
+    attr_type: 'style2css',
     category: 'style2css'
   },
 

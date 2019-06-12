@@ -1,6 +1,5 @@
 
 //하나의 object로 수정하자
-
 const builder = function (option) {
     try {
         var parent = document.createElement(option.element);
