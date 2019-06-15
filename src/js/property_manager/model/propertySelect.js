@@ -1,6 +1,6 @@
 const CSS = require('../config/css');
 
-var propertyText = {
+var propertySelect = {
   setProperty: function (prop) {
     this.prop = {};
 
@@ -8,6 +8,7 @@ var propertyText = {
     this.prop.title = prop.title;
     this.prop.attr_type = prop.attr_type;
     this.prop.category = prop.category;
+    this.prop.options = prop.options;
   },
 
   setDom: function (dom) {
@@ -25,30 +26,27 @@ var propertyText = {
   event: {
     type: 'change',
     func: function (e) {
-      if (propertyText.selected) {
+      if (propertySelect.selected) {
         var eventDom = e.target;
 
         if (eventDom.value) {
-          propertyText.selected.setAttribute(propertyText.prop.name, eventDom.value);
+          propertySelect.selected.style[propertySelect.prop.name] = eventDom.value;
         } else {
-          propertyText.selected.removeAttribute(propertyText.prop.name);
+          propertySelect.selected.style[propertySelect.prop.name] = null;
         }
 
-        if (propertyText.callback && typeof propertyText.callback === 'function') {
-          propertyText.callback();
+        if (propertySelect.callback && typeof propertySelect.callback === 'function') {
+          propertySelect.callback();
         }
       }
     }
   },
 
   render: function () {
-    //render에서 object를 만들어서 추가하는것이 어떨까?
-    //render된 부모를 받는걸로 하자
-
     var event = this.event;
     var prop = this.prop;
 
-    return {
+    var _render = {
       element: 'div',
       attr: {
         class: CSS.prop_body_div
@@ -73,48 +71,31 @@ var propertyText = {
             class: CSS.prop_body_set_div
           },
           child: [{
-            element: 'input',
+            element: 'select',
             attr: {
-              type: 'text',
-              class: CSS.prop_body_set_text,
+              class: CSS.prop_body_set_select,
               hb_set_type: 'value'
             },
+            child: [],
             event: [event]
           }]
         }
       ]
     };
-  },
 
-  update : function() {
+    _select = _render.child[1].child[0];
+    for (var i = 0, len = prop.options.length; i < len; i++) {
+      _select.push({
+        element: 'option',
+        attr: {
+          value: prop.options[i]
+        },
+        text: prop.options[i]
+      });
+    }
 
+    return _render;
   }
 };
 
-module.exports = propertyText;
-
-/**
- * 이 정도 해주려면 그냥 htmlbuilder로 생성하게 하는게 좋겠다.
- *
-
-  결과물
-  <div - for category>
-    <div - title for category>
-      title
-    </div>
-
-    <div - attr>
-      <div - title for attr></div>
-      <div - attr setting></div>
-
-      <div - child list>
-        <div - title for child category></div>
-        <div - child attr>
-          <div - title for child attr></div>
-          <div - child attr setting></div>
-        </div>
-      </div>
-    <div>
-
-  </div>
-**/
+module.exports = propertySelect;

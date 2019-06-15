@@ -1,51 +1,66 @@
 /**
-    Default Attr configs
-**/
+ * Model
+ */
+const model = {
+  propertyClass: require('../model/propertyClass'),
+  propertyColor: require('../model/propertyColor'),
+  propertySelect: require('../model/propertySelect'),
+  propertyStyle2Save: require('../model/propertyStyle2Save'),
+  propertyText: require('../model/propertyText'),
+  propertyTextUnit: require('../model/propertyTextUnit')
+};
 
-const category = [{
-  name: 'common',
-  title: 'Common'
-},
-
-{
-  name: 'src',
-  title: 'Src'
-},
-
-{
-  name: 'href',
-  title: 'Href'
-},
-
-{
-  name: 'style2css',
-  title: 'Style to CSS'
-},
-
-{
-  name: 'position',
-  title: 'Position'
-},
-
-{
-  name: 'size',
-  title: 'Size'
-},
-
-{
-  name: 'font',
-  title: 'Font'
-},
-
-{
-  name: 'border',
-  title: 'Border'
-},
-
-{
-  name: 'background',
-  title: 'Background'
+function newModel(name) {
+  return model[name].cloneNode('true');
 }
+
+/**
+ * Default Attr configs
+ */
+const category = [{
+    name: 'common',
+    title: 'Common'
+  },
+
+  {
+    name: 'src',
+    title: 'Src'
+  },
+
+  {
+    name: 'href',
+    title: 'Href'
+  },
+
+  {
+    name: 'style2css',
+    title: 'Style to CSS'
+  },
+
+  {
+    name: 'position',
+    title: 'Position'
+  },
+
+  {
+    name: 'size',
+    title: 'Size'
+  },
+
+  {
+    name: 'font',
+    title: 'Font'
+  },
+
+  {
+    name: 'border',
+    title: 'Border'
+  },
+
+  {
+    name: 'background',
+    title: 'Background'
+  }
 ];
 
 /**
@@ -62,12 +77,16 @@ const category = [{
  * 6. obj -> builder
  **/
 
+/**
+ * category toggle 처리 해야함
+ */
+
 const configs = [
   //For attributes
   {
     name: 'id',
     title: 'Id',
-    type: 'text',
+    model: newModel('propertyText'),
     attr_type: 'attr',
     category: 'common'
   },
@@ -75,7 +94,7 @@ const configs = [
   {
     name: 'name',
     title: 'Name',
-    type: 'text',
+    model: newModel('propertyText'),
     attr_type: 'attr',
     category: 'common'
   },
@@ -232,36 +251,36 @@ const configs = [
     units: ['px', 'cm', 'mm', 'in'],
     category: 'size',
     child: [{
-      name: 'margin-top',
-      title: 'Margin Top',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+        name: 'margin-top',
+        title: 'Margin Top',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'margin-bottom',
-      title: 'Margin bottom',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+      {
+        name: 'margin-bottom',
+        title: 'Margin bottom',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'margin-left',
-      title: 'Margin Left',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+      {
+        name: 'margin-left',
+        title: 'Margin Left',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'margin-right',
-      title: 'Margin Right',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    }
+      {
+        name: 'margin-right',
+        title: 'Margin Right',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      }
     ]
   },
 
@@ -274,36 +293,36 @@ const configs = [
     units: ['px', 'cm', 'mm', 'in'],
     category: 'size',
     child: [{
-      name: 'padding-top',
-      title: 'Padding Top',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+        name: 'padding-top',
+        title: 'Padding Top',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'padding-bottom',
-      title: 'Padding Bottom',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+      {
+        name: 'padding-bottom',
+        title: 'Padding Bottom',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'padding-left',
-      title: 'Padding Left',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+      {
+        name: 'padding-left',
+        title: 'Padding Left',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'padding-right',
-      title: 'Padding Right',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    }
+      {
+        name: 'padding-right',
+        title: 'Padding Right',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      }
     ]
   },
 
@@ -335,36 +354,36 @@ const configs = [
     units: ['px', 'cm', 'mm', 'in'],
     category: 'border',
     child: [{
-      name: 'border-left-width',
-      title: 'Border left width',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+        name: 'border-left-width',
+        title: 'Border left width',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'border-right-width',
-      title: 'Border right width',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+      {
+        name: 'border-right-width',
+        title: 'Border right width',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'border-top-width',
-      title: 'Border top width',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    },
+      {
+        name: 'border-top-width',
+        title: 'Border top width',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      },
 
-    {
-      name: 'border-bottom-width',
-      title: 'Border bottom width',
-      attr_type: 'style',
-      type: 'text-unit',
-      units: ['px', 'cm', 'mm', 'in']
-    }
+      {
+        name: 'border-bottom-width',
+        title: 'Border bottom width',
+        attr_type: 'style',
+        type: 'text-unit',
+        units: ['px', 'cm', 'mm', 'in']
+      }
     ]
   },
 
@@ -375,32 +394,32 @@ const configs = [
     type: 'color',
     category: 'border',
     child: [{
-      name: 'border-left-color',
-      title: 'Border left color',
-      attr_type: 'style',
-      type: 'color'
-    },
+        name: 'border-left-color',
+        title: 'Border left color',
+        attr_type: 'style',
+        type: 'color'
+      },
 
-    {
-      name: 'border-right-color',
-      title: 'Border right color',
-      attr_type: 'style',
-      type: 'color'
-    },
+      {
+        name: 'border-right-color',
+        title: 'Border right color',
+        attr_type: 'style',
+        type: 'color'
+      },
 
-    {
-      name: 'border-top-color',
-      title: 'Border top color',
-      attr_type: 'style',
-      type: 'color'
-    },
+      {
+        name: 'border-top-color',
+        title: 'Border top color',
+        attr_type: 'style',
+        type: 'color'
+      },
 
-    {
-      name: 'border-bottom-color',
-      title: 'Border bottom color',
-      attr_type: 'style',
-      type: 'color'
-    }
+      {
+        name: 'border-bottom-color',
+        title: 'Border bottom color',
+        attr_type: 'style',
+        type: 'color'
+      }
     ]
   },
 
@@ -412,36 +431,36 @@ const configs = [
     options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit'],
     category: 'border',
     child: [{
-      name: 'border-left-style',
-      title: 'Border left style',
-      attr_type: 'style',
-      type: 'select',
-      options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-    },
+        name: 'border-left-style',
+        title: 'Border left style',
+        attr_type: 'style',
+        type: 'select',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+      },
 
-    {
-      name: 'border-right-style',
-      title: 'Border right style',
-      attr_type: 'style',
-      type: 'select',
-      options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-    },
+      {
+        name: 'border-right-style',
+        title: 'Border right style',
+        attr_type: 'style',
+        type: 'select',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+      },
 
-    {
-      name: 'border-top-style',
-      title: 'Border top style',
-      attr_type: 'style',
-      type: 'select',
-      options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-    },
+      {
+        name: 'border-top-style',
+        title: 'Border top style',
+        attr_type: 'style',
+        type: 'select',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+      },
 
-    {
-      name: 'border-bottom-style',
-      title: 'Border bottom style',
-      attr_type: 'style',
-      type: 'select',
-      options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-    }
+      {
+        name: 'border-bottom-style',
+        title: 'Border bottom style',
+        attr_type: 'style',
+        type: 'select',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+      }
     ]
   },
 

@@ -2,16 +2,14 @@
     Attributes View Manager
 **/
 
-const ATTRS_CONFIGS = require('./configs');
-const ATTRS_ID = require('./default_id');
-const ATTRS_EVENTS = require('./events');
+const configs = require('./configs');
 
 /**
  * set selected element for events
  * @param {Layout} selected 
  */
 const setSeleted = function(selected) {
-  ATTRS_EVENTS.selected = selected;
+  
 };
 
 /**

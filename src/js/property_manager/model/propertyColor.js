@@ -1,6 +1,6 @@
 const CSS = require('../config/css');
 
-var propertyText = {
+var propertyColor = {
   setProperty: function (prop) {
     this.prop = {};
 
@@ -25,26 +25,23 @@ var propertyText = {
   event: {
     type: 'change',
     func: function (e) {
-      if (propertyText.selected) {
+      if (propertyColor.selected) {
         var eventDom = e.target;
 
         if (eventDom.value) {
-          propertyText.selected.setAttribute(propertyText.prop.name, eventDom.value);
+          propertyColor.selected.style[propertyColor.prop.name] = eventDo.value;
         } else {
-          propertyText.selected.removeAttribute(propertyText.prop.name);
+          propertyColor.selected.style[propertyColor.prop.name] = null;
         }
 
-        if (propertyText.callback && typeof propertyText.callback === 'function') {
-          propertyText.callback();
+        if (propertyColor.callback && typeof propertyColor.callback === 'function') {
+          propertyColor.callback();
         }
       }
     }
   },
 
   render: function () {
-    //render에서 object를 만들어서 추가하는것이 어떨까?
-    //render된 부모를 받는걸로 하자
-
     var event = this.event;
     var prop = this.prop;
 
@@ -75,8 +72,8 @@ var propertyText = {
           child: [{
             element: 'input',
             attr: {
-              type: 'text',
-              class: CSS.prop_body_set_text,
+              type: 'color',
+              class: CSS.hb_prop_body_set_color,
               hb_set_type: 'value'
             },
             event: [event]
@@ -84,37 +81,7 @@ var propertyText = {
         }
       ]
     };
-  },
-
-  update : function() {
-
   }
 };
 
-module.exports = propertyText;
-
-/**
- * 이 정도 해주려면 그냥 htmlbuilder로 생성하게 하는게 좋겠다.
- *
-
-  결과물
-  <div - for category>
-    <div - title for category>
-      title
-    </div>
-
-    <div - attr>
-      <div - title for attr></div>
-      <div - attr setting></div>
-
-      <div - child list>
-        <div - title for child category></div>
-        <div - child attr>
-          <div - title for child attr></div>
-          <div - child attr setting></div>
-        </div>
-      </div>
-    <div>
-
-  </div>
-**/
+module.exports = propertyColor;

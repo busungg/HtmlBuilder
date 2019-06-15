@@ -1,6 +1,6 @@
 const CSS = require('../config/css');
 
-var propertyStyle2Save = {
+var propertyTextUnit = {
   setProperty: function (prop) {
     this.prop = {};
 
@@ -8,6 +8,7 @@ var propertyStyle2Save = {
     this.prop.title = prop.title;
     this.prop.attr_type = prop.attr_type;
     this.prop.category = prop.category;
+    this.prop.units = prop.units;
   },
 
   setDom: function (dom) {
@@ -23,22 +24,29 @@ var propertyStyle2Save = {
   },
 
   event: {
-    type: 'click',
+    type: 'change',
     func: function (e) {
-      if (propertyStyle2Save.selected) {
-        var eventDom = e.target.previousSibling;
-
-        //U.style2Css 수정 필요 -- selected를 인식하지 못하는 상태
-        /*
-        if(U.style2Css(eventDom.value)) {
-          propertyStyle2Save.selected.setAttribute('style', '');
-          var classText = propertyStyle2Save.selected.getAttribute('class');
-          propertyStyle2Save.selected.setAttribute('class', classText + ' ' + value);
+      if (propertyTextUnit.selected) {
+        var eventDom = e.target;
+        var valueDom, unitDom;
+        if (eventDom.getAttribute('hb_set_type') === 'value') {
+          valueDom = eventDom;
+          unitDom = eventDom.nextSibling;
+        } else {
+          valueDom = eventDom.previousSibling;
+          unitDom = eventDom;
         }
-        */
 
-        if (propertyStyle2Save.callback && typeof propertyStyle2Save.callback === 'function') {
-          propertyStyle2Save.callback();
+        var value;
+        if (valueDom.value != null && valueDom.value != '') {
+          value = valueDom.value + unitDom.value;
+          propertyTextUnit.selected.style[propertyTextUnit.prop.name] = value;
+        } else {
+          propertyTextUnit.selected.style[propertyTextUnit.prop.name] = null;
+        }
+
+        if (propertyTextUnit.callback && typeof propertyTextUnit.callback === 'function') {
+          propertyTextUnit.callback();
         }
       }
     }
@@ -48,7 +56,7 @@ var propertyStyle2Save = {
     var event = this.event;
     var prop = this.prop;
 
-    return {
+    var _render = {
       element: 'div',
       attr: {
         class: CSS.prop_body_div
@@ -78,21 +86,36 @@ var propertyStyle2Save = {
                 type: 'text',
                 class: CSS.prop_body_set_text,
                 hb_set_type: 'value'
-              }
+              },
+              event: [event]
             },
             {
-              element: 'button',
+              element: 'select',
               attr: {
-                class: CSS.hb_prop_body_set_btn
+                class: CSS.prop_body_set_select,
+                hb_set_type: 'unit'
               },
-              text: 'Save',
+              child: [],
               event: [event]
             }
           ]
         }
       ]
     };
+
+    var _select = _render.child[1].child[1];
+    for (var i = 0, len = prop.units.length; i < len; i++) {
+      _select.push({
+        element: 'option',
+        attr: {
+          value: prop.units[i]
+        },
+        text: prop.units[i]
+      });
+    }
+
+    return _render;
   }
 };
 
-module.exports = propertyStyle2Save;
+module.exports = propertyTextUnit;
