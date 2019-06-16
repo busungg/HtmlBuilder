@@ -1,20 +1,4 @@
 /**
- * Model
- */
-const model = {
-  propertyClass: require('../model/propertyClass'),
-  propertyColor: require('../model/propertyColor'),
-  propertySelect: require('../model/propertySelect'),
-  propertyStyle2Save: require('../model/propertyStyle2Save'),
-  propertyText: require('../model/propertyText'),
-  propertyTextUnit: require('../model/propertyTextUnit')
-};
-
-function newModel(name) {
-  return model[name].cloneNode('true');
-}
-
-/**
  * Default Attr configs
  */
 const category = [{
@@ -84,428 +68,525 @@ const category = [{
 const configs = [
   //For attributes
   {
-    name: 'id',
-    title: 'Id',
-    model: newModel('propertyText'),
-    attr_type: 'attr',
-    category: 'common'
-  },
-
-  {
-    name: 'name',
-    title: 'Name',
-    model: newModel('propertyText'),
-    attr_type: 'attr',
-    category: 'common'
-  },
-
-  {
-    name: 'title',
-    title: 'Title',
-    type: 'text',
-    attr_type: 'attr',
-    category: 'common'
-  },
-
-  {
-    name: 'text',
-    title: 'Text',
-    type: 'text',
-    attr_type: 'attr',
-    category: 'common'
-  },
-
-  {
-    name: 'value',
-    title: 'Value',
-    type: 'text',
-    attr_type: 'attr',
-    category: 'common'
-  },
-
-  {
-    name: 'src',
-    title: 'Src',
-    type: 'text',
-    attr_type: 'attr',
-    category: 'src'
-  },
-
-  {
-    name: 'href',
-    title: 'Href',
-    type: 'text',
-    attr_type: 'attr',
-    category: 'href'
-  },
-
-  {
-    name: 'class',
-    title: 'Class',
-    type: {
-
+    prop: {
+      name: 'id',
+      title: 'Id',
+      attr_type: 'attr',
+      category: 'common'
     },
-    attr_type: 'attr',
-    category: 'common'
+    model_name: 'propertyText'
   },
 
   {
-    name: 'style2css',
-    title: 'Style to CSS',
-    type: 'text-button',
-    attr_type: 'style2css',
-    category: 'style2css'
+    prop: {
+      name: 'name',
+      title: 'Name',
+      attr_type: 'attr',
+      category: 'common'
+    },
+    model_name: 'propertyText'
+  },
+
+  {
+    prop: {
+      name: 'title',
+      title: 'Title',
+      attr_type: 'attr',
+      category: 'common'
+    },
+    model_name: 'propertyText'
+  },
+
+  {
+    prop: {
+      name: 'text',
+      title: 'Text',
+      attr_type: 'attr',
+      category: 'common'
+    },
+    model_name: 'propertyText'
+  },
+
+  {
+    prop: {
+      name: 'value',
+      title: 'Value',
+      attr_type: 'attr',
+      category: 'common'
+    },
+    model_name: 'propertyText'
+  },
+
+  {
+    prop: {
+      name: 'src',
+      title: 'Src',
+      attr_type: 'attr',
+      category: 'src'
+    },
+    model_name: 'propertyText'
+  },
+
+  {
+    prop: {
+      name: 'href',
+      title: 'Href',
+      attr_type: 'attr',
+      category: 'href'
+    },
+    model_name: 'propertyText'
+  },
+
+  {
+    prop: {
+      name: 'class',
+      title: 'Class',
+      attr_type: 'attr',
+      category: 'common'
+    },
+    model_name: 'propertyClass'
+  },
+
+  {
+    prop: {
+      name: 'style2css',
+      title: 'Style to CSS',
+      attr_type: 'style2css',
+      category: 'style2css'
+    },
+    model_name: 'propertyStyle2Save'
   },
 
   // For styles
   //Display
   {
-    name: 'display',
-    title: 'Display',
-    attr_type: 'style',
-    type: 'select',
-    options: ['', 'block', 'inline', 'inline-block', 'none'],
-    category: 'position'
+    prop: {
+      name: 'display',
+      title: 'Display',
+      attr_type: 'style',
+      options: ['', 'block', 'inline', 'inline-block', 'none'],
+      category: 'position'
+    },
+    model_name: 'propertySelect'
   },
 
   //Position
   {
-    name: 'position',
-    title: 'Position',
-    attr_type: 'style',
-    type: 'select',
-    options: ['', 'static', 'relative', 'absolute'],
-    category: 'position'
+    prop: {
+      name: 'position',
+      title: 'Position',
+      attr_type: 'style',
+      options: ['', 'static', 'relative', 'absolute'],
+      category: 'position'
+    },
+    model_name: 'propertySelect'
   },
 
   {
-    name: 'left',
-    title: 'Left',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['px', '%', 'cm', 'mm', 'in'],
-    category: 'position'
+    prop: {
+      name: 'left',
+      title: 'Left',
+      attr_type: 'style',
+      units: ['px', '%', 'cm', 'mm', 'in'],
+      category: 'position'
+    },
+    model_name: 'propertyTextUnit'
   },
 
   {
-    name: 'right',
-    title: 'Right',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['px', '%', 'cm', 'mm', 'in'],
-    category: 'position'
+    prop: {
+      name: 'right',
+      title: 'Right',
+      attr_type: 'style',
+      units: ['px', '%', 'cm', 'mm', 'in'],
+      category: 'position'
+    },
+    model_name: 'propertyTextUnit'
   },
 
   {
-    name: 'top',
-    title: 'Top',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['px', '%', 'cm', 'mm', 'in'],
-    category: 'position'
+    prop: {
+      name: 'top',
+      title: 'Top',
+      attr_type: 'style',
+      units: ['px', '%', 'cm', 'mm', 'in'],
+      category: 'position'
+    },
+    model_name: 'propertyTextUnit'
   },
 
   {
-    name: 'bottom',
-    title: 'Bottom',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['px', '%', 'cm', 'mm', 'in'],
-    category: 'position'
+    prop: {
+      name: 'bottom',
+      title: 'Bottom',
+      attr_type: 'style',
+      units: ['px', '%', 'cm', 'mm', 'in'],
+      category: 'position'
+    },
+    model_name: 'propertyTextUnit'
   },
 
   //Float
   {
-    name: 'float',
-    title: 'Float',
-    attr_type: 'style',
-    type: 'text',
-    category: 'position'
+    prop: {
+      name: 'float',
+      title: 'Float',
+      attr_type: 'style',
+      category: 'position'
+    },
+    model_name: 'propertyText'
   },
 
   //Width, Height
   {
-    name: 'width',
-    title: 'Width',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['%', 'px', 'auto', 'cm', 'mm', 'in'],
-    category: 'size'
+    prop: {
+      name: 'width',
+      title: 'Width',
+      attr_type: 'style',
+      units: ['%', 'px', 'auto', 'cm', 'mm', 'in'],
+      category: 'size'
+    },
+    model_name: 'propertyTextUnit'
   },
 
   {
-    name: 'height',
-    title: 'Height',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['%', 'px', 'auto', 'cm', 'mm', 'in'],
-    category: 'size'
+    prop: {
+      name: 'height',
+      title: 'Height',
+      attr_type: 'style',
+      units: ['%', 'px', 'auto', 'cm', 'mm', 'in'],
+      category: 'size'
+    },
+    model_name: 'propertyTextUnit'
   },
 
   //Margin
   {
-    name: 'margin',
-    title: 'Margin',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['px', 'cm', 'mm', 'in'],
-    category: 'size',
+    prop: {
+      name: 'margin',
+      title: 'Margin',
+      attr_type: 'style',
+      units: ['px', 'cm', 'mm', 'in'],
+      category: 'size'
+    },
+    model_name: 'propertyTextUnit',
     child: [{
-        name: 'margin-top',
-        title: 'Margin Top',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'margin-top',
+          title: 'Margin Top',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'margin-bottom',
-        title: 'Margin bottom',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'margin-bottom',
+          title: 'Margin bottom',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'margin-left',
-        title: 'Margin Left',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'margin-left',
+          title: 'Margin Left',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'margin-right',
-        title: 'Margin Right',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'margin-right',
+          title: 'Margin Right',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       }
     ]
   },
 
   //Padding
   {
-    name: 'padding',
-    title: 'Padding',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['px', 'cm', 'mm', 'in'],
-    category: 'size',
+    prop: {
+      name: 'padding',
+      title: 'Padding',
+      attr_type: 'style',
+      units: ['px', 'cm', 'mm', 'in'],
+      category: 'size',
+    },
+    model_name: 'propertyTextUnit',
     child: [{
-        name: 'padding-top',
-        title: 'Padding Top',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'padding-top',
+          title: 'Padding Top',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'padding-bottom',
-        title: 'Padding Bottom',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'padding-bottom',
+          title: 'Padding Bottom',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'padding-left',
-        title: 'Padding Left',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'padding-left',
+          title: 'Padding Left',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'padding-right',
-        title: 'Padding Right',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'padding-right',
+          title: 'Padding Right',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       }
     ]
   },
 
   //Font
   {
-    name: 'color',
-    title: 'Color',
-    attr_type: 'style',
-    type: 'color',
-    units: [],
-    category: 'font'
+    prop: {
+      name: 'color',
+      title: 'Color',
+      attr_type: 'style',
+      category: 'font'
+    },
+    model_name: 'propertyColor'
   },
 
   {
-    name: 'font-weight',
-    title: 'Font weight',
-    attr_type: 'style',
-    type: 'select',
-    options: ['', 'normal', 'bold', 'bolder', 'lighter', 'initial', 'inherit'],
-    category: 'font'
+    prop: {
+      name: 'font-weight',
+      title: 'Font weight',
+      attr_type: 'style',
+      options: ['', 'normal', 'bold', 'bolder', 'lighter', 'initial', 'inherit'],
+      category: 'font'
+    },
+    model_name: 'propertySelect'
   },
 
   //Border
   {
-    name: 'border-width',
-    title: 'Border width',
-    attr_type: 'style',
-    type: 'text-unit',
-    units: ['px', 'cm', 'mm', 'in'],
-    category: 'border',
+    prop: {
+      name: 'border-width',
+      title: 'Border width',
+      attr_type: 'style',
+      units: ['px', 'cm', 'mm', 'in'],
+      category: 'border'
+    },
+    model_name: 'propertyTextUnit',
     child: [{
-        name: 'border-left-width',
-        title: 'Border left width',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'border-left-width',
+          title: 'Border left width',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'border-right-width',
-        title: 'Border right width',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'border-right-width',
+          title: 'Border right width',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'border-top-width',
-        title: 'Border top width',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'border-top-width',
+          title: 'Border top width',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       },
 
       {
-        name: 'border-bottom-width',
-        title: 'Border bottom width',
-        attr_type: 'style',
-        type: 'text-unit',
-        units: ['px', 'cm', 'mm', 'in']
+        prop: {
+          name: 'border-bottom-width',
+          title: 'Border bottom width',
+          attr_type: 'style',
+          units: ['px', 'cm', 'mm', 'in']
+        },
+        model_name: 'propertyTextUnit'
       }
     ]
   },
 
   {
-    name: 'border-color',
-    title: 'Border color',
-    attr_type: 'style',
-    type: 'color',
-    category: 'border',
+    prop: {
+      name: 'border-color',
+      title: 'Border color',
+      attr_type: 'style',
+      category: 'border',
+    },
+    model_name: 'propertyColor',
     child: [{
-        name: 'border-left-color',
-        title: 'Border left color',
-        attr_type: 'style',
-        type: 'color'
+        prop: {
+          name: 'border-left-color',
+          title: 'Border left color',
+          attr_type: 'style'
+        },
+        model_name: 'propertyColor'
       },
 
       {
-        name: 'border-right-color',
-        title: 'Border right color',
-        attr_type: 'style',
-        type: 'color'
+        prop: {
+          name: 'border-right-color',
+          title: 'Border right color',
+          attr_type: 'style'
+        },
+        model_name: 'propertyColor'
       },
 
       {
-        name: 'border-top-color',
-        title: 'Border top color',
-        attr_type: 'style',
-        type: 'color'
+        prop: {
+          name: 'border-top-color',
+          title: 'Border top color',
+          attr_type: 'style'
+        },
+        model_name: 'propertyColor'
       },
 
       {
-        name: 'border-bottom-color',
-        title: 'Border bottom color',
-        attr_type: 'style',
-        type: 'color'
+        prop: {
+          name: 'border-bottom-color',
+          title: 'Border bottom color',
+          attr_type: 'style'
+        },
+        model_name: 'propertyColor'
       }
     ]
   },
 
   {
-    name: 'border-style',
-    title: 'Border style',
-    attr_type: 'style',
-    type: 'select',
-    options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit'],
-    category: 'border',
+    prop: {
+      name: 'border-style',
+      title: 'Border style',
+      attr_type: 'style',
+      options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit'],
+      category: 'border',
+    },
+    model_name: 'propertySelect',
     child: [{
-        name: 'border-left-style',
-        title: 'Border left style',
-        attr_type: 'style',
-        type: 'select',
-        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        prop: {
+          name: 'border-left-style',
+          title: 'Border left style',
+          attr_type: 'style',
+          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        },
+        model_name: 'propertySelect'
       },
 
       {
-        name: 'border-right-style',
-        title: 'Border right style',
-        attr_type: 'style',
-        type: 'select',
-        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        prop: {
+          name: 'border-right-style',
+          title: 'Border right style',
+          attr_type: 'style',
+          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        },
+        model_name: 'propertySelect'
       },
 
       {
-        name: 'border-top-style',
-        title: 'Border top style',
-        attr_type: 'style',
-        type: 'select',
-        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        prop: {
+          name: 'border-top-style',
+          title: 'Border top style',
+          attr_type: 'style',
+          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        },
+        model_name: 'propertySelect'
       },
 
       {
-        name: 'border-bottom-style',
-        title: 'Border bottom style',
-        attr_type: 'style',
-        type: 'select',
-        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        prop: {
+          name: 'border-bottom-style',
+          title: 'Border bottom style',
+          attr_type: 'style',
+          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+        },
+        model_name: 'propertySelect'
       }
     ]
   },
 
   //Background
   {
-    name: 'background',
-    title: 'Background',
-    attr_type: 'style',
-    type: 'text',
-    category: 'background'
+    prop: {
+      name: 'background',
+      title: 'Background',
+      attr_type: 'style',
+      category: 'background'
+    },
+    model_name: 'propertyText'
   },
 
   {
-    name: 'background-color',
-    title: 'Background color',
-    attr_type: 'style',
-    type: 'color',
-    category: 'background'
+    prop: {
+      name: 'background-color',
+      title: 'Background color',
+      attr_type: 'style',
+      category: 'background'
+    },
+    model_name: 'propertyColor'
   },
 
   //Background Image
   {
-    name: 'background-image',
-    title: 'Background image',
-    attr_type: 'style',
-    type: 'text',
-    category: 'background'
+    prop: {
+      name: 'background-image',
+      title: 'Background image',
+      attr_type: 'style',
+      category: 'background'
+    },
+    model_name: 'propertyText'
   },
 
   {
-    name: 'background-repeat',
-    title: 'Background repeat',
-    attr_type: 'style',
-    type: 'select',
-    options: ['', 'repeat', 'repeat-x', 'repeat-y', 'no-repeat'],
-    category: 'background'
+    prop: {
+      name: 'background-repeat',
+      title: 'Background repeat',
+      attr_type: 'style',
+      options: ['', 'repeat', 'repeat-x', 'repeat-y', 'no-repeat'],
+      category: 'background'
+    },
+    model_name: 'propertySelect'
   },
 
   {
-    name: 'background-size',
-    title: 'Background size',
-    attr_type: 'style',
-    type: 'select',
-    options: ['', 'auto', 'cover', 'contain'],
-    category: 'background'
+    prop: {
+      name: 'background-size',
+      title: 'Background size',
+      attr_type: 'style',
+      options: ['', 'auto', 'cover', 'contain'],
+      category: 'background'
+    },
+    model_name: 'propertySelect'
   }
 ];
 

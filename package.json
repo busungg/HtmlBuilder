@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"build": "webpack"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/busungg/HtmlBuilder#readme",
   "dependencies": {
+    "lodash": "^4.17.11",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
   }
