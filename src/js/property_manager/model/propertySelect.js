@@ -85,7 +85,7 @@ var propertySelect = {
 
     _select = _render.child[1].child[0];
     for (var i = 0, len = prop.options.length; i < len; i++) {
-      _select.push({
+      _select.child.push({
         element: 'option',
         attr: {
           value: prop.options[i]

@@ -1,4 +1,5 @@
 var utils = require('../utils/utils');
+var lodash = require('lodash/lang');
 
 /**
     Attributes View Manager
@@ -31,7 +32,7 @@ var propertyManager = {
   },
 
   newModel: function (name) {
-    return Object.create(propertyManager.model[name]);
+    return lodash.cloneDeep(propertyManager.model[name]);
   },
 
   /**
@@ -72,6 +73,10 @@ var propertyManager = {
     propertyManager.init();
     propertyManager.renderCategoryContent(parent);
   }
+};
+
+module.exports = {
+  render: propertyManager.render
 };
 
 /**

@@ -42,9 +42,6 @@ var propertyText = {
   },
 
   render: function () {
-    //render에서 object를 만들어서 추가하는것이 어떨까?
-    //render된 부모를 받는걸로 하자
-
     var event = this.event;
     var prop = this.prop;
 
@@ -92,29 +89,3 @@ var propertyText = {
 };
 
 module.exports = propertyText;
-
-/**
- * 이 정도 해주려면 그냥 htmlbuilder로 생성하게 하는게 좋겠다.
- *
-
-  결과물
-  <div - for category>
-    <div - title for category>
-      title
-    </div>
-
-    <div - attr>
-      <div - title for attr></div>
-      <div - attr setting></div>
-
-      <div - child list>
-        <div - title for child category></div>
-        <div - child attr>
-          <div - title for child attr></div>
-          <div - child attr setting></div>
-        </div>
-      </div>
-    <div>
-
-  </div>
-**/

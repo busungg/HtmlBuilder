@@ -105,7 +105,7 @@ var propertyTextUnit = {
 
     var _select = _render.child[1].child[1];
     for (var i = 0, len = prop.units.length; i < len; i++) {
-      _select.push({
+      _select.child.push({
         element: 'option',
         attr: {
           value: prop.units[i]
