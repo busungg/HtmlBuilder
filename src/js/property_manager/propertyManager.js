@@ -1,5 +1,6 @@
-var utils = require('../utils/utils');
-var lodash = require('lodash/lang');
+const utils = require('../utils/utils');
+const lodash = require('lodash/lang');
+const CSS = require('./config/css');
 
 /**
     Attributes View Manager
@@ -18,10 +19,10 @@ var propertyManager = {
 
   selected: null,
 
-  init: function() {
+  init: function () {
     var configs = propertyManager.config.configs;
     var _config = null;
-    for(var i = 0, len = configs.length; i < len; i++) {
+    for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
       _config.model = propertyManager.newModel(configs[i].model_name);
       _config.model.setProperty(_config.prop);
@@ -48,20 +49,57 @@ var propertyManager = {
    * @param {Element} parent 
    */
   renderCategory: function (parent) {
+    var category = propertyManager.config.category;
 
+    var _category, dom;
+    for (var i = 0, leni = category.length; i < leni; i++) {
+      _category = {
+        element: 'div',
+        attr: {
+          class: CSS.category_body_div
+        },
+        child: [
+          {
+            element: 'div',
+            attr: {
+              class: CSS.category_body_title_div,
+              style: 'width: 150px; background-color: #9fa8b7; border-top: 1px solid #495267; font-size:8px; cursor:pointer;'
+            },
+            child: [
+              {
+                element: 'label',
+                attr: {
+                  name: category[i].name
+                },
+                html: category[i].title + ' \u25B2'
+              }
+            ]
+          }
+        ]
+      };
+
+      dom = utils.builder(_category);
+      propertyManager.renderCategoryContent(category[i].name, dom);
+
+      parent.appendChild(dom);
+    }
   },
 
   /**
-   * set category content element
-   * @param {Element} category 
+   * 
+   * @param {string} category 
+   * @param {Dom Element} categoryDom 
    */
-  renderCategoryContent: function (category) {
+  renderCategoryContent: function (category, categoryDom) {
     var configs = propertyManager.config.configs;
+    
     var dom;
-    for(var i = 0, len = configs.length; i < len; i++) {
-      dom = utils.builder(configs[i].model.render());
-      configs[i].model.setDom(dom);
-      category.appendChild(dom);
+    for(var i=0, len = configs.length; i < len; i++) {
+      if(configs[i].prop.category === category) {
+        dom = utils.builder(configs[i].model.render());
+        configs[i].model.setDom(dom);
+        categoryDom.appendChild(dom);
+      }
     }
   },
 
@@ -71,7 +109,7 @@ var propertyManager = {
    */
   render: function (parent) {
     propertyManager.init();
-    propertyManager.renderCategoryContent(parent);
+    propertyManager.renderCategory(parent);
   }
 };
 
@@ -80,9 +118,41 @@ module.exports = {
 };
 
 /**
+ * var toggleEvent = function(e) {
+  var target;
+
+  if(e.target.nodeName == 'LABEL') {
+    target = e.target.parentNode;
+  } else {
+    target = e.target;
+  }
+
+  if(target.innerHTML.indexOf('\u25B2') != -1) {
+    target.innerHTML = target.innerHTML.replace('\u25B2', '\u25BC');
+  } else {
+    target.innerHTML = target.innerHTML.replace('\u25BC', '\u25B2');
+  }
+
+  var sibling = target.nextSibling;
+
+  while(sibling) {
+    if(sibling.style.display == 'none') {
+      sibling.style.display = 'block';
+    } else {
+      sibling.style.display = 'none';
+    }
+
+    sibling = sibling.nextSibling;
+  }
+};
+
+ *
+ */
+
+/**
  * 이 정도 해주려면 그냥 htmlbuilder로 생성하게 하는게 좋겠다.
- * 
-  
+ *
+
   결과물
   <div - for category>
     <div - title for category>
