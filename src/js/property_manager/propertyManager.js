@@ -21,12 +21,22 @@ var propertyManager = {
 
   init: function () {
     var configs = propertyManager.config.configs;
-    var _config = null;
+    var _config = null, _configChild;
     for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
-      _config.model = propertyManager.newModel(configs[i].model_name);
+      _config.model = propertyManager.newModel(_config.model_name);
       _config.model.setProperty(_config.prop);
       _config.model.setSelected(propertyManager.selected);
+
+      if (_config.child) {
+        for (var c = 0, lenC = _config.child.length; c < lenC; c++) {
+          _configChild = _config.child[c];
+          _configChild.model = propertyManager.newModel(_configChild.model_name);
+          _configChild.model.setProperty(_configChild.prop);
+          _configChild.model.setSelected(propertyManager.selected);
+        }
+      }
+
     }
 
     // setSelected 관리 여기서 하기 -> propertyManager.selected를 넘기면 하나로 관리가 가능하다
@@ -45,10 +55,44 @@ var propertyManager = {
   },
 
   /**
+   * category, sub category toggle event
+   * @param {event} e 
+   */
+  eventToggle: function (e) {
+    var target;
+
+    if (e.target.nodeName == 'LABEL') {
+      target = e.target.parentNode;
+    } else {
+      target = e.target;
+    }
+
+    if (target.innerHTML.indexOf('\u25B2') != -1) {
+      target.innerHTML = target.innerHTML.replace('\u25B2', '\u25BC');
+    } else {
+      target.innerHTML = target.innerHTML.replace('\u25BC', '\u25B2');
+    }
+
+    var sibling = target.nextSibling;
+
+    while (sibling) {
+      if (sibling.style.display == 'none') {
+        sibling.style.display = 'block';
+      } else {
+        sibling.style.display = 'none';
+      }
+
+      sibling = sibling.nextSibling;
+    }
+  },
+
+  /**
    * set category element
    * @param {Element} parent 
    */
   renderCategory: function (parent) {
+    //toggle event 만들기
+
     var category = propertyManager.config.category;
 
     var _category, dom;
@@ -65,13 +109,25 @@ var propertyManager = {
               class: CSS.category_body_title_div,
               style: 'width: 150px; background-color: #9fa8b7; border-top: 1px solid #495267; font-size:8px; cursor:pointer;'
             },
+            event: [
+              {
+                type: 'click',
+                func: propertyManager.eventToggle
+              }
+            ],
             child: [
               {
                 element: 'label',
                 attr: {
                   name: category[i].name
                 },
-                html: category[i].title + ' \u25B2'
+                html: category[i].title + ' \u25B2',
+                event: [
+                  {
+                    type: 'click',
+                    func: propertyManager.eventToggle
+                  }
+                ]
               }
             ]
           }
@@ -92,15 +148,47 @@ var propertyManager = {
    */
   renderCategoryContent: function (category, categoryDom) {
     var configs = propertyManager.config.configs;
-    
-    var dom;
-    for(var i=0, len = configs.length; i < len; i++) {
-      if(configs[i].prop.category === category) {
+
+    var dom, domChild, domChildCategory;
+    for (var i = 0, len = configs.length; i < len; i++) {
+      if (configs[i].prop.category === category) {
         dom = utils.builder(configs[i].model.render());
         configs[i].model.setDom(dom);
         categoryDom.appendChild(dom);
+
+        if (configs[i].child) {
+          domChildCategory = utils.builder(
+            {
+              element: 'div',
+              attr: {
+                class: CSS.category_body_div
+              },
+              child: [
+                {
+                  element: 'div',
+                  attr: {
+                    style: 'width: 100%; background-color: #9fa8b7; border-top: 1px solid #495267; font-size:8px; cursor:pointer;'
+                  },
+                  html: '\u25B2',
+                  event: [{
+                    type: 'click',
+                    func: propertyManager.eventToggle
+                  }]
+                }]
+            }
+          );
+          categoryDom.appendChild(domChildCategory);
+
+          for (var c = 0, lenC = configs[i].child.length; c < lenC; c++) {
+            domChild = utils.builder(configs[i].child[c].model.render());
+            configs[i].child[c].model.setDom(domChild);
+            domChildCategory.appendChild(domChild);
+          }
+        }
       }
     }
+
+    //sub category도 만들자
   },
 
   /**
@@ -117,37 +205,6 @@ module.exports = {
   render: propertyManager.render
 };
 
-/**
- * var toggleEvent = function(e) {
-  var target;
-
-  if(e.target.nodeName == 'LABEL') {
-    target = e.target.parentNode;
-  } else {
-    target = e.target;
-  }
-
-  if(target.innerHTML.indexOf('\u25B2') != -1) {
-    target.innerHTML = target.innerHTML.replace('\u25B2', '\u25BC');
-  } else {
-    target.innerHTML = target.innerHTML.replace('\u25BC', '\u25B2');
-  }
-
-  var sibling = target.nextSibling;
-
-  while(sibling) {
-    if(sibling.style.display == 'none') {
-      sibling.style.display = 'block';
-    } else {
-      sibling.style.display = 'none';
-    }
-
-    sibling = sibling.nextSibling;
-  }
-};
-
- *
- */
 
 /**
  * 이 정도 해주려면 그냥 htmlbuilder로 생성하게 하는게 좋겠다.
