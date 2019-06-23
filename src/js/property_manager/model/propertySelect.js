@@ -1,7 +1,8 @@
 const CSS = require('../config/css');
+const Property = require('./property');
 
-var propertySelect = {
-  setProperty: function (prop) {
+class PropertySelect extends Property {
+  set property(prop) {
     this.prop = {};
 
     this.prop.name = prop.name;
@@ -9,42 +10,31 @@ var propertySelect = {
     this.prop.attr_type = prop.attr_type;
     this.prop.category = prop.category;
     this.prop.options = prop.options;
-  },
+  };
 
-  setDom: function (dom) {
-    this.dom = dom;
-  },
+  get property() {
+    return this.prop;
+  };
 
-  setSelected: function (selected) {
-    this.selected = selected;
-  },
+  event(e) {
+    if (this.selected) {
+      var eventDom = e.target;
 
-  callback: function (callback) {
-    this.callback = callback;
-  },
+      if (eventDom.value) {
+        this.selected.style[this.property.name] = eventDom.value;
+      } else {
+        this.selected.style[this.property.name] = null;
+      }
 
-  event: {
-    type: 'change',
-    func: function (e) {
-      if (propertySelect.selected) {
-        var eventDom = e.target;
-
-        if (eventDom.value) {
-          propertySelect.selected.style[propertySelect.prop.name] = eventDom.value;
-        } else {
-          propertySelect.selected.style[propertySelect.prop.name] = null;
-        }
-
-        if (propertySelect.callback && typeof propertySelect.callback === 'function') {
-          propertySelect.callback();
-        }
+      if (this.callback && typeof this.callback === 'function') {
+        this.callback();
       }
     }
-  },
+  };
 
-  render: function () {
+  render() {
     var event = this.event;
-    var prop = this.prop;
+    var prop = this.property;
 
     var _render = {
       element: 'div',
@@ -52,34 +42,37 @@ var propertySelect = {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
-          element: 'div',
-          attr: {
-            class: CSS.prop_body_title_div
-          },
-          child: [{
-            element: 'label',
-            attr: {
-              class: CSS.prop_body_title_label
-            },
-            text: prop.title
-          }]
+        element: 'div',
+        attr: {
+          class: CSS.prop_body_title_div
         },
-
-        { //div for property set
-          element: 'div',
+        child: [{
+          element: 'label',
           attr: {
-            class: CSS.prop_body_set_div
+            class: CSS.prop_body_title_label
           },
-          child: [{
-            element: 'select',
-            attr: {
-              class: CSS.prop_body_set_select,
-              hb_set_type: 'value'
-            },
-            child: [],
-            event: [event]
+          text: prop.title
+        }]
+      },
+
+      { //div for property set
+        element: 'div',
+        attr: {
+          class: CSS.prop_body_set_div
+        },
+        child: [{
+          element: 'select',
+          attr: {
+            class: CSS.prop_body_set_select,
+            hb_set_type: 'value'
+          },
+          child: [],
+          event: [{
+            type: 'change',
+            func: event
           }]
-        }
+        }]
+      }
       ]
     };
 
@@ -95,7 +88,7 @@ var propertySelect = {
     }
 
     return _render;
-  }
+  };
 };
 
-module.exports = propertySelect;
+module.exports = PropertySelect;

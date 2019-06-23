@@ -1,8 +1,8 @@
 class Proeprty {
   constructor() {
     this.prop = null;
-    this.dom = null;
-    this.selected = null;
+    this.element = null;
+    this.selectedElement = null;
     this.callback = null;
   }
 
@@ -19,20 +19,20 @@ class Proeprty {
     return this.prop;
   }
 
-  set dom(dom) {
-    this.dom = dom;
+  set dom(element) {
+    this.element = element;
   }
 
   get dom() {
-    return this.dom;
+    return this.element;
   }
 
-  set selected(selected) {
-    this.selected = selected;
+  set selected(selectedElement) {
+    this.selectedElement = selectedElement;
   }
 
   get selected() {
-    return this.selected;
+    return this.selectedElement;
   }
 
   update() {}

@@ -1,52 +1,29 @@
 const CSS = require('../config/css');
+const Property = require('./property');
 
-var propertyStyle2Save = {
-  setProperty: function (prop) {
-    this.prop = {};
+class PropertyStyle2Save extends Property {
+  event(e) {
+    if (this.selected) {
+      var eventDom = e.target.previousSibling;
 
-    this.prop.name = prop.name;
-    this.prop.title = prop.title;
-    this.prop.attr_type = prop.attr_type;
-    this.prop.category = prop.category;
-  },
+      //U.style2Css 수정 필요 -- selected를 인식하지 못하는 상태
+      /*
+      if(U.style2Css(eventDom.value)) {
+        propertyStyle2Save.selected.setAttribute('style', '');
+        var classText = propertyStyle2Save.selected.getAttribute('class');
+        propertyStyle2Save.selected.setAttribute('class', classText + ' ' + value);
+      }
+      */
 
-  setDom: function (dom) {
-    this.dom = dom;
-  },
-
-  setSelected: function (selected) {
-    this.selected = selected;
-  },
-
-  callback: function (callback) {
-    this.callback = callback;
-  },
-
-  event: {
-    type: 'click',
-    func: function (e) {
-      if (propertyStyle2Save.selected) {
-        var eventDom = e.target.previousSibling;
-
-        //U.style2Css 수정 필요 -- selected를 인식하지 못하는 상태
-        /*
-        if(U.style2Css(eventDom.value)) {
-          propertyStyle2Save.selected.setAttribute('style', '');
-          var classText = propertyStyle2Save.selected.getAttribute('class');
-          propertyStyle2Save.selected.setAttribute('class', classText + ' ' + value);
-        }
-        */
-
-        if (propertyStyle2Save.callback && typeof propertyStyle2Save.callback === 'function') {
-          propertyStyle2Save.callback();
-        }
+      if (this.callback && typeof this.callback === 'function') {
+        this.callback();
       }
     }
-  },
+  };
 
-  render: function () {
+  render() {
     var event = this.event;
-    var prop = this.prop;
+    var prop = this.property;
 
     return {
       element: 'div',
@@ -54,45 +31,48 @@ var propertyStyle2Save = {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
-          element: 'div',
-          attr: {
-            class: CSS.prop_body_title_div
-          },
-          child: [{
-            element: 'label',
-            attr: {
-              class: CSS.prop_body_title_label
-            },
-            text: prop.title
-          }]
+        element: 'div',
+        attr: {
+          class: CSS.prop_body_title_div
         },
-
-        { //div for property set
-          element: 'div',
+        child: [{
+          element: 'label',
           attr: {
-            class: CSS.prop_body_set_div
+            class: CSS.prop_body_title_label
           },
-          child: [{
-              element: 'input',
-              attr: {
-                type: 'text',
-                class: CSS.prop_body_set_text,
-                hb_set_type: 'value'
-              }
-            },
-            {
-              element: 'button',
-              attr: {
-                class: CSS.prop_body_set_btn
-              },
-              text: 'Save',
-              event: [event]
-            }
-          ]
+          text: prop.title
+        }]
+      },
+
+      { //div for property set
+        element: 'div',
+        attr: {
+          class: CSS.prop_body_set_div
+        },
+        child: [{
+          element: 'input',
+          attr: {
+            type: 'text',
+            class: CSS.prop_body_set_text,
+            hb_set_type: 'value'
+          }
+        },
+        {
+          element: 'button',
+          attr: {
+            class: CSS.prop_body_set_btn
+          },
+          text: 'Save',
+          event: [{
+            type: 'click',
+            func: event
+          }]
         }
+        ]
+      }
       ]
     };
-  }
+  };
 };
 
-module.exports = propertyStyle2Save;
+module.exports = PropertyStyle2Save;
