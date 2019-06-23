@@ -123,7 +123,7 @@ var propertyClass = {
             {
               element: 'select',
               attr: {
-                class: CSS.prop_body_set_select,
+                class: CSS.prop_body_set_multi_select,
                 multiple: true,
                 hb_set_type: 'value'
               }

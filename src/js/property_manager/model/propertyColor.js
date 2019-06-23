@@ -73,7 +73,7 @@ var propertyColor = {
             element: 'input',
             attr: {
               type: 'color',
-              class: CSS.hb_prop_body_set_color,
+              class: CSS.prop_body_set_color,
               hb_set_type: 'value'
             },
             event: [event]

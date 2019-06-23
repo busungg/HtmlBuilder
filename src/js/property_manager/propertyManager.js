@@ -36,10 +36,7 @@ var propertyManager = {
           _configChild.model.setSelected(propertyManager.selected);
         }
       }
-
     }
-
-    // setSelected 관리 여기서 하기 -> propertyManager.selected를 넘기면 하나로 관리가 가능하다
   },
 
   newModel: function (name) {
@@ -91,8 +88,6 @@ var propertyManager = {
    * @param {Element} parent 
    */
   renderCategory: function (parent) {
-    //toggle event 만들기
-
     var category = propertyManager.config.category;
 
     var _category, dom;
@@ -106,8 +101,7 @@ var propertyManager = {
           {
             element: 'div',
             attr: {
-              class: CSS.category_body_title_div,
-              style: 'width: 150px; background-color: #9fa8b7; border-top: 1px solid #495267; font-size:8px; cursor:pointer;'
+              class: CSS.category_body_title_div
             },
             event: [
               {
@@ -167,7 +161,7 @@ var propertyManager = {
                 {
                   element: 'div',
                   attr: {
-                    style: 'width: 100%; background-color: #9fa8b7; border-top: 1px solid #495267; font-size:8px; cursor:pointer;'
+                    class: CSS.sub_category_toggle_body_div
                   },
                   html: '\u25B2',
                   event: [{
@@ -177,7 +171,7 @@ var propertyManager = {
                 }]
             }
           );
-          categoryDom.appendChild(domChildCategory);
+          dom.appendChild(domChildCategory);
 
           for (var c = 0, lenC = configs[i].child.length; c < lenC; c++) {
             domChild = utils.builder(configs[i].child[c].model.render());

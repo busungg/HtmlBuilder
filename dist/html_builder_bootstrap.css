@@ -1,0 +1,256 @@
+/*
+1. CSS Naming Rule
+	- Block: The sole root of the component.
+	- Element: A component part of the Block.
+	- Modifier: A variant or extension of the Block.
+
+2. CSS structure
+	- menu
+	- navigator
+	- 
+*/
+
+html, 
+body
+{
+	width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 5px;
+    overflow-y: hidden;
+}
+
+.hb_sub-menu,
+.hb_main-menu
+.hb_content
+{
+	display: block;
+}
+
+/*--------------- COMMON -------------- */
+.hb_cursor-move {
+	cursor: move;
+}
+
+/*--------------- BLOCK -------------- */
+.hb_btn-block
+{
+	float:left;
+	width: 35%;
+	height: 100px;
+	padding: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	border: 1px solid #495267;
+}
+
+.hb_btn-block:hover {
+	border:1px solid #a0a0a0;
+}
+
+.hb_btn-block .hb_lbl
+{
+	display: inline-block;
+	width: 100%;
+	white-space: normal;
+	text-align: center;
+	text-overflow: ellipsis;
+	font-size:12px; 
+	font-weight:bold;
+}
+
+.hb_btn-block .hb_img
+{
+	display: block;
+	width: 80%;
+	height: 65%;
+	margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    pointer-events : none;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_btn-div 
+{
+	background-image: url("../icon/div.svg");
+}
+
+.hb_btn-p 
+{
+	background-image: url("../icon/p.svg");
+}
+
+.hb_btn-input 
+{
+	background-image: url("../icon/input.svg");
+}
+
+.hb_btn-text-area 
+{
+	background-image: url("../icon/text-area.svg");
+}
+
+.hb_btn-link
+{
+	background-image: url("../icon/link.svg");
+}
+
+.hb_btn-img 
+{
+	background-image: url("../icon/img.svg");
+}
+
+.hb_btn-select
+{
+	background-image: url("../icon/select-box.svg");
+}
+
+.hb_btn-button
+{
+	background-image: url("../icon/button.svg");
+}
+
+.hb_btn-label
+{
+	background-image: url("../icon/label.svg");
+}
+
+.hb_btn-check-box 
+{
+	background-image: url("../icon/check-box.svg");
+}
+
+.hb_btn-radio 
+{
+	background-image: url("../icon/radio.svg");
+}
+
+/*--------------- CONTENT PROPERTY --------------*/
+.hb_prop_body
+{
+	width: 100%;
+	text-align: center;
+}
+
+.hb_sub_category_toggle_body_div
+{
+	width: 100%;
+	background-color: #9fa8b7;
+	font-size:12px; 
+	cursor:pointer;
+}
+
+.hb_category_body_div, .hb_prop_body_div
+{
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+	text-align: center;
+}
+
+.hb_category_body_title_div
+{
+	width: 100%;
+	min-height: 25px;
+	background-color: #9fa8b7;
+	font-size:13px;
+	font-weight: bold; 
+	cursor:pointer;
+}
+
+.hb_prop_body_title_div
+{
+	width: 100%;
+	min-height: 25px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_category_body_title_label, .hb_prop_body_title_label
+{
+	float: left;
+	width: 90%;
+	height: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 11px;
+	font-weight: bold;
+	overflow-wrap: break-word;
+}
+
+.hb_prop_body_set_div {
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_prop_body_set_text
+{
+	width: 90%;
+	height: 20px;
+	font-size: 12px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_prop_body_set_btn
+{
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+
+	width: 90%;
+	height: 20px;
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_prop_body_set_btn:hover
+{
+	color: #fff;
+  	background-color: #5a6268;
+  	border-color: #545b62;
+}
+
+.hb_prop_body_set_select
+{
+	width: 90%;
+	height: 20px;
+	font-size: 12px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_prop_body_set_multi_select
+{
+	width: 90%;
+	height: 100px;
+	font-size: 12px;
+	overflow: auto;
+}
+
+.hb_prop_body_set_color
+{
+	width: 90%;
+	height: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}

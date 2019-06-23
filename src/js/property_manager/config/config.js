@@ -47,24 +47,6 @@ const category = [{
   }
 ];
 
-/**
- * type 종류
- * 
- * 1. text
- * 2. text-unit (units 필요)
- *   -> auto는 예외처리
- * 3. text-button
- *   -> save button
- * 4. select (options 필요)
- *   -> option
- * 5. color
- * 6. obj -> builder
- **/
-
-/**
- * category toggle 처리 해야함
- */
-
 const configs = [
   //For attributes
   {

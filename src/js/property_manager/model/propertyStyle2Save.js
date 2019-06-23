@@ -83,7 +83,7 @@ var propertyStyle2Save = {
             {
               element: 'button',
               attr: {
-                class: CSS.hb_prop_body_set_btn
+                class: CSS.prop_body_set_btn
               },
               text: 'Save',
               event: [event]
