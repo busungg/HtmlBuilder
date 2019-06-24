@@ -17,7 +17,9 @@ var propertyManager = {
     propertyTextUnit: require('./model/propertyTextUnit')
   },
 
-  selected: null,
+  selected: {
+    element: null
+  },
 
   init: function () {
     var configs = propertyManager.config.configs;
@@ -33,7 +35,7 @@ var propertyManager = {
           _configChild = _config.child[c];
           _configChild.model = propertyManager.newModel(_configChild.model_name);
           _configChild.model.property = _configChild.prop;
-          _configChild.model.selected = propertyManager.selected;
+          _configChild.model.selected = propertyManager.selected; 
         }
       }
     }
@@ -41,16 +43,18 @@ var propertyManager = {
 
   newModel: function (name) {
     return new propertyManager.model[name]();
-
-    //return lodash.cloneDeep(propertyManager.model[name]);
   },
 
   /**
    * set selected element for events
    * @param {Layout} selected 
    */
-  setSeleted: function (selected) {
-    propertyManager.selected = selected;
+  setSeleted: function (element) {
+    propertyManager.selected.element = element;
+  },
+
+  getSelected: function() {
+    return propertyManager.selected;
   },
 
   /**
@@ -183,8 +187,6 @@ var propertyManager = {
         }
       }
     }
-
-    //sub category도 만들자
   },
 
   /**
@@ -200,5 +202,6 @@ var propertyManager = {
 module.exports = {
   render: propertyManager.render,
   setSelected: propertyManager.setSeleted,
+  getSelected: propertyManager.getSelected,
   configs: propertyManager.config
 };

@@ -33,8 +33,8 @@ class PropertySelect extends Property {
   };
 
   render() {
-    var event = this.event;
     var prop = this.property;
+    var eventDetect = super.eventDetect;
 
     var _render = {
       element: 'div',
@@ -64,12 +64,13 @@ class PropertySelect extends Property {
           element: 'select',
           attr: {
             class: CSS.prop_body_set_select,
-            hb_set_type: 'value'
+            hb_set_type: 'value',
+            hb_set_prop_name: prop.name
           },
           child: [],
           event: [{
             type: 'change',
-            func: event
+            func: eventDetect
           }]
         }]
       }

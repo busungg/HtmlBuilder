@@ -43,8 +43,8 @@ class PropertyTextUnit extends Property {
   };
 
   render() {
-    var event = this.event;
-    var prop = this.prop;
+    var prop = this.property;
+    var eventDetect = super.eventDetect;
 
     var _render = {
       element: 'div',
@@ -75,23 +75,25 @@ class PropertyTextUnit extends Property {
           attr: {
             type: 'text',
             class: CSS.prop_body_set_text,
-            hb_set_type: 'value'
+            hb_set_type: 'value',
+            hb_set_prop_name: prop.name
           },
           event: [{
             type: 'change',
-            func: event
+            func: eventDetect
           }]
         },
         {
           element: 'select',
           attr: {
             class: CSS.prop_body_set_select,
-            hb_set_type: 'unit'
+            hb_set_type: 'unit',
+            hb_set_prop_name: prop.name
           },
           child: [],
           event: [{
             type: 'change',
-            func: event
+            func: eventDetect
           }]
         }
         ]

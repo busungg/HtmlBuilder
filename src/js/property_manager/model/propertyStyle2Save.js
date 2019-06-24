@@ -22,8 +22,8 @@ class PropertyStyle2Save extends Property {
   };
 
   render() {
-    var event = this.event;
     var prop = this.property;
+    var eventDetect = super.eventDetect;
 
     return {
       element: 'div',
@@ -60,12 +60,13 @@ class PropertyStyle2Save extends Property {
         {
           element: 'button',
           attr: {
-            class: CSS.prop_body_set_btn
+            class: CSS.prop_body_set_btn,
+            hb_set_prop_name: prop.name
           },
           text: 'Save',
           event: [{
             type: 'click',
-            func: event
+            func: eventDetect
           }]
         }
         ]

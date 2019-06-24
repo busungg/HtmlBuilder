@@ -2,10 +2,22 @@ const CSS = require('../config/css');
 const Property = require('./property');
 
 class PropertyClass extends Property {
+  event(e) {
+    var eventType = e.target.getAttribute('hb_set_event_type');
+
+    if (eventType === 'add') {
+      this.addEvent(e);
+    } else {
+      this.removeEvent(e);
+    }
+  };
+
   addEvent(e) {
     if (this.selected) {
-      nameDom = this.dom.querySelector('[hb_set_type=name]');
-      valueDom = this.dom.querySelector('[hb_set_type=value]');
+      var nameDom = this.dom.querySelector('[hb_set_type=name]');
+      var valueDom = this.dom.querySelector('[hb_set_type=value]');
+
+      var selected = this.selected;
 
       if (nameDom.value != '') {
         var option = document.createElement('option');
@@ -13,7 +25,7 @@ class PropertyClass extends Property {
         option.appendChild(document.createTextNode(nameDom.value));
         valueDom.appendChild(option);
 
-        this.selected.classList.add(input.value);
+        selected.classList.add(nameDom.value);
       }
 
       if (this.callback && typeof this.callback === 'function') {
@@ -24,7 +36,7 @@ class PropertyClass extends Property {
 
   removeEvent(e) {
     if (this.selected) {
-      valueDom = this.dom.querySelector('[hb_set_type=value]');
+      var valueDom = this.dom.querySelector('[hb_set_type=value]');
 
       for (var i = 0; i < valueDom.options.length; i++) {
         if (valueDom.options[i].selected == true) {
@@ -42,6 +54,7 @@ class PropertyClass extends Property {
 
   render() {
     var prop = this.property;
+    var eventDetect = super.eventDetect;
 
     return {
       element: 'div',
@@ -79,24 +92,28 @@ class PropertyClass extends Property {
           element: 'button',
           attr: {
             class: CSS.prop_body_set_btn,
-            title: 'Add class'
+            title: 'Add class',
+            hb_set_prop_name: prop.name,
+            hb_set_event_type: 'add'
           },
           text: 'Add class',
           event: [{
             type: 'click',
-            func: this.addEvent
+            func: eventDetect
           }]
         },
         {
           element: 'button',
           attr: {
             class: CSS.prop_body_set_btn,
-            title: 'Delete class'
+            title: 'Delete class',
+            hb_set_prop_name: prop.name,
+            hb_set_event_type: 'delete'
           },
           text: 'Delete class',
           event: [{
             type: 'click',
-            func: this.removeEvent
+            func: eventDetect
           }]
         },
         {

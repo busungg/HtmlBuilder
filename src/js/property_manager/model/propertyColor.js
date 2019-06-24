@@ -7,7 +7,7 @@ class PropertyColor extends Property {
       var eventDom = e.target;
 
       if (eventDom.value) {
-        this.selected.style[this.property.name] = eventDo.value;
+        this.selected.style[this.property.name] = eventDom.value;
       } else {
         this.selected.style[this.property.name] = null;
       }
@@ -20,7 +20,7 @@ class PropertyColor extends Property {
   
   render() {
     var prop = this.property;
-    var event = this.event;
+    var eventDetect = super.eventDetect;
 
     return {
       element: 'div',
@@ -51,11 +51,12 @@ class PropertyColor extends Property {
           attr: {
             type: 'color',
             class: CSS.prop_body_set_color,
-            hb_set_type: 'value'
+            hb_set_type: 'value',
+            hb_set_prop_name: prop.name
           },
           event: [{
             type: 'change',
-            func: event
+            func: eventDetect
           }]
         }]
       }

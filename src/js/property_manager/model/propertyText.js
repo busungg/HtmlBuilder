@@ -3,11 +3,6 @@ const Property = require('./property');
 
 class PropertyText extends Property {
   event(e) {
-    console.log(this.selected);
-    console.log(this.property);
-    console.log(this.callback);
-    console.log(e);
-    
     if (this.selected) {
       var eventDom = e.target;
 
@@ -24,8 +19,8 @@ class PropertyText extends Property {
   };
 
   render() {
-    var event = this.event;
     var prop = this.property;
+    var eventDetect = super.eventDetect;
 
     return {
       element: 'div',
@@ -56,11 +51,12 @@ class PropertyText extends Property {
           attr: {
             type: 'text',
             class: CSS.prop_body_set_text,
-            hb_set_type: 'value'
+            hb_set_type: 'value',
+            hb_set_prop_name: prop.name
           },
           event: [{
             type: 'change',
-            func: event
+            func: eventDetect
           }]
         }]
       }
