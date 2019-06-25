@@ -86,7 +86,7 @@ const configs = [
       attr_type: 'attr',
       category: 'common'
     },
-    model_name: 'propertyText'
+    model_name: 'propertyTextAppend'
   },
 
   {

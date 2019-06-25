@@ -1,5 +1,4 @@
 const utils = require('../utils/utils');
-const lodash = require('lodash/lang');
 const CSS = require('./config/css');
 
 /**
@@ -14,7 +13,8 @@ var propertyManager = {
     propertySelect: require('./model/propertySelect'),
     propertyStyle2Save: require('./model/propertyStyle2Save'),
     propertyText: require('./model/propertyText'),
-    propertyTextUnit: require('./model/propertyTextUnit')
+    propertyTextUnit: require('./model/propertyTextUnit'),
+    propertyTextAppend: require('./model/PropertyTextAppend')
   },
 
   selected: {

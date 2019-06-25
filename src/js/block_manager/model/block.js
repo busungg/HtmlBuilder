@@ -1,37 +1,37 @@
-var block = {
+class Block {
+    constructor() {
+        this._title = null;
+        this._icon = null;
+        this._option = null;
+    };
 
-    /*
-        title: 'radio',
-        block.title != this.title 다르다.
-    */
+    set title(_title) {
+        this._title = _title;
+    };
 
-    t: null,
+    get title() {
+        return this._title;
+    };
 
-    setTitle: function (title) {
-        this.title = title;
+    set icon(_icon) {
+        this._icon = _icon;
+    };
 
-        this.t = title;
-        block.t = title;
-    },
+    get icon() {
+        return this._icon;
+    };
 
-    setIcon: function (icon) {
-        this.icon = icon;
-    },
+    set option(_option) {
+        this._option;
+    };
 
-    setOption: function (option) {
-        this.option = option;
-    },
+    get option() {
+        return this._option;
+    };
 
-    //event 필요
-    //block option 을 제공
-
-    render: function () {
-        console.log('this.t : ' + this.t);
-        console.log('block.t : ' + block.t);
-        console.log(block);
-
-        var title = this.title;
-        var icon = this.icon;
+    render() {
+        var title = this._title;
+        var icon = this._icon;
 
         var _render = {
             element: 'div',
@@ -58,6 +58,7 @@ var block = {
 
         return _render;
     }
+
 };
 
-module.exports = block;
+module.exports = Block;

@@ -1,5 +1,4 @@
 const utils = require('../utils/utils');
-const lodash = require('lodash/lang');
 
 /**
     Attributes View Manager
@@ -19,14 +18,14 @@ var blockManager = {
     for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
       _config.model = blockManager.newModel('block');
-      _config.model.setTitle(_config.title);
-      _config.model.setIcon(_config.icon);
-      _config.model.setOption(_config.option);
+      _config.model.title = _config.title;
+      _config.model.icon = _config.icon;
+      _config.model.option = _config.option;
     }
   },
 
   newModel: function (name) {
-    return lodash.cloneDeep(blockManager.model[name]);
+    return new blockManager.model[name];
   },
 
   /**
@@ -41,8 +40,6 @@ var blockManager = {
     for(var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
 
-      console.log(_config.model);
-
       var dom = utils.builder(_config.model.render());
       parent.appendChild(dom);
     }
@@ -50,5 +47,6 @@ var blockManager = {
 };
 
 module.exports = {
-  render: blockManager.render
+  render: blockManager.render,
+  config: blockManager.config
 };
