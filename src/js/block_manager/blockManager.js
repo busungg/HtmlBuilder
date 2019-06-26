@@ -28,6 +28,13 @@ var blockManager = {
     return new blockManager.model[name];
   },
 
+  setEvent: function (event) {
+    for (var i = 0, len = configs.length; i < len; i++) {
+      _config = configs[i];
+      _config.model.event = event;
+    }
+  },
+
   /**
    * render block element
    * @param {Element} parent 
@@ -37,16 +44,42 @@ var blockManager = {
 
     var configs = blockManager.config;
     var _config = null;
-    for(var i = 0, len = configs.length; i < len; i++) {
+    for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
 
       var dom = utils.builder(_config.model.render());
       parent.appendChild(dom);
     }
-  },
+  }
 };
 
 module.exports = {
   render: blockManager.render,
   config: blockManager.config
 };
+
+/*
+{
+  type: 'mousedown',
+  func: function(e) {
+    if(U.selectedLayout) {
+      U.selectBlock({
+        target: U.selectedLayout.getBlock()
+      });
+      U.setFunctionBlock();
+    }
+  }
+},
+{
+  type: 'drag',
+  func: function(e) {
+    U.moveBlock(e);
+  }
+},
+{
+  type: 'dragend',
+  func: function(e) {
+    U.setBlock();
+  }
+}
+*/

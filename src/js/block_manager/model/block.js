@@ -3,6 +3,15 @@ class Block {
         this._title = null;
         this._icon = null;
         this._option = null;
+
+        /*
+            {
+                mousedown: null,
+                drag: null,
+                dragend: null
+            }
+        */
+        this._event = null;
     };
 
     set title(_title) {
@@ -29,6 +38,16 @@ class Block {
         return this._option;
     };
 
+    set event(_event) {
+        this._event = _event;
+    };
+
+    eventDetect(e) {
+        if(this._event) {
+            this._event[e.type](e, this.option);
+        }
+    };
+
     render() {
         var title = this._title;
         var icon = this._icon;
@@ -53,11 +72,25 @@ class Block {
                     },
                     text: title
                 }
+            ],
+            event: [
+                {
+                    type: 'mousedown',
+                    func: this.eventDetect
+                },
+                {
+                    type: 'drag',
+                    func: this.eventDetect
+                },
+                {
+                    type: 'dragend',
+                    func: this.eventDetect
+                }
             ]
         }
 
         return _render;
-    }
+    };
 
 };
 
