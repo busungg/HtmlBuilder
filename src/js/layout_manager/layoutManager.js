@@ -10,6 +10,12 @@ var layoutManager = {
     eventInfo: null, //event information
     idIdx: 1, //layout id index
 
+    event: null,
+
+    setEvent: function(event) {
+        layoutManager.event = event;
+    },
+
     /**
      * Find layout that has same id(id에 해당하는 layout을 return)
      * @param {string} layoutId 
@@ -24,6 +30,31 @@ var layoutManager = {
             } else {
                 for (var i = 0, len = layout.child.length; i < len; i++) {
                     if (selectedLayout = layoutManager.selectLayout(layoutId, layout.child[i])) {
+                        return selectedLayout;
+                    }
+                }
+
+                return null;
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    },
+
+    /**
+     * Find layout that has same dom
+     * @param {element} dom 
+     * @param {Layout} layout 
+     */
+    selectLayoutDom: function (dom, layout) {
+        try {
+            var selectedLayout = null;
+
+            if (dom === layout.dom) {
+                return layout;
+            } else {
+                for (var i = 0, len = layout.child.length; i < len; i++) {
+                    if (selectedLayout = layoutManager.selectLayoutDom(dom, layout.child[i])) {
                         return selectedLayout;
                     }
                 }
@@ -289,7 +320,7 @@ var layoutManager = {
                 var newChildLayout = new Layout();
                 newChildLayout.info = {
                     layoutId: newChildId,
-                    parentLayoutId: parentLayout.info.id,
+                    parentLayoutId: parentLayout.info.layoutId,
                     elementType: option.element
                 };
 
@@ -377,35 +408,187 @@ var layoutManager = {
     },
 
     /**
-     * select layout
+     * select dom
      * @param {event} e 
      */
-    selectLayout: function (e, info) {
+    selectDom: function (e) {
         try {
             if (layoutManager.selectedLayout) {
                 var selectedDom = layoutManager.selectedLayout.dom;
                 selectedDom.classList.remove('hb_selected');
                 selectedDom.removeAttribute('draggable');
 
-                //해결할 수 있는 방법은?
                 if (selectedDom === e.target) {
                     layoutManager.selectedLayout = null;
                     //U.draggableMenuBlock(true);
-                    return;
+                    return false;
 
                 } else {
                     selectedDom.classList.remove('hb_selectable');
                 }
             }
 
-            layoutManager.selectedLayout = layoutManager.selectLayout(info.id, layoutManager.contentLayout);
+            layoutManager.selectedLayout = layoutManager.selectLayoutDom(e.target, layoutManager.contentLayout);
             e.target.setAttribute('draggable', 'true');
             e.target.classList.add('hb_selected');
             e.target.classList.add('hb_selectable');
 
             //U.draggableMenuBlock(false);
+            return true;
+        } catch (err) {
+            console.log(err.message);
+        }
+    },
+
+    /**
+     * delete selected layout dom
+     */
+    deleteDom: function () {
+        try {
+            if (layoutManager.selectedLayout) {
+                layoutManager.deleteLayout(layoutManager.selectedLayout.info.parentLayoutId, layoutManager.selectedLayout);
+                layoutManager.selectedLayout.dom.remove();
+                layoutManager.selectedLayout = null;
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    },
+
+    /**
+     * copy selected layout dom
+     * @param {string, Layout} parent 
+     * @param {string, Layout} copy 
+     */
+    copyDom: function (parent, copy) {
+        try {
+            var parentLayout, copyLayout;
+
+            if (typeof parent === 'string') {
+                parentLayout = layoutManager.selectLayout(parent, layoutManager.contentLayout);
+            } else {
+                parentLayout = parent;
+            }
+
+            if (typeof copy === 'string') {
+                copyLayout = layoutManager.selectLayout(copy, layoutManager.contentLayout);
+            } else {
+                copyLayout = copy;
+            }
+
+            if (parentLayout && copyLayout) {
+                var copiedLayout = copyLayout.copy();
+                copiedLayout.info.layoutId = copiedLayout.info.element + '_' + layoutManager.idIdx;
+                layoutManager.idIdx++;
+                copiedLayout.child = [];
+                copiedLayout.info.parentLayoutId = parentLayout.layoutId;
+                layoutManager.addLayout(parentLayout, copiedLayout, parentLayout.child.length);
+
+                var parentDom = parentLayout.dom
+                var originalDom = copyLayout.dom
+
+                if (originalDom.classList.contains('hb_selected')) {
+                    layoutManager.selectDom({
+                        target: originalDom
+                    });
+                }
+
+                if (originalDom.classList.contains('hb_selectable')) {
+                    originalDom.classList.remove('hb_selectable');
+                }
+
+                var _copiedBlock = {
+                    element: copiedLayout.info.element,
+                    attr: {
+                        type: (originalDom.attributes['type'] ? originalDom.attributes['type'].value : null),
+                        class: originalDom.classList.value,
+                        style: originalDom.style.cssText
+                    },
+                    text: utils.getJustTextContent(originalDom),
+                    event: layoutManager.event
+                };
+                var copiedBlock = utils.builder(_copiedBlock);
+                copiedLayout.dom = copiedBlock;
+                parentDom.appendChild(copiedBlock);
+
+                for (var i = 0, len = copyLayout.child.length; i < len; i++) {
+                    layoutManager.copyDom(copiedLayout, copyLayout.child[i]);
+                }
+            }
         } catch (err) {
             console.log(err.message);
         }
     }
 };
+
+module.exports = layoutManager;
+
+var layoutEvents = [
+    {
+        type: 'mouseover',
+        func: function (e) {
+            layoutManager.selectableLayout(e);
+            e.stopPropagation();
+        }
+    },
+    {
+        type: 'mouseout',
+        func: function (e) {
+            layoutManager.selectableLayout(e);
+            e.stopPropagation();
+        }
+    },
+    {
+        type: 'mousedown',
+        func: function (e) {
+            layoutManager.selectLayout(e);
+            layoutManager.selectDom(e);
+
+            /* 다른 곳에서 이벤트 연결 필요
+            U.setFunctionBlock();
+            U.setBlockAttr();
+            U.setBlockStyle();
+            */
+
+            if (e.target.tagName === 'SELECT') { //for select box drag
+                e.target.disabled = true;
+            }
+
+            e.stopPropagation();
+        }
+    },
+    {
+        type: 'pointerup',
+        func: function (e) {
+            if (e.target.tagName === 'SELECT') { //for select box drag
+                e.target.disabled = false;
+            }
+
+            e.stopPropagation();
+        }
+    },
+    {
+        type: 'drag',
+        func: function (e) {
+            layoutManager.moveLayout(e);
+            e.stopPropagation();
+        }
+    },
+    {
+        type: 'dragend',
+        func: function (e) {
+            if (e.target.tagName === 'SELECT') { //for select box drag
+                e.target.disabled = false;
+            }
+
+            layoutManager.setLayout();
+
+            /* 다른곳
+            U.setFunctionBlock();
+            U.draggableMenuBlock(true);
+            */
+
+            e.stopPropagation();
+        }
+    }
+];
