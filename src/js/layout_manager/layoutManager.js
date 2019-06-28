@@ -12,6 +12,24 @@ var layoutManager = {
 
     event: null,
 
+    initContentLayout: function(layoutId, contentRect, dom) {
+        var contentLayout = layoutManager.contentLayout = new Layout();
+        contentLayout.info = {
+            layoutId: layoutId,
+            parentLayoutId: null,
+            elementType: 'div'
+        };
+
+        contentLayout.pos = {
+            x: contentRect.left,
+            y: contentRect.top,
+            width: contentRect.width,
+            height: contentRect.height
+        };
+
+        contentLayout.dom = dom;
+    },
+
     setEvent: function(event) {
         layoutManager.event = event;
     },
@@ -326,7 +344,7 @@ var layoutManager = {
 
                 var _newChild = {
                     element: blockOption.element,
-                    event: U.blockDefaultEvents
+                    event: layoutManager.event
                 };
                 _newChild.attr = {};
                 for (var attrName in blockOption.attrs) {

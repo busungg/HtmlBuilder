@@ -194,14 +194,8 @@ var propertyManager = {
    * @param {Element} parent 
    */
   render: function (parent) {
-    propertyManager.init();
     propertyManager.renderCategory(parent);
   }
 };
 
-module.exports = {
-  render: propertyManager.render,
-  setSelected: propertyManager.setSeleted,
-  getSelected: propertyManager.getSelected,
-  configs: propertyManager.config
-};
+module.exports = propertyManager;

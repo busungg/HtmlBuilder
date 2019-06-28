@@ -40,8 +40,6 @@ var blockManager = {
    * @param {Element} parent 
    */
   render: function (parent) {
-    blockManager.init();
-
     var configs = blockManager.config;
     var _config = null;
     for (var i = 0, len = configs.length; i < len; i++) {
@@ -53,10 +51,7 @@ var blockManager = {
   }
 };
 
-module.exports = {
-  render: blockManager.render,
-  config: blockManager.config
-};
+module.exports = blockManager;
 
 /*
 {
