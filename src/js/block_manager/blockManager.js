@@ -29,9 +29,10 @@ var blockManager = {
   },
 
   setEvent: function (event) {
+    var configs = blockManager.config;
     for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
-      _config.model.event = event;
+      _config.model.setEvent(event);
     }
   },
 
@@ -46,6 +47,7 @@ var blockManager = {
       _config = configs[i];
 
       var dom = utils.builder(_config.model.render());
+      _config.model.dom = dom;
       parent.appendChild(dom);
     }
   }

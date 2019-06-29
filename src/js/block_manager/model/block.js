@@ -1,3 +1,5 @@
+const config = require('../config/config');
+
 class Block {
     constructor() {
         this._title = null;
@@ -12,6 +14,7 @@ class Block {
             }
         */
         this._event = null;
+        this._dom = null;
     };
 
     set title(_title) {
@@ -31,22 +34,40 @@ class Block {
     };
 
     set option(_option) {
-        this._option;
+        this._option = _option;
     };
 
     get option() {
         return this._option;
     };
 
-    set event(_event) {
+    set dom(_dom) {
+        this._dom = _dom;
+    }
+
+    get dom() {
+        return this._dom;
+    }
+
+    setEvent(_event) {
         this._event = _event;
     };
 
     eventDetect(e) {
-        if(this._event) {
-            this._event[e.type](e, this.option);
+        var _config;
+        for (var i = 0, len = config.length; i < len; i++) {
+            _config = config[i];
+            if (_config.model.dom === e.target) {
+                _config.model.event(e);
+            }
         }
     };
+
+    event(e, option) {
+        if (this._event) {
+            this._event[e.type](e, this._option);
+        }
+    }
 
     render() {
         var title = this._title;
@@ -58,8 +79,7 @@ class Block {
                 class: 'hb_btn-block hb_cursor-move',
                 draggable: true
             },
-            child: [
-                {
+            child: [{
                     element: 'div',
                     attr: {
                         class: 'hb_img ' + icon
@@ -73,8 +93,7 @@ class Block {
                     text: title
                 }
             ],
-            event: [
-                {
+            event: [{
                     type: 'mousedown',
                     func: this.eventDetect
                 },

@@ -25,9 +25,6 @@ var mainManager = {
         };
 
         var c = config || {};
-
-        console.log(c);
-
         for (var name in defaults) {
             if (!(name in c)) {
                 c[name] = defaults[name];
@@ -46,7 +43,11 @@ var mainManager = {
             //menu
             mainManager.initMenu(container);
 
+            //layout events
+            mainManager.initLayoutEvents();
+
             //selected ui function
+            funcManager.init();
             funcManager.render(document.body);
         } catch (err) {
             console.log(err.message);
@@ -62,7 +63,8 @@ var mainManager = {
             attr: {
                 id: mainManager.config.ids[0],
                 style: ('width:' + mainManager.config.width[0] + ';height:' + mainManager.config.height[0] + '; float:left; overflow: auto;'),
-                class: 'hb_content hb_full hb_border-basic'
+                class: 'hb_content hb_border-basic'
+                //class: 'hb_content hb_full hb_border-basic'
             }
         };
         var content = utils.builder(_content);
@@ -87,7 +89,7 @@ var mainManager = {
             element: 'div',
             attr: {
                 id: mainManager.config.ids[1],
-                style: ('width:' + mainManager.config.width[1] + ';height:' + mainManager.config.height[1] + '; float:right;'),
+                style: ('width:' + mainManager.config.width[1] + ';height:' + mainManager.config.height[1] + '; float:right; margin-right:15px;'),
                 class: 'hb_main-menu hb_border-basic'
             }
         });
@@ -102,7 +104,7 @@ var mainManager = {
         */
     },
 
-    initMenuNav: function (container) { //수정 필요
+    initMenuNav: function (container) {
         try {
             var click = function (e) {
                 var content = document.getElementById('#main-content');
@@ -122,8 +124,7 @@ var mainManager = {
                     class: 'hb_nav',
                     id: '#main-nav'
                 },
-                child: [
-                    {
+                child: [{
                         element: 'button',
                         attr: {
                             class: 'hb_btn-nav hb_btn-nav-block',
@@ -168,7 +169,7 @@ var mainManager = {
                 element: 'div',
                 attr: {
                     id: '#main-content',
-                    class: 'hb_content'
+                    class: 'hb_nav_content'
                 },
                 child: []
             };
@@ -178,7 +179,7 @@ var mainManager = {
             var _block = {
                 element: 'div',
                 attr: {
-                    class: 'hb_content-blocks'
+                    class: 'hb_nav_content-blocks'
                 }
             };
             mainManager.nav.block = utils.builder(_block);
@@ -187,21 +188,20 @@ var mainManager = {
             var _prop = {
                 element: 'div',
                 attr: {
-                    class: 'hb_content-attr',
+                    class: 'hb_nav_content-prop',
                     style: 'display:none;'
                 },
-                child: [
-                    {
+                child: [{
                         element: 'div',
                         attr: {
-                            class: 'hb_content-attr',
+                            class: 'hb_nav_content-prop',
                             style: 'display:none;'
                         }
                     },
                     {
                         element: 'div',
                         attr: {
-                            class: 'hb_content-attr',
+                            class: 'hb_nav_content-prop',
                             style: 'display:block;'
                         },
                         text: 'There is no selected Block\nPlease select at least 1 block'
@@ -214,7 +214,7 @@ var mainManager = {
             var _setting = {
                 element: 'div',
                 attr: {
-                    class: 'hb_content-attr',
+                    class: 'hb_nav_content-prop',
                     style: 'display:none;'
                 }
             };
@@ -226,14 +226,171 @@ var mainManager = {
         }
     },
 
-    initMenuNavContent: function() {
+    initMenuNavContent: function () {
         //Block
         blockManager.init();
         blockManager.render(mainManager.nav.block);
+        mainManager.initBlockEvents();
 
         //Prop
         propertyManager.init();
         propertyManager.render(mainManager.nav.prop.children[1]);
+    },
+
+    initBlockEvents: function () {
+        var blockEvents = {
+            mousedown: function (e) {
+                if (layoutManager.selectedLayout) {
+                    layoutManager.selectDom({
+                        target: layoutManager.selectedLayout.dom
+                    });
+                    mainManager.setFunctionBlock();
+                }
+            },
+            drag: function (e, option) {
+                layoutManager.moveLayout(e, option);
+            },
+            dragend: function (e) {
+                layoutManager.setNewLayout(e);
+            }
+        }
+
+        blockManager.setEvent(blockEvents);
+    },
+
+    initLayoutEvents: function () {
+        var layoutEvents = {
+            mouseover: function (e) {
+                console.log('mouseover');
+
+                layoutManager.selectableLayout(e);
+                e.stopPropagation();
+            },
+            mouseout: function (e) {
+                console.log('mouseover');
+
+                layoutManager.selectableLayout(e);
+                e.stopPropagation();
+            },
+            mousedown: function (e) {
+                console.log('mousedown');
+
+                var chk = layoutManager.selectDom(e);
+                mainManager.setFunctionBlock();
+                mainManager.draggableMenuBlock(!chk);
+
+                /* 다른 곳에서 이벤트 연결 필요
+                U.setBlockAttr();
+                U.setBlockStyle();
+                */
+
+                if (e.target.tagName === 'SELECT') { //for select box drag
+                    e.target.disabled = true;
+                }
+
+                e.stopPropagation();
+            },
+            pointerup: function (e) {
+                console.log('pointerup');
+
+                if (e.target.tagName === 'SELECT') { //for select box drag
+                    e.target.disabled = false;
+                }
+
+                e.stopPropagation();
+            },
+            drag: function (e) {
+                console.log('drag');
+
+                layoutManager.moveLayout(e);
+                e.stopPropagation();
+            },
+            dragend: function (e) {
+                console.log('dragend');
+
+                if (e.target.tagName === 'SELECT') { //for select box drag
+                    e.target.disabled = false;
+                }
+
+                layoutManager.setLayout();
+                mainManager.setFunctionBlock();
+                mainManager.draggableMenuBlock(true);
+
+                /* 다른곳
+                U.setFunctionBlock();
+                U.draggableMenuBlock(true);
+                */
+
+                e.stopPropagation();
+            }
+        };
+
+        layoutManager.setEvent(layoutEvents);
+    },
+
+    draggableMenuBlock: function (chk) {
+        try {
+            var blocks = document.getElementsByClassName('hb_btn-block');
+            for (var i = 0, len = blocks.length; i < len; i++) {
+                blocks[i].setAttribute('draggable', chk);
+            }
+
+            if (!chk) {
+                mainManager.nav.block.style.display = 'none';
+                mainManager.nav.attr.style.display = 'block';
+                mainManager.nav.setting.style.display = 'none';
+            } else {
+                mainManager.nav.block.style.display = 'block';
+                mainManager.nav.attr.style.display = 'none';
+                mainManager.nav.setting.style.display = 'none';
+            }
+
+            /*
+            var content = document.getElementById('#main-content');
+            var children = content.children;
+            for (var i = 0; i < children.length; i++) {
+                children[i].style.display = 'none';
+
+                if (!chk && (children[i].getAttribute('id') === '#main-attr_block')) {
+                    children[i].style.display = 'block';
+                }
+
+                if (chk && (children[i].getAttribute('id') === '#main-content_block')) {
+                    children[i].style.display = 'block';
+                }
+            }
+            */
+        } catch (err) {
+            console.log(err.message);
+        }
+    },
+
+    setFunctionBlock: function () {
+        try {
+            if (layoutManager.selectedLayout) {
+                var body = layoutManager.contentLayout.dom;
+                var x = (layoutManager.selectedLayout.pos.x - body.scrollLeft);
+                var y = (layoutManager.selectedLayout.pos.y - body.scrollTop) - 21;
+
+                funcManager.setPos(x, y);
+
+                if (!body.attachedScroll) {
+                    body.attachedScroll = true;
+                    body.addEventListener('scroll', function (e) {
+                        if (layoutManager.selectedLayout) {
+                            var x = (layoutManager.selectedLayout.pos.x - e.target.scrollLeft);
+                            var y = (layoutManager.selectedLayout.pos.y - e.target.scrollTop) - 21;
+
+                            funcManager.setPos(x, y);
+                        }
+                    });
+                }
+            } else {
+                funcManager.setPos(0, -100);
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
     }
 };
 

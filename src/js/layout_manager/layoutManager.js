@@ -30,6 +30,12 @@ var layoutManager = {
         contentLayout.dom = dom;
     },
 
+    eventDetect: function(e) {
+        if(layoutManager.event) {
+            layoutManager.event[e.type](e);
+        }
+    },
+
     setEvent: function(event) {
         layoutManager.event = event;
     },
@@ -332,19 +338,42 @@ var layoutManager = {
                 var parentLayout = layoutManager.eventInfo.parentLayout;
                 var parent = parentLayout.dom;
 
-                var blockOption = layoutManager.eventInfo.option;
+                var blockOption = layoutManager.eventInfo.layoutOption;
                 var newChildId = blockOption.element + '_' + layoutManager.idIdx;
 
                 var newChildLayout = new Layout();
                 newChildLayout.info = {
                     layoutId: newChildId,
                     parentLayoutId: parentLayout.info.layoutId,
-                    elementType: option.element
+                    elementType: blockOption.element
                 };
 
                 var _newChild = {
                     element: blockOption.element,
-                    event: layoutManager.event
+                    event: [{
+                        type: 'mouseover',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'mouseout',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'mousedown',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'pointerup',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'drag',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'dragend',
+                        func: layoutManager.eventDetect
+                    }]
                 };
                 _newChild.attr = {};
                 for (var attrName in blockOption.attrs) {
@@ -438,7 +467,6 @@ var layoutManager = {
 
                 if (selectedDom === e.target) {
                     layoutManager.selectedLayout = null;
-                    //U.draggableMenuBlock(true);
                     return false;
 
                 } else {
@@ -451,7 +479,6 @@ var layoutManager = {
             e.target.classList.add('hb_selected');
             e.target.classList.add('hb_selectable');
 
-            //U.draggableMenuBlock(false);
             return true;
         } catch (err) {
             console.log(err.message);
