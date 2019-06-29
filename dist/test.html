@@ -2,20 +2,20 @@
 <html>
 
 <head>
-  <link rel="stylesheet" type="text/css" href="html_builder_bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="html_builder_bootstrap_node.css">
   <script src="./main.js"></script>
 
   <title>Getting Started</title>
 </head>
 
 <body>
-  <div id="div1" style="width: 200px; height: 90%; overflow-y: auto;"></div>
+  <div id="#hb_container" style="width:100%; height:95%;">
+  </div>
 </body>
 
 <script type='text/javascript'>
   (function () {
-    var div1 = document.getElementById('div1');
-    propertyManager.render(div1);
+    HtmlBuilder.init();
   })();
 </script>
 
