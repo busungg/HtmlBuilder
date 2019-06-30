@@ -1,15 +1,22 @@
+let instance;
+
+//Singletone
+/**
+ * manage function tool
+ */
 class Func {
     constructor() {
+        if(instance) {
+            return instance;
+        }
+
         this._pos = {
             x: 0,
             y: -100
         }
         this._dom = null;
         this._class = 'hb_func-menu';
-        this._event = {
-            eventDelete: null,
-            eventCopy: null
-        }
+        this._event = null;
     };
 
     set dom(_dom) {
@@ -20,10 +27,6 @@ class Func {
         return this._dom;
     };
 
-    set event(_event) {
-        this._event = _event;
-    };
-
     setPos(x, y) {
         this._pos.x = x;
         this._pos.y = y;
@@ -31,17 +34,21 @@ class Func {
         this.dom.setAttribute('style', 'position: absolute; left: ' + this._pos.x + 'px; top: ' + this._pos.y + 'px;');
     };
 
-    eventDetect(e) {
-        switch (e.target.getAttribute('hb_func_evnt_typ')) {
-            case 'delete':
-                this._event.eventDelete(e);
-                break;
-
-            case 'copy':
-                this._event.eventCopy(e);
-                break;
-        }
+    setEvent(_event) {
+        this._event = _event;
     };
+
+    eventDetect(e) {
+        var type = e.target.getAttribute('hb_func_evnt_typ');
+        
+        instance.event(e, type);
+    };
+
+    event(e, type) {
+        if (this._event) {
+            this._event[type](e);
+        }
+    }
 
     /*
         delete
@@ -111,4 +118,6 @@ class Func {
     }
 };
 
-module.exports = Func;
+instance = new Func();
+
+module.exports = instance;

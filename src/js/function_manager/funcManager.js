@@ -5,11 +5,11 @@ var funcManager = {
     func: null,
 
     init: function () {
-        funcManager.func = new Func();
+        funcManager.func = Func;
     },
 
     setEvent: function (event) {
-        funcManager.func.event = event;
+        funcManager.func.setEvent(event);
     },
 
     setPos: function (x, y) {

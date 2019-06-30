@@ -543,14 +543,37 @@ var layoutManager = {
                 }
 
                 var _copiedBlock = {
-                    element: copiedLayout.info.element,
+                    element: copiedLayout.info.elementType,
                     attr: {
                         type: (originalDom.attributes['type'] ? originalDom.attributes['type'].value : null),
-                        class: originalDom.classList.value,
-                        style: originalDom.style.cssText
+                        class: (originalDom.classList.value == '' ? null : originalDom.classList.value),
+                        style: (originalDom.style.cssText == '' ? null : originalDom.style.cssText) 
                     },
                     text: utils.getJustTextContent(originalDom),
-                    event: layoutManager.event
+                    event: [{
+                        type: 'mouseover',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'mouseout',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'mousedown',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'pointerup',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'drag',
+                        func: layoutManager.eventDetect
+                    },
+                    {
+                        type: 'dragend',
+                        func: layoutManager.eventDetect
+                    }]
                 };
                 var copiedBlock = utils.builder(_copiedBlock);
                 copiedLayout.dom = copiedBlock;

@@ -49,6 +49,8 @@ var mainManager = {
             //selected ui function
             funcManager.init();
             funcManager.render(document.body);
+            mainManager.initFuncEvents();
+
         } catch (err) {
             console.log(err.message);
         } finally {
@@ -261,20 +263,14 @@ var mainManager = {
     initLayoutEvents: function () {
         var layoutEvents = {
             mouseover: function (e) {
-                console.log('mouseover');
-
                 layoutManager.selectableLayout(e);
                 e.stopPropagation();
             },
             mouseout: function (e) {
-                console.log('mouseover');
-
                 layoutManager.selectableLayout(e);
                 e.stopPropagation();
             },
             mousedown: function (e) {
-                console.log('mousedown');
-
                 var chk = layoutManager.selectDom(e);
                 mainManager.setFunctionBlock();
                 mainManager.draggableMenuBlock(!chk);
@@ -291,8 +287,6 @@ var mainManager = {
                 e.stopPropagation();
             },
             pointerup: function (e) {
-                console.log('pointerup');
-
                 if (e.target.tagName === 'SELECT') { //for select box drag
                     e.target.disabled = false;
                 }
@@ -300,14 +294,10 @@ var mainManager = {
                 e.stopPropagation();
             },
             drag: function (e) {
-                console.log('drag');
-
                 layoutManager.moveLayout(e);
                 e.stopPropagation();
             },
             dragend: function (e) {
-                console.log('dragend');
-
                 if (e.target.tagName === 'SELECT') { //for select box drag
                     e.target.disabled = false;
                 }
@@ -316,16 +306,33 @@ var mainManager = {
                 mainManager.setFunctionBlock();
                 mainManager.draggableMenuBlock(true);
 
-                /* 다른곳
-                U.setFunctionBlock();
-                U.draggableMenuBlock(true);
-                */
-
                 e.stopPropagation();
             }
         };
 
         layoutManager.setEvent(layoutEvents);
+    },
+
+    initFuncEvents: function() {
+        var funcEvents = {
+            delete: function(e){
+                layoutManager.deleteDom();
+                layoutManager.updateLayout(layoutManager.contentLayout);
+                mainManager.setFunctionBlock();
+                mainManager.draggableMenuBlock(true);
+                //U.showBlockAttr(false);
+            },
+
+            copy: function(e){
+                layoutManager.copyDom(layoutManager.selectedLayout.info.parentLayoutId, layoutManager.selectedLayout.info.layoutId);
+                layoutManager.updateLayout(layoutManager.contentLayout);
+                mainManager.setFunctionBlock();
+                mainManager.draggableMenuBlock(true);
+                //U.showBlockAttr(false);
+            }
+        }
+
+        funcManager.setEvent(funcEvents);
     },
 
     draggableMenuBlock: function (chk) {
@@ -344,22 +351,6 @@ var mainManager = {
                 mainManager.nav.attr.style.display = 'none';
                 mainManager.nav.setting.style.display = 'none';
             }
-
-            /*
-            var content = document.getElementById('#main-content');
-            var children = content.children;
-            for (var i = 0; i < children.length; i++) {
-                children[i].style.display = 'none';
-
-                if (!chk && (children[i].getAttribute('id') === '#main-attr_block')) {
-                    children[i].style.display = 'block';
-                }
-
-                if (chk && (children[i].getAttribute('id') === '#main-content_block')) {
-                    children[i].style.display = 'block';
-                }
-            }
-            */
         } catch (err) {
             console.log(err.message);
         }
