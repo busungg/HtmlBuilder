@@ -586,77 +586,15 @@ var layoutManager = {
         } catch (err) {
             console.log(err.message);
         }
+    },
+
+    getLayoutProp: function() {
+        return layoutManager.selectedLayout.prop;
+    },
+
+    updateLayoutProp: function() {
+        layoutManager.selectedLayout.updateProp(null);
     }
 };
 
 module.exports = layoutManager;
-
-var layoutEvents = [
-    {
-        type: 'mouseover',
-        func: function (e) {
-            layoutManager.selectableLayout(e);
-            e.stopPropagation();
-        }
-    },
-    {
-        type: 'mouseout',
-        func: function (e) {
-            layoutManager.selectableLayout(e);
-            e.stopPropagation();
-        }
-    },
-    {
-        type: 'mousedown',
-        func: function (e) {
-            layoutManager.selectLayout(e);
-            layoutManager.selectDom(e);
-
-            /* 다른 곳에서 이벤트 연결 필요
-            U.setFunctionBlock();
-            U.setBlockAttr();
-            U.setBlockStyle();
-            */
-
-            if (e.target.tagName === 'SELECT') { //for select box drag
-                e.target.disabled = true;
-            }
-
-            e.stopPropagation();
-        }
-    },
-    {
-        type: 'pointerup',
-        func: function (e) {
-            if (e.target.tagName === 'SELECT') { //for select box drag
-                e.target.disabled = false;
-            }
-
-            e.stopPropagation();
-        }
-    },
-    {
-        type: 'drag',
-        func: function (e) {
-            layoutManager.moveLayout(e);
-            e.stopPropagation();
-        }
-    },
-    {
-        type: 'dragend',
-        func: function (e) {
-            if (e.target.tagName === 'SELECT') { //for select box drag
-                e.target.disabled = false;
-            }
-
-            layoutManager.setLayout();
-
-            /* 다른곳
-            U.setFunctionBlock();
-            U.draggableMenuBlock(true);
-            */
-
-            e.stopPropagation();
-        }
-    }
-];

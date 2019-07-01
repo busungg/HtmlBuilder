@@ -35,7 +35,7 @@ var propertyManager = {
           _configChild = _config.child[c];
           _configChild.model = propertyManager.newModel(_configChild.model_name);
           _configChild.model.property = _configChild.prop;
-          _configChild.model.selected = propertyManager.selected; 
+          _configChild.model.selected = propertyManager.selected;
         }
       }
     }
@@ -53,7 +53,7 @@ var propertyManager = {
     propertyManager.selected.element = element;
   },
 
-  getSelected: function() {
+  getSelected: function () {
     return propertyManager.selected;
   },
 
@@ -183,6 +183,25 @@ var propertyManager = {
             domChild = utils.builder(configs[i].child[c].model.render());
             configs[i].child[c].model.dom = domChild;
             domChildCategory.appendChild(domChild);
+          }
+        }
+      }
+    }
+  },
+
+  updateProp: function (prop) {
+    if (propertyManager.selected) {
+      var configs = propertyManager.config.configs;
+      var _config = null, _configChild;
+      for (var i = 0, len = configs.length; i < len; i++) {
+        _config = configs[i];
+
+        _config.update(prop);
+
+        if (_config.child) {
+          for (var c = 0, lenC = _config.child.length; c < lenC; c++) {
+            _configChild = _config.child[c];
+            _configChild.update(prop);
           }
         }
       }

@@ -280,6 +280,9 @@ var mainManager = {
                 U.setBlockStyle();
                 */
 
+                propertyManager.setSeleted(layoutManager.selectedLayout);
+                propertyManager.updateProp(layoutManager.getLayoutProp());
+
                 if (e.target.tagName === 'SELECT') { //for select box drag
                     e.target.disabled = true;
                 }
@@ -386,3 +389,132 @@ var mainManager = {
 };
 
 module.exports = mainManager;
+
+
+/*
+U.setBlockAttr = function() {
+    try {
+    var attrs = U.getBlockAttr();
+
+    if(attrs) {
+        U.showBlockAttr(true);
+
+        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'id', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.id;
+        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'name', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.name;
+        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'title', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.title;
+        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'text', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.text;
+        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'value', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.value;
+
+        var srcAttr = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'src', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text));
+        var hrefAttr = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'href', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text));
+
+        if(attrs.src != undefined) {
+        srcAttr.parentElement.parentElement.style.display = 'block';
+        srcAttr.value = attrs.src;
+        } else {
+        srcAttr.parentElement.parentElement.style.display = 'none';
+        }
+
+        if(attrs.href != undefined) {
+        hrefAttr.parentElement.parentElement.style.display = 'block';
+        hrefAttr.value = attrs.href;
+        } else {
+        hrefAttr.parentElement.parentElement.style.display = 'none';
+        }
+
+        var classSelect = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'class', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.select)), i = 0;
+
+        for(i = classSelect.options.length - 1 ; i >= 0 ; i--)
+        {
+            classSelect.remove(i);
+        }
+
+        var option;
+        for(i = 0, len = attrs.classList.length; i < len; i++) {
+        option = document.createElement('option');
+        option.text = attrs.classList[i];
+        option.value = attrs.classList[i];
+        classSelect.add(option);
+        }
+    } else {
+        U.showBlockAttr(false);
+    }
+    } catch(err) {
+    console.log(err.message);
+    }
+};
+
+U.setBlockStyle = function() {
+    try {
+        var styles = U.getBlockStyle(false);
+
+        var name, value, domValue, domUnit;
+        // Init Style Html
+        O.style.forEach(function(obj) {
+            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.text));
+            if(!domValue) {
+            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.select));
+            }
+
+            if(!domValue) {
+            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.color));
+            }
+            domUnit = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.units));
+            
+            if(domValue.nodeName == 'INPUT') {
+            domValue.value = '';
+            if(domUnit != null) {
+                domUnit.value = obj.units[0];
+            }
+            } else {
+            domValue.value = obj.options[0];
+            }
+        });
+        
+        for(name in styles) {
+            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.text));
+            if(!domValue) {
+            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.select));
+            }
+
+            if(!domValue) {
+            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.color));
+            }
+            domUnit = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.units));
+            
+            if(domValue.nodeName == 'INPUT') {
+            if(domUnit != null) {
+                for(idx in domUnit.children) {
+                if(styles[name].indexOf(domUnit.children[idx].value) != -1) {
+                    domValue.value = styles[name].replace(domUnit.children[idx].value, '');
+                    domUnit.value = domUnit.children[idx].value;
+                    break;
+                }
+                }
+            } else {
+                if(domValue.getAttribute('type') == O.HB_STYLE_TYPE_OPTION.color) {
+                domValue.value = U.rgb2Hex(styles[name]);
+                } else {
+                domValue.value = styles[name];  
+                }
+            }
+            } else {
+            if(domUnit != null) {
+                for(idx in domUnit.children) {
+                if(styles[name].indexOf(domUnit.children[idx].value) != -1) {
+                    value = styles[name].replace(domUnit.children[idx].value, '');
+                    domUnit.value = domUnit.children[idx].value;
+                    break;
+                }
+                }
+                domValue.value = value;
+            } else {
+                domValue.value = styles[name];
+            }
+            }
+        }
+    } catch (err) {
+        console.log(err.message);
+    }
+};
+*/
