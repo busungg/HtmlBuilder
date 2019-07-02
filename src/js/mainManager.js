@@ -236,7 +236,7 @@ var mainManager = {
 
         //Prop
         propertyManager.init();
-        propertyManager.render(mainManager.nav.prop.children[1]);
+        propertyManager.render(mainManager.nav.prop.children[0]);
     },
 
     initBlockEvents: function () {
@@ -279,6 +279,8 @@ var mainManager = {
                 U.setBlockAttr();
                 U.setBlockStyle();
                 */
+
+                console.log('mousedown');
 
                 propertyManager.setSeleted(layoutManager.selectedLayout);
                 propertyManager.updateProp(layoutManager.getLayoutProp());

@@ -42,6 +42,31 @@ class PropertyTextUnit extends Property {
     }
   };
 
+  update(prop) {
+    console.log(prop);
+
+    var propContent;
+    if(this.prop.attr_type === 'sytle') {
+      propContent = prop.style[this.prop.name];
+    } else {
+      propContent = prop[this.prop.value];
+    }
+
+    valueDom = this.dom.querySelector('[hb_set_type=value]');
+    unitDom = this.dom.querySelector('[hb_set_type=unit]');
+
+    var unit = null;
+    for(var i = 0, len = unitDom.children.length; i < len; i++) {
+      unit = unitDom.children[i];
+
+      if(propContent.indexOf(unit.value) != -1) {
+        valueDom.value = propContent.replace(unit.value, '');
+        unitDom.value = unit.value;
+        break;
+      }
+    }
+  };
+
   render() {
     var prop = this.property;
     var eventDetect = super.eventDetect;

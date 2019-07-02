@@ -118,6 +118,10 @@ class Layout {
         }
 
         try {
+            if(!this.prop) {
+                this.prop = {};
+            }
+
             var prop = this.prop;
             prop.id = (dom.id ? dom.id : null);
             prop.name = (dom.getAttribute('name') ? dom.getAttribute('name') : null);

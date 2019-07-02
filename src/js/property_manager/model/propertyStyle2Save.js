@@ -21,6 +21,10 @@ class PropertyStyle2Save extends Property {
     }
   };
 
+  update(prop) {
+
+  };
+
   render() {
     var prop = this.property;
     var eventDetect = super.eventDetect;

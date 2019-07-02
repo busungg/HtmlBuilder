@@ -17,6 +17,10 @@ class PropertyColor extends Property {
       }
     }
   };
+
+  update(prop) {
+
+  };
   
   render() {
     var prop = this.property;

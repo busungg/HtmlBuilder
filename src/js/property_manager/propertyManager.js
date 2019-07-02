@@ -196,12 +196,12 @@ var propertyManager = {
       for (var i = 0, len = configs.length; i < len; i++) {
         _config = configs[i];
 
-        _config.update(prop);
+        _config.model.update(prop);
 
         if (_config.child) {
           for (var c = 0, lenC = _config.child.length; c < lenC; c++) {
             _configChild = _config.child[c];
-            _configChild.update(prop);
+            _configChild.model.update(prop);
           }
         }
       }
