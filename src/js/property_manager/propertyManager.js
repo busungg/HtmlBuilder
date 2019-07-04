@@ -21,6 +21,10 @@ var propertyManager = {
     element: null
   },
 
+  callback: {
+    func: null
+  },
+
   init: function () {
     var configs = propertyManager.config.configs;
     var _config = null, _configChild;
@@ -29,6 +33,7 @@ var propertyManager = {
       _config.model = propertyManager.newModel(_config.model_name);
       _config.model.property = _config.prop;
       _config.model.selected = propertyManager.selected;
+      _config.model.callback = propertyManager.callback;
 
       if (_config.child) {
         for (var c = 0, lenC = _config.child.length; c < lenC; c++) {
@@ -36,6 +41,7 @@ var propertyManager = {
           _configChild.model = propertyManager.newModel(_configChild.model_name);
           _configChild.model.property = _configChild.prop;
           _configChild.model.selected = propertyManager.selected;
+          _configChild.model.callback = propertyManager.callback;
         }
       }
     }
@@ -55,6 +61,14 @@ var propertyManager = {
 
   getSelected: function () {
     return propertyManager.selected;
+  },
+
+  /**
+   * set callback function
+   * @param {function} func 
+   */
+  setCallback: function(func) {
+    propertyManager.callback.func = func;
   },
 
   /**

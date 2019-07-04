@@ -18,12 +18,13 @@ class PropertySelect extends Property {
 
   event(e) {
     if (this.selected) {
+      var selected = this.selected.dom;
       var eventDom = e.target;
 
       if (eventDom.value) {
-        this.selected.style[this.property.name] = eventDom.value;
+        selected.style[this.property.name] = eventDom.value;
       } else {
-        this.selected.style[this.property.name] = null;
+        selected.style[this.property.name] = null;
       }
 
       if (this.callback && typeof this.callback === 'function') {
@@ -33,7 +34,20 @@ class PropertySelect extends Property {
   };
 
   update(prop) {
+    var propContent;
+    if (this.prop.attr_type === 'style') {
+      propContent = prop.style[this.prop.name];
+    } else {
+      propContent = prop[this.prop.name];
+    }
 
+    valueDom = this.dom.querySelector('[hb_set_type=value]');
+
+    if (!propContent) { //init property view
+      valueDom.value = valueDom.children[0].value;
+    } else {
+      valueDom.value = propContent;
+    }
   };
 
   render() {

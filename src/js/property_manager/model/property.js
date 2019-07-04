@@ -6,7 +6,7 @@ class Proeprty {
     this.prop = null;
     this.element = null;
     this.selectedElement = null;
-    this.callback = null;
+    this._callback = null;
   };
 
   set property(prop) {
@@ -37,6 +37,14 @@ class Proeprty {
   get selected() {
     return this.selectedElement.element;
   };
+
+  set callback(_callback) {
+    this._callback = _callback;
+  }
+
+  get callback() {
+    return this._callback.func;
+  }
 
   eventDetect(e) {
     var propName = e.target.getAttribute('hb_set_prop_name');

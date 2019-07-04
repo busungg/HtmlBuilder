@@ -4,12 +4,13 @@ const Property = require('./property');
 class PropertyText extends Property {
   event(e) {
     if (this.selected) {
+      var selected = this.selected.dom;
       var eventDom = e.target;
 
       if (eventDom.value) {
-        this.selected.setAttribute(this.property.name, eventDom.value);
+        selected.setAttribute(this.property.name, eventDom.value);
       } else {
-        this.selected.removeAttribute(this.property.name);
+        selected.removeAttribute(this.property.name);
       }
 
       if (this.callback && typeof this.callback === 'function') {
@@ -19,7 +20,20 @@ class PropertyText extends Property {
   };
 
   update(prop) {
+    var propContent;
+    if (this.prop.attr_type === 'style') {
+      propContent = prop.style[this.prop.name];
+    } else {
+      propContent = prop[this.prop.name];
+    }
 
+    valueDom = this.dom.querySelector('[hb_set_type=value]');
+
+    if (!propContent) { //init property view
+      valueDom.value = '';
+    } else {
+      valueDom.value = propContent;
+    }
   };
 
   render() {

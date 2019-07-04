@@ -21,9 +21,7 @@ class PropertyStyle2Save extends Property {
     }
   };
 
-  update(prop) {
-
-  };
+  update(prop) {}; //no update
 
   render() {
     var prop = this.property;

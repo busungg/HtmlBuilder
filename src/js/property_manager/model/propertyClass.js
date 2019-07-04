@@ -14,10 +14,9 @@ class PropertyClass extends Property {
 
   addEvent(e) {
     if (this.selected) {
+      var selected = this.selected.dom;
       var nameDom = this.dom.querySelector('[hb_set_type=name]');
       var valueDom = this.dom.querySelector('[hb_set_type=value]');
-
-      var selected = this.selected;
 
       if (nameDom.value != '') {
         var option = document.createElement('option');
@@ -36,11 +35,12 @@ class PropertyClass extends Property {
 
   removeEvent(e) {
     if (this.selected) {
+      var selected = this.selected.dom;
       var valueDom = this.dom.querySelector('[hb_set_type=value]');
 
       for (var i = 0; i < valueDom.options.length; i++) {
         if (valueDom.options[i].selected == true) {
-          this.selected.classList.remove(valueDom.options[i].value);
+          selected.classList.remove(valueDom.options[i].value);
           valueDom.removeChild(valueDom.options[i]);
           i--;
         }
@@ -53,7 +53,28 @@ class PropertyClass extends Property {
   };
 
   update(prop) {
+    valueDom = this.dom.querySelector('[hb_set_type=value]');
 
+    if (prop.class.length == 0) {
+      while (valueDom.options.length != 0) {
+        valueDom.options[0].remove();
+      }
+    } else {
+      while (valueDom.options.length != 0) {
+        valueDom.options[0].remove();
+      }
+
+      var option;
+      for (var i = 0, len = prop.class.length; i < len; i++) {
+        if (prop.class[i].indexOf('hb_selectable') == -1 && prop.class[i].indexOf('hb_selected') == -1) {
+          option = document.createElement('option');
+          option.setAttribute('value', prop.class[i]);
+          option.appendChild(document.createTextNode(prop.class[i]));
+
+          valueDom.appendChild(option);
+        }
+      }
+    }
   };
 
   render() {

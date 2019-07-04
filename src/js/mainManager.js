@@ -237,6 +237,7 @@ var mainManager = {
         //Prop
         propertyManager.init();
         propertyManager.render(mainManager.nav.prop.children[0]);
+        mainManager.initPropertyEvents();
     },
 
     initBlockEvents: function () {
@@ -275,15 +276,10 @@ var mainManager = {
                 mainManager.setFunctionBlock();
                 mainManager.draggableMenuBlock(!chk);
 
-                /* 다른 곳에서 이벤트 연결 필요
-                U.setBlockAttr();
-                U.setBlockStyle();
-                */
-
-                console.log('mousedown');
-
                 propertyManager.setSeleted(layoutManager.selectedLayout);
-                propertyManager.updateProp(layoutManager.getLayoutProp());
+                if(chk) {
+                    propertyManager.updateProp(layoutManager.getLayoutProp());
+                }
 
                 if (e.target.tagName === 'SELECT') { //for select box drag
                     e.target.disabled = true;
@@ -318,6 +314,16 @@ var mainManager = {
         layoutManager.setEvent(layoutEvents);
     },
 
+    initPropertyEvents: function() {
+        var callbackFunc = function() {
+            layoutManager.updateLayout(layoutManager.contentLayout);
+            layoutManager.updateLayoutProp();
+            mainManager.setFunctionBlock();
+        };
+        
+        propertyManager.setCallback(callbackFunc);
+    },
+
     initFuncEvents: function() {
         var funcEvents = {
             delete: function(e){
@@ -349,12 +355,20 @@ var mainManager = {
 
             if (!chk) {
                 mainManager.nav.block.style.display = 'none';
-                mainManager.nav.attr.style.display = 'block';
+                mainManager.nav.prop.style.display = 'block';
                 mainManager.nav.setting.style.display = 'none';
             } else {
                 mainManager.nav.block.style.display = 'block';
-                mainManager.nav.attr.style.display = 'none';
+                mainManager.nav.prop.style.display = 'none';
                 mainManager.nav.setting.style.display = 'none';
+            }
+
+            if(layoutManager.selectedLayout) {
+                mainManager.nav.prop.children[0].style.display = 'block';
+                mainManager.nav.prop.children[1].style.display = 'none';
+            } else {
+                mainManager.nav.prop.children[0].style.display = 'none';
+                mainManager.nav.prop.children[1].style.display = 'block';
             }
         } catch (err) {
             console.log(err.message);

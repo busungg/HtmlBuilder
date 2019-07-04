@@ -4,7 +4,7 @@ const Property = require('./property');
 class PropertyTextAppend extends Property {
     event(e) {
         if (this.selected) {
-            var selected = this.selected;
+            var selected = this.selected.dom;
             var eventDom = e.target;
 
             if (eventDom.value) {
@@ -26,7 +26,13 @@ class PropertyTextAppend extends Property {
     };
 
     update(prop) {
+        var valueDom = this.dom.querySelector('[hb_set_type=value]');
 
+        if(prop.text) {
+            valueDom.value = prop.text;
+        } else {
+            valueDom.value = '';
+        }
     };
 
     render() {

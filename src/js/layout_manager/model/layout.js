@@ -1,3 +1,5 @@
+var utils = require('../../utils/utils');
+
 class Layout {
     constructor() {
         this._info = {
@@ -191,20 +193,28 @@ class Layout {
                     groupProperty[groupName].checkSum++;
                 }
 
-                prop.style[propertyName] = propertyValue;
+                if(propertyName.indexOf('color') != -1) {
+                    prop.style[propertyName] = utils.rgb2Hex(propertyValue);
+                } else {
+                    prop.style[propertyName] = propertyValue;
+                }
             }
 
             for (key in groupProperty) {
                 if (groupProperty[key].checkSum == 4 && groupProperty[key].group) {
-                    prop.style[key] = groupProperty[key].value;
-
-                    if (group) {
-                        groupName = key.split('-');
-                        for (i = 0, len = direction.length; i < len; i++) {
-                            propertyName = ((groupName.length > 1) ? (groupName[0] + direction[i] + '-' + groupName[1]) : (groupName[0] + direction[i]));
-                            prop.style[propertyName] = null;
-                        }
+                    if(key.indexOf('color') != -1) {
+                        prop.style[key] = utils.rgb2Hex(groupProperty[key].value);
+                    } else {
+                        prop.style[key] = groupProperty[key].value;
                     }
+
+                    /*group 화 할 시 사용
+                    groupName = key.split('-');
+                    for (i = 0, len = direction.length; i < len; i++) {
+                        propertyName = ((groupName.length > 1) ? (groupName[0] + direction[i] + '-' + groupName[1]) : (groupName[0] + direction[i]));
+                        prop.style[propertyName] = null;
+                    }
+                    */
                 }
             }
         } catch (err) {

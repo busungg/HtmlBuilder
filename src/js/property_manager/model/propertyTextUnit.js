@@ -28,12 +28,12 @@ class PropertyTextUnit extends Property {
         unitDom = eventDom;
       }
 
-      var value;
+      var value, selected = this.selected.dom;
       if (valueDom.value != null && valueDom.value != '') {
         value = valueDom.value + unitDom.value;
-        this.selected.style[this.property.name] = value;
+        selected.style[this.property.name] = value;
       } else {
-        this.selected.style[this.property.name] = null;
+        selected.style[this.property.name] = null;
       }
 
       if (this.callback && typeof this.callback === 'function') {
@@ -43,26 +43,29 @@ class PropertyTextUnit extends Property {
   };
 
   update(prop) {
-    console.log(prop);
-
     var propContent;
-    if(this.prop.attr_type === 'sytle') {
+    if (this.prop.attr_type === 'style') {
       propContent = prop.style[this.prop.name];
     } else {
-      propContent = prop[this.prop.value];
+      propContent = prop[this.prop.name];
     }
 
     valueDom = this.dom.querySelector('[hb_set_type=value]');
     unitDom = this.dom.querySelector('[hb_set_type=unit]');
 
-    var unit = null;
-    for(var i = 0, len = unitDom.children.length; i < len; i++) {
-      unit = unitDom.children[i];
+    if (!propContent) { //init property view
+      valueDom.value = '';
+      unitDom.value = unitDom.children[0].value;
+    } else {
+      var unit = null;
+      for (var i = 0, len = unitDom.children.length; i < len; i++) {
+        unit = unitDom.children[i];
 
-      if(propContent.indexOf(unit.value) != -1) {
-        valueDom.value = propContent.replace(unit.value, '');
-        unitDom.value = unit.value;
-        break;
+        if (propContent.indexOf(unit.value) != -1) {
+          valueDom.value = propContent.replace(unit.value, '');
+          unitDom.value = unit.value;
+          break;
+        }
       }
     }
   };
