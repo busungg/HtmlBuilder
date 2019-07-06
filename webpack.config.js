@@ -1,8 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/js/property_manager/propertyManager.js',
+  //entry: './src/js/property_manager/propertyManager.js',
   //entry: './src/js/block_manager/blockManager.js',
+  entry: './src/js/mainManager.js',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
@@ -11,7 +12,7 @@ module.exports = {
     minimize: false
   },
   output: {
-    library: ['propertyManager']
+    library: ['HtmlBuilder']
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),

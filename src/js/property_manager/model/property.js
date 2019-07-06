@@ -1,5 +1,5 @@
 const config = require('../config/config');
-const configs=  config.configs;
+const configs = config.configs;
 
 class Proeprty {
   constructor() {

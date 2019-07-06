@@ -1,60 +1,111 @@
-const configs = [
-    {
-        attr: {
-            name: 'resolution',
-            title: 'Change Resolution'
+const configs = [{
+        title: {
+            element: 'label',
+            prop: {
+                name: 'resolution',
+                title: 'Change Resolution'
+            }
         },
-        child: [
-            {
+        content: [{
                 element: 'button',
-                attr: {
+                prop: {
+                    name: 'btn_resolution_phone',
                     class: 'hb_setting-btn-phone',
-                    value: '320px'
+                    hb_set_name: 'resolution',
+                    //value: '320px'
                 }
             },
             {
                 element: 'button',
-                attr: {
+                prop: {
+                    name: 'btn_resolution_tablet',
                     class: 'hb_setting-btn-tablet',
-                    value: '768px'
+                    hb_set_name: 'resolution',
+                    //value: '768px'
                 }
             },
             {
                 element: 'button',
-                attr: {
+                prop: {
+                    name: 'btn_resolution_browser',
                     class: 'hb_setting-btn-browser',
-                    value: H.config.width[0]
+                    hb_set_name: 'resolution',
+                    //value: H.config.width[0]
                 }
             }
         ]
     },
     {
-        element: 'button',
-        attr: {
-            name: 'import_html',
-            title: 'Import HTML'
-        }
+        title: {
+            element: 'label',
+            prop: {
+                name: 'import_html',
+                title: 'Import HTML'
+            }
+        },
+        content: [{
+            element: 'button',
+            prop: {
+                name: 'import_html',
+                title: 'Import HTML',
+                class: 'hb_setting-btn',
+                hb_set_name: 'import_html'
+            }
+        }]
     },
     {
-        element: 'button',
-        attr: {
-            name: 'import_css',
-            title: 'Import CSS'
-        }
+        title: {
+            element: 'label',
+            prop: {
+                name: 'import_css',
+                title: 'Import CSS'
+            }
+        },
+        content: [{
+            element: 'button',
+            prop: {
+                name: 'import_css',
+                title: 'Import CSS',
+                class: 'hb_setting-btn',
+                hb_set_name: 'import_css'
+            }
+        }]
     },
     {
-        element: 'button',
-        attr: {
-            name: 'export_html',
-            title: 'Export HTML'
-        }
+        title: {
+            element: 'label',
+            prop: {
+                name: 'export_html',
+                title: 'Export HTML'
+            }
+        },
+        content: [{
+            element: 'button',
+            prop: {
+                name: 'export_html',
+                title: 'Export HTML',
+                class: 'hb_setting-btn',
+                hb_set_name: 'export_html'
+            }
+        }]
     },
     {
-        element: 'button',
-        attr: {
-            name: 'export_css',
-            title: 'Export CSS'
-        }
+        title: {
+            element: 'label',
+            prop: {
+                name: 'export_css',
+                title: 'Export CSS'
+            }
+        },
+        content: [{
+            element: 'button',
+            prop: {
+                name: 'export_css',
+                title: 'Export CSS',
+                class: 'hb_setting-btn',
+                hb_set_name: 'export_css'
+            }
+        }]
     }
 ];
 
