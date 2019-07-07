@@ -42,7 +42,7 @@ class setting {
 
     event(e) {
         var eventType = e.target.name;
-        console.log(eventType);
+        this._event[eventType]();
     };
 
     render() {

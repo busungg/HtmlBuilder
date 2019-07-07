@@ -136,6 +136,57 @@ var utils = {
         }
     },
 
+    changeResolution: function (id, width, height) {
+        try {
+            var content = document.getElementById(id);
+
+            if (width) {
+                content.style.width = width;
+            }
+
+            if (height) {
+                content.style.height = height;
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    },
+
+    exportHtml: function (id) {
+        try {
+            var html = {
+                result: ''
+            };
+            var content = document.getElementById(id);
+            var tempContent = document.createElement('div');
+            tempContent.setAttribute('style', 'position: absolute; x:0; y:-1000;');
+            tempContent.innerHTML = content.innerHTML;
+
+            document.body.appendChild(tempContent);
+            utils.beautifyHtml(tempContent, ' '.repeat(4), -1, html);
+            document.body.removeChild(tempContent);
+
+            if (html.result === '') {
+                return '';
+            }
+
+            return html.result;
+        } catch (err) {
+            console.log(err.message);
+        }
+    },
+
+    exportCss: function (id) {
+        try {
+            var cssElement = document.getElementById(id);
+            var css = cssElement.textContent;
+
+            return css;
+        } catch (err) {
+            console.log(err.message)
+        }
+    },
+
     obj2Css: function (css) {
         try {
             var cssText = '';

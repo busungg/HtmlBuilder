@@ -11,8 +11,7 @@ const configs = [{
                 prop: {
                     name: 'btn_resolution_phone',
                     class: 'hb_setting-btn-phone',
-                    hb_set_name: 'resolution',
-                    //value: '320px'
+                    hb_set_name: 'resolution'
                 }
             },
             {
@@ -20,8 +19,7 @@ const configs = [{
                 prop: {
                     name: 'btn_resolution_tablet',
                     class: 'hb_setting-btn-tablet',
-                    hb_set_name: 'resolution',
-                    //value: '768px'
+                    hb_set_name: 'resolution'
                 }
             },
             {

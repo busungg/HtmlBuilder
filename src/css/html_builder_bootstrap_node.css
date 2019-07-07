@@ -9,6 +9,8 @@
 	- navigator
 	- 
 */
+
+/*
 .block_half {
 	width: 50%;
 	height: 50%;
@@ -26,6 +28,7 @@
 .block_margin-10px {
 	margin: 10px;
 }
+*/
 
 html, 
 body
@@ -508,4 +511,206 @@ body
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 90% 90%;
+}
+
+/*--------------- SETTING --------------*/
+.hb_setting_div {
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+}
+
+.hb_setting_title_div {
+	width: 100%;
+	min-height: 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_setting_content_div {
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_setting_title_label {
+	width: 100%;
+	font-weight: bold;
+}
+
+.hb_setting-btn {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+
+	width: 90%;
+	height: 20px;
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_setting-btn:hover 
+{
+	background-color: #858f98;
+	border-color: #545b60;
+}
+
+.hb_setting-btn-phone
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-phone.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+
+	user-select: none;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+	border-color: #76818b;
+}
+
+.hb_setting-btn-tablet
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-tablet.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+
+	user-select: none;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+	border-color: #76818b;
+}
+
+.hb_setting-btn-browser
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-computer.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+
+	user-select: none;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+	border-color: #76818b;
+}
+
+/*--------------- SETTING POPUP --------------*/
+.hb_setting-popup
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 70%;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	border: 2px solid #495267;
+	background-color: #3b4251;
+}
+
+.hb_setting-popup div {
+	box-sizing: border-box;
+	border-bottom: 1px solid #66728d;
+}
+
+.hb_setting-popup-titlediv
+{
+	width: 100%;
+	height: 10%;
+	color: #c3cee2;
+	font: 15px;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
+.hb_setting-popup-textdiv
+{
+	width: 100%;
+	height: 80%;
+	padding: 10px;
+}
+
+.hb_setting-popup-textarea
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.hb_setting-popup-applybutton
+{
+	margin: 10px;
+
+	user-select: none;
+	font-weight: bold;
+	font-size: 13px;
+	color: #2d2d2d;
+	border: 1px solid #76818b;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+}
+
+.hb_setting-popup-applybutton:hover
+{
+	background-color: #b5c1cc;
+}
+
+.hb_setting-popup-clossbutton
+{
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin: 10px;
+	background-image: url("../icon/btn-cancel.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80% 80%;
+    user-select: none;
+    border: 1px solid #76818b;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+}
+
+.hb_setting-popup-clossbutton:hover
+{
+	background-color: #b5c1cc;
 }

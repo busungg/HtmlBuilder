@@ -12,7 +12,7 @@ var layoutManager = {
 
     event: null,
 
-    initContentLayout: function(layoutId, contentRect, dom) {
+    initContentLayout: function (layoutId, contentRect, dom) {
         var contentLayout = layoutManager.contentLayout = new Layout();
         contentLayout.info = {
             layoutId: layoutId,
@@ -30,13 +30,13 @@ var layoutManager = {
         contentLayout.dom = dom;
     },
 
-    eventDetect: function(e) {
-        if(layoutManager.event) {
+    eventDetect: function (e) {
+        if (layoutManager.event) {
             layoutManager.event[e.type](e);
         }
     },
 
-    setEvent: function(event) {
+    setEvent: function (event) {
         layoutManager.event = event;
     },
 
@@ -281,7 +281,9 @@ var layoutManager = {
                 parent.classList.add('hb_border-contain');
 
                 if (parentLayout.child.length > 0) {
-                    var nearLayout, layoutPos = 0, minDistance = Infinity, distance = 0;
+                    var nearLayout, layoutPos = 0,
+                        minDistance = Infinity,
+                        distance = 0;
                     for (var i = 0, len = parentLayout.child.length; i < len; i++) {
                         distance = Math.sqrt(
                             Math.pow(x - (parentLayout.child[i].pos.x + parentLayout.child[i].pos.width * 0.5), 2) +
@@ -351,29 +353,30 @@ var layoutManager = {
                 var _newChild = {
                     element: blockOption.element,
                     event: [{
-                        type: 'mouseover',
-                        func: layoutManager.eventDetect
-                    },
-                    {
-                        type: 'mouseout',
-                        func: layoutManager.eventDetect
-                    },
-                    {
-                        type: 'mousedown',
-                        func: layoutManager.eventDetect
-                    },
-                    {
-                        type: 'pointerup',
-                        func: layoutManager.eventDetect
-                    },
-                    {
-                        type: 'drag',
-                        func: layoutManager.eventDetect
-                    },
-                    {
-                        type: 'dragend',
-                        func: layoutManager.eventDetect
-                    }]
+                            type: 'mouseover',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'mouseout',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'mousedown',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'pointerup',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'drag',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'dragend',
+                            func: layoutManager.eventDetect
+                        }
+                    ]
                 };
                 _newChild.attr = {};
                 for (var attrName in blockOption.attrs) {
@@ -547,10 +550,71 @@ var layoutManager = {
                     attr: {
                         type: (originalDom.attributes['type'] ? originalDom.attributes['type'].value : null),
                         class: (originalDom.classList.value == '' ? null : originalDom.classList.value),
-                        style: (originalDom.style.cssText == '' ? null : originalDom.style.cssText) 
+                        style: (originalDom.style.cssText == '' ? null : originalDom.style.cssText)
                     },
                     text: utils.getJustTextContent(originalDom),
                     event: [{
+                            type: 'mouseover',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'mouseout',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'mousedown',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'pointerup',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'drag',
+                            func: layoutManager.eventDetect
+                        },
+                        {
+                            type: 'dragend',
+                            func: layoutManager.eventDetect
+                        }
+                    ]
+                };
+                var copiedBlock = utils.builder(_copiedBlock);
+                copiedLayout.dom = copiedBlock;
+                parentDom.appendChild(copiedBlock);
+
+                for (var i = 0, len = copyLayout.child.length; i < len; i++) {
+                    layoutManager.copyDom(copiedLayout, copyLayout.child[i]);
+                }
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    },
+
+    getLayoutProp: function () {
+        return layoutManager.selectedLayout.prop;
+    },
+
+    updateLayoutProp: function () {
+        layoutManager.selectedLayout.updateProp(null);
+    },
+
+    importLayout: function (child, parent) {
+        try {
+            var layout = null,
+                parentLayout = null;
+
+            if (parent != null) {
+                //hb_layout_id가 없으니깐 어떻게 할까?
+                parentLayout = layoutManager.selectLayoutDom(parent, layoutManager.contentLayout);
+
+                layout = new Layout();
+                layout.info.elementType = child.tagName.toLowerCase();
+                layout.info.layoutId = layout.info.elementType + '_' + layoutManager.idIdx;
+                layout.info.parentLayoutId = parentLayout.info.layoutId;
+                
+                var layoutEvents = [{
                         type: 'mouseover',
                         func: layoutManager.eventDetect
                     },
@@ -573,27 +637,25 @@ var layoutManager = {
                     {
                         type: 'dragend',
                         func: layoutManager.eventDetect
-                    }]
-                };
-                var copiedBlock = utils.builder(_copiedBlock);
-                copiedLayout.dom = copiedBlock;
-                parentDom.appendChild(copiedBlock);
+                    }
+                ];
 
-                for (var i = 0, len = copyLayout.child.length; i < len; i++) {
-                    layoutManager.copyDom(copiedLayout, copyLayout.child[i]);
+                layout.dom = child;
+
+                for (var idx in layoutEvents) {
+                    child.addEventListener(layoutEvents[idx].type, layoutEvents[idx].func);
                 }
+
+                parentLayout.child.push(layout);
+                layoutManager.idIdx++;
+            }
+
+            for (var i = 0, len = child.children.length; i < len; i++) {
+                layoutManager.importLayout(child.children[i], child);
             }
         } catch (err) {
             console.log(err.message);
         }
-    },
-
-    getLayoutProp: function() {
-        return layoutManager.selectedLayout.prop;
-    },
-
-    updateLayoutProp: function() {
-        layoutManager.selectedLayout.updateProp(null);
     }
 };
 

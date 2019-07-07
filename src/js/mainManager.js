@@ -4,6 +4,7 @@ const funcManager = require('./function_manager/funcManager');
 const layoutManager = require('./layout_manager/layoutManager');
 const propertyManager = require('./property_manager/propertyManager');
 const settingManager = require('./setting_manager/settingManager');
+const cssManager = require('./css_manager/cssManager');
 
 /**
  * set main view and manages all manager
@@ -52,6 +53,10 @@ var mainManager = {
             funcManager.render(document.body);
             mainManager.initFuncEvents();
 
+            //default css setting
+            cssManager.init(mainManager.config.css);
+            cssManager.render();
+            
         } catch (err) {
             console.log(err.message);
         } finally {
@@ -243,6 +248,7 @@ var mainManager = {
         //Setting
         settingManager.init();
         settingManager.render(mainManager.nav.setting);
+        mainManager.initSettingEvents();
     },
 
     initBlockEvents: function () {
@@ -266,48 +272,83 @@ var mainManager = {
         blockManager.setEvent(blockEvents);
     },
 
-    initPropertyEvents: function() {
-        var callbackFunc = function() {
+    initPropertyEvents: function () {
+        var callbackFunc = function () {
             layoutManager.updateLayout(layoutManager.contentLayout);
             layoutManager.updateLayoutProp();
             mainManager.setFunctionBlock();
         };
-        
+
         propertyManager.setCallback(callbackFunc);
     },
 
-    initSettingEvents: function() {
-        //좀 아닌듯
-
+    //통일성 제공 그 후 리펙토링 시작
+    initSettingEvents: function () {
         var settingEvents = {
-            btn_resolution_phone: function(e) {
-
+            btn_resolution_phone: function (e) {
+                utils.changeResolution(mainManager.config.ids[0], '320px', null);
             },
 
-            btn_resolution_tablet: function(e) {
-
+            btn_resolution_tablet: function (e) {
+                utils.changeResolution(mainManager.config.ids[0], '768px', null);
             },
 
-            btn_resolution_browser: function(e) {
-
+            btn_resolution_browser: function (e) {
+                utils.changeResolution(mainManager.config.ids[0], mainManager.config.width[0], null);
             },
 
-            import_html: function(e) {
+            import_html: function (e) {
+                console.log('import_html');
 
+                applyFunc = function (e) {
+                    var div = e.target.parentNode;
+                    var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+
+                    try {
+                        var content = document.getElementById(mainManager.config.ids[0]);
+                        content.innerHTML = textarea.value;
+                        
+                        layoutManager.contentLayout.child = []; //init child
+                        layoutManager.importLayout(content, null);
+                        layoutManager.updateLayout(layoutManager.contentLayout);
+            
+                      } catch (err) {
+                        console.log(err.message);
+                      }
+
+                    div.remove();
+                };
+                settingManager.menuSettingPopup('Import HTML', applyFunc, utils.exportHtml(mainManager.config.ids[0]));
             },
 
-            import_html: function(e) {
-
+            export_html: function (e) {
+                settingManager.menuSettingPopup('Export HTML', null, utils.exportHtml(mainManager.config.ids[0]));
             },
 
-            import_html: function(e) {
+            import_css: function (e) {
+                console.log('import_css');
 
+                /*
+                applyFunc = function (e) {
+                    var div = e.target.parentNode;
+                    var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+
+                    U.importCss(textarea.value);
+
+                    div.remove();
+                };
+
+                var cssElement = document.getElementById(H.config.css);
+                layoutManager.menuSettingPopup('Import CSS', applyFunc, cssElement.textContent);
+                */
             },
 
-            import_html: function(e) {
-
+            export_css: function (e) {
+                settingManager.menuSettingPopup('Export CSS', null, utils.exportCss(mainManager.config.css));
             }
-        }
+        };
+
+        settingManager.setEvent(settingEvents);
     },
 
     initLayoutEvents: function () {
@@ -326,7 +367,7 @@ var mainManager = {
                 mainManager.draggableMenuBlock(!chk);
 
                 propertyManager.setSeleted(layoutManager.selectedLayout);
-                if(chk) {
+                if (chk) {
                     propertyManager.updateProp(layoutManager.getLayoutProp());
                 }
 
@@ -363,9 +404,9 @@ var mainManager = {
         layoutManager.setEvent(layoutEvents);
     },
 
-    initFuncEvents: function() {
+    initFuncEvents: function () {
         var funcEvents = {
-            delete: function(e){
+            delete: function (e) {
                 layoutManager.deleteDom();
                 layoutManager.updateLayout(layoutManager.contentLayout);
                 mainManager.setFunctionBlock();
@@ -373,7 +414,7 @@ var mainManager = {
                 //U.showBlockAttr(false);
             },
 
-            copy: function(e){
+            copy: function (e) {
                 layoutManager.copyDom(layoutManager.selectedLayout.info.parentLayoutId, layoutManager.selectedLayout.info.layoutId);
                 layoutManager.updateLayout(layoutManager.contentLayout);
                 mainManager.setFunctionBlock();
@@ -430,7 +471,7 @@ var mainManager = {
                 mainManager.nav.setting.style.display = 'none';
             }
 
-            if(layoutManager.selectedLayout) {
+            if (layoutManager.selectedLayout) {
                 mainManager.nav.prop.children[0].style.display = 'block';
                 mainManager.nav.prop.children[1].style.display = 'none';
             } else {
@@ -440,7 +481,14 @@ var mainManager = {
         } catch (err) {
             console.log(err.message);
         }
+    },
+
+    getContentLayout: function() {
+        return layoutManager.contentLayout;
     }
 };
 
-module.exports = mainManager;
+module.exports = {
+    init: mainManager.init,
+    contentLayout: mainManager.getContentLayout
+};
