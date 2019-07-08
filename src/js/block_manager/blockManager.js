@@ -54,29 +54,3 @@ var blockManager = {
 };
 
 module.exports = blockManager;
-
-/*
-{
-  type: 'mousedown',
-  func: function(e) {
-    if(U.selectedLayout) {
-      U.selectBlock({
-        target: U.selectedLayout.getBlock()
-      });
-      U.setFunctionBlock();
-    }
-  }
-},
-{
-  type: 'drag',
-  func: function(e) {
-    U.moveBlock(e);
-  }
-},
-{
-  type: 'dragend',
-  func: function(e) {
-    U.setBlock();
-  }
-}
-*/

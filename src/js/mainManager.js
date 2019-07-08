@@ -56,7 +56,10 @@ var mainManager = {
             //default css setting
             cssManager.init(mainManager.config.css);
             cssManager.render();
-            
+
+            //util set css id
+            utils.cssId = mainManager.config.css;
+
         } catch (err) {
             console.log(err.message);
         } finally {
@@ -133,41 +136,41 @@ var mainManager = {
                     id: '#main-nav'
                 },
                 child: [{
-                        element: 'button',
-                        attr: {
-                            class: 'hb_btn-nav hb_btn-nav-block',
-                            name: '#main-nav',
-                            value: 'block'
-                        },
-                        event: [{
-                            type: 'click',
-                            func: click
-                        }]
+                    element: 'button',
+                    attr: {
+                        class: 'hb_btn-nav hb_btn-nav-block',
+                        name: '#main-nav',
+                        value: 'block'
                     },
-                    {
-                        element: 'button',
-                        attr: {
-                            class: 'hb_btn-nav hb_btn-nav-attr',
-                            name: '#main-nav',
-                            value: 'prop'
-                        },
-                        event: [{
-                            type: 'click',
-                            func: click
-                        }]
+                    event: [{
+                        type: 'click',
+                        func: click
+                    }]
+                },
+                {
+                    element: 'button',
+                    attr: {
+                        class: 'hb_btn-nav hb_btn-nav-attr',
+                        name: '#main-nav',
+                        value: 'prop'
                     },
-                    {
-                        element: 'button',
-                        attr: {
-                            class: 'hb_btn-nav hb_btn-nav-setting',
-                            name: '#main-nav',
-                            value: 'setting'
-                        },
-                        event: [{
-                            type: 'click',
-                            func: click
-                        }]
-                    }
+                    event: [{
+                        type: 'click',
+                        func: click
+                    }]
+                },
+                {
+                    element: 'button',
+                    attr: {
+                        class: 'hb_btn-nav hb_btn-nav-setting',
+                        name: '#main-nav',
+                        value: 'setting'
+                    },
+                    event: [{
+                        type: 'click',
+                        func: click
+                    }]
+                }
                 ]
             };
 
@@ -200,20 +203,20 @@ var mainManager = {
                     style: 'display:none;'
                 },
                 child: [{
-                        element: 'div',
-                        attr: {
-                            class: 'hb_nav_content-prop',
-                            style: 'display:none;'
-                        }
-                    },
-                    {
-                        element: 'div',
-                        attr: {
-                            class: 'hb_nav_content-prop',
-                            style: 'display:block;'
-                        },
-                        text: 'There is no selected Block\nPlease select at least 1 block'
+                    element: 'div',
+                    attr: {
+                        class: 'hb_nav_content-prop',
+                        style: 'display:none;'
                     }
+                },
+                {
+                    element: 'div',
+                    attr: {
+                        class: 'hb_nav_content-prop',
+                        style: 'display:block;'
+                    },
+                    text: 'There is no selected Block\nPlease select at least 1 block'
+                }
                 ]
             };
             mainManager.nav.prop = utils.builder(_prop);
@@ -276,13 +279,13 @@ var mainManager = {
         var callbackFunc = function () {
             layoutManager.updateLayout(layoutManager.contentLayout);
             layoutManager.updateLayoutProp();
+            propertyManager.updateProp(layoutManager.getLayoutProp());
             mainManager.setFunctionBlock();
         };
 
         propertyManager.setCallback(callbackFunc);
     },
 
-    //통일성 제공 그 후 리펙토링 시작
     initSettingEvents: function () {
         var settingEvents = {
             btn_resolution_phone: function (e) {
@@ -298,8 +301,6 @@ var mainManager = {
             },
 
             import_html: function (e) {
-                console.log('import_html');
-
                 applyFunc = function (e) {
                     var div = e.target.parentNode;
                     var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
@@ -307,14 +308,14 @@ var mainManager = {
                     try {
                         var content = document.getElementById(mainManager.config.ids[0]);
                         content.innerHTML = textarea.value;
-                        
+
                         layoutManager.contentLayout.child = []; //init child
                         layoutManager.importLayout(content, null);
                         layoutManager.updateLayout(layoutManager.contentLayout);
-            
-                      } catch (err) {
+
+                    } catch (err) {
                         console.log(err.message);
-                      }
+                    }
 
                     div.remove();
                 };
@@ -326,21 +327,18 @@ var mainManager = {
             },
 
             import_css: function (e) {
-                console.log('import_css');
-
-                /*
                 applyFunc = function (e) {
                     var div = e.target.parentNode;
                     var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
 
-                    U.importCss(textarea.value);
+                    var cssElement = document.getElementById(mainManager.config.css);
+                    cssElement.innerHTML = textarea.value;
 
                     div.remove();
                 };
 
-                var cssElement = document.getElementById(H.config.css);
-                layoutManager.menuSettingPopup('Import CSS', applyFunc, cssElement.textContent);
-                */
+                var cssElement = document.getElementById(mainManager.config.css);
+                settingManager.menuSettingPopup('Import CSS', applyFunc, cssElement.textContent);
             },
 
             export_css: function (e) {
@@ -483,7 +481,7 @@ var mainManager = {
         }
     },
 
-    getContentLayout: function() {
+    getContentLayout: function () {
         return layoutManager.contentLayout;
     }
 };

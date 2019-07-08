@@ -1,19 +1,21 @@
 const CSS = require('../config/css');
 const Property = require('./property');
+const utils = require('../../utils/utils');
 
 class PropertyStyle2Save extends Property {
   event(e) {
     if (this.selected) {
+      var selected = this.selected;
       var eventDom = e.target.previousSibling;
 
-      //U.style2Css 수정 필요 -- selected를 인식하지 못하는 상태
-      /*
-      if(U.style2Css(eventDom.value)) {
-        propertyStyle2Save.selected.setAttribute('style', '');
-        var classText = propertyStyle2Save.selected.getAttribute('class');
-        propertyStyle2Save.selected.setAttribute('class', classText + ' ' + value);
+      if (eventDom.value != '') {
+        if (utils.style2Css(eventDom.value, selected.prop.style)) {
+          selected.dom.removeAttribute('style');
+          var classText = selected.dom.getAttribute('class');
+          selected.dom.setAttribute('class', classText + ' ' + eventDom.value);
+          eventDom.value = '';
+        }
       }
-      */
 
       if (this.callback && typeof this.callback === 'function') {
         this.callback();
@@ -21,7 +23,7 @@ class PropertyStyle2Save extends Property {
     }
   };
 
-  update(prop) {}; //no update
+  update(prop) { }; //no update
 
   render() {
     var prop = this.property;

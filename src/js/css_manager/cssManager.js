@@ -14,7 +14,6 @@ var cssManager = {
         defaultCss.setAttribute('type', 'text/css');
 
         head.appendChild(defaultCss);
-        //head.insertBefore(defaultCss, document.querySelectorAll('[attr-type=html_builder]')[0]);
     },
 
     render: function () {

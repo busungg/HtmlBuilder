@@ -49,19 +49,39 @@ class Proeprty {
   eventDetect(e) {
     var propName = e.target.getAttribute('hb_set_prop_name');
 
-    var _config;
-    for(var i = 0, len = configs.length; i < len; i++) {
+    var _config, eventChecked = 0;
+    for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
-      if(_config.prop.name === propName) {
-        if(_config.model.event) {
+      if (_config.prop.name === propName) {
+        if (_config.model.event) {
           _config.model.event(e);
+          eventChecked++;
         }
+      }
+
+      if (eventChecked != 0) {
         break;
+      }
+
+      if (_config.child) {
+        for (var j = 0, lenj = _config.child.length; j < lenj; j++) {
+          if (_config.child[j].prop.name === propName) {
+            if (_config.child[j].model.event) {
+              _config.child[j].model.event(e);
+              eventChecked++;
+            }
+            break;
+          }
+        }
+
+        if (eventChecked != 0) {
+          break;
+        }
       }
     }
   };
 
-  update() {};
+  update() { };
 
   render() {
     return null;

@@ -99,18 +99,29 @@ class Layout {
 
     copy() {
         var copiedLayout = new Layout();
-        copiedLayout._info.layoutId = this._info.layoutId;
-        copiedLayout._info.parentLayoutId = this._info.parentLayoutId;
-        copiedLayout._info.elementType = this._info.elementType;
+        copiedLayout.info.layoutId = this.info.layoutId;
+        copiedLayout.info.parentLayoutId = this.info.parentLayoutId;
+        copiedLayout.info.elementType = this.info.elementType;
 
-        copiedLayout._pos.x = this._pos.x;
-        copiedLayout._pos.y = this._pos.y;
-        copiedLayout._pos.width = this._pos.width;
-        copiedLayout._pos.height = this._pos.height;
+        copiedLayout.pos.x = this.pos.x;
+        copiedLayout.pos.y = this.pos.y;
+        copiedLayout.pos.width = this.pos.width;
+        copiedLayout.pos.height = this.pos.height;
 
-        copiedLayout._prop.prop = this._prop.prop;
-        copiedLayout._prop.style = this._prop.style;
-        copiedLayout._prop.class = this._prop.class;
+        copiedLayout.prop = {};
+        for(name in this.prop) {
+            if(name === 'class') {
+                copiedLayout.prop[name] = this.prop[name].slice();
+            } else if(name === 'style') {
+                copiedLayout.prop[name] = {};
+                for(var key in this.prop[name]) {
+                    copiedLayout.prop[name][key] = this.prop[name][key];
+                }
+            } else {
+                copiedLayout.prop[name] = this.prop[name];
+            }
+        }
+
         return copiedLayout;
     };
 

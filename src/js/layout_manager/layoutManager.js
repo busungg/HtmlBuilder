@@ -120,7 +120,7 @@ var layoutManager = {
                 }
 
                 if (posParent) {
-                    parentLayout = layoutManager.selectLayout(posParent.getAttribute('hb_layout_id'), layoutManager.contentLayout);
+                    parentLayout = layoutManager.selectLayoutDom(posParent, layoutManager.contentLayout);
                     layout.pos.x = (child.offsetLeft ? (child.offsetLeft + parentLayout.pos.x) : parentLayout.pos.x);
                     layout.pos.y = (child.offsetTop ? (child.offsetTop + parentLayout.pos.y) : parentLayout.pos.y);
                     layout.pos.width = (child.scrollWidth ? child.scrollWidth : childRect.width);
@@ -298,7 +298,7 @@ var layoutManager = {
                     }
 
                     var child = nearLayout.dom;
-                    if (nearLayout.y < y && (nearLayout.pos.y + nearLayout.pos.height) > y) {
+                    if (nearLayout.pos.y < y && (nearLayout.pos.y + nearLayout.pos.height) > y) {
                         if (nearLayout.pos.x > x) {
                             child.classList.add('hb_border-left-move');
                             layoutManager.eventInfo.posIdx = ((layoutPos - 1) < 0) ? 0 : layoutPos;
@@ -526,7 +526,7 @@ var layoutManager = {
 
             if (parentLayout && copyLayout) {
                 var copiedLayout = copyLayout.copy();
-                copiedLayout.info.layoutId = copiedLayout.info.element + '_' + layoutManager.idIdx;
+                copiedLayout.info.layoutId = copiedLayout.info.elementType + '_' + layoutManager.idIdx;
                 layoutManager.idIdx++;
                 copiedLayout.child = [];
                 copiedLayout.info.parentLayoutId = parentLayout.layoutId;
@@ -582,6 +582,8 @@ var layoutManager = {
                 var copiedBlock = utils.builder(_copiedBlock);
                 copiedLayout.dom = copiedBlock;
                 parentDom.appendChild(copiedBlock);
+
+                copiedLayout.updateProp();
 
                 for (var i = 0, len = copyLayout.child.length; i < len; i++) {
                     layoutManager.copyDom(copiedLayout, copyLayout.child[i]);

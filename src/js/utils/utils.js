@@ -202,6 +202,35 @@ var utils = {
         } catch (err) {
             console.log(err.message);
         }
+    },
+
+    cssId: null,
+
+    /**
+     * change style to css object
+     * @param {string} name is css Name 
+     * @param {object} style is for css content
+     */
+    style2Css: function (name, style) {
+        try {
+            var cssElement = document.getElementById(utils.cssId);
+
+            var cssObj = {
+                title: '.' + name,
+                content: {}
+            };
+            for (var attr in style) {
+                if (style[attr] != null) {
+                    cssObj.content[attr] = style[attr];
+                }
+            }
+
+            cssElement.appendChild(document.createTextNode(utils.obj2Css(cssObj) + '\n\n'));
+            return true;
+        } catch (err) {
+            console.log(err.message);
+            return false;
+        }
     }
 }
 
