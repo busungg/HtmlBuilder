@@ -67,7 +67,7 @@ var propertyManager = {
    * set callback function
    * @param {function} func 
    */
-  setCallback: function(func) {
+  setCallback: function (func) {
     propertyManager.callback.func = func;
   },
 
@@ -204,11 +204,28 @@ var propertyManager = {
   },
 
   updateProp: function (prop) {
-    if (propertyManager.selected) {
+    if (propertyManager.selected.element) {
+      var domType = propertyManager.selected.element.dom.nodeName;
       var configs = propertyManager.config.configs;
       var _config = null, _configChild;
       for (var i = 0, len = configs.length; i < len; i++) {
         _config = configs[i];
+
+        if(_config.model.prop.name == 'src') {
+          if(domType == 'IMG') {
+            _config.model.dom.parentElement.style['display'] = 'block';
+          } else {
+            _config.model.dom.parentElement.style['display'] = 'none';
+          }
+        }
+
+        if(_config.model.prop.name == 'href') {
+          if(domType == 'A') {
+            _config.model.dom.parentElement.style['display'] = 'block';
+          } else {
+            _config.model.dom.parentElement.style['display'] = 'none';
+          }
+        }
 
         _config.model.update(prop);
 

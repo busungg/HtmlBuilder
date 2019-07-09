@@ -1,4 +1,25 @@
-const configs = [{
+const configs = [
+    {
+        title: {
+            element: 'label',
+            prop: {
+                name: 'preview',
+                title: 'Preview'
+            }
+        },
+        content: [
+            {
+                element: 'button',
+                prop: {
+                    name: 'preview',
+                    title: 'Preview',
+                    class: 'hb_setting-btn',
+                    hb_set_name: 'preview'
+                }
+            }
+        ]
+    },
+    {
         title: {
             element: 'label',
             prop: {
@@ -7,30 +28,29 @@ const configs = [{
             }
         },
         content: [{
-                element: 'button',
-                prop: {
-                    name: 'btn_resolution_phone',
-                    class: 'hb_setting-btn-phone',
-                    hb_set_name: 'resolution'
-                }
-            },
-            {
-                element: 'button',
-                prop: {
-                    name: 'btn_resolution_tablet',
-                    class: 'hb_setting-btn-tablet',
-                    hb_set_name: 'resolution'
-                }
-            },
-            {
-                element: 'button',
-                prop: {
-                    name: 'btn_resolution_browser',
-                    class: 'hb_setting-btn-browser',
-                    hb_set_name: 'resolution',
-                    //value: H.config.width[0]
-                }
+            element: 'button',
+            prop: {
+                name: 'btn_resolution_phone',
+                class: 'hb_setting-btn-phone',
+                hb_set_name: 'resolution'
             }
+        },
+        {
+            element: 'button',
+            prop: {
+                name: 'btn_resolution_tablet',
+                class: 'hb_setting-btn-tablet',
+                hb_set_name: 'resolution'
+            }
+        },
+        {
+            element: 'button',
+            prop: {
+                name: 'btn_resolution_browser',
+                class: 'hb_setting-btn-browser',
+                hb_set_name: 'resolution'
+            }
+        }
         ]
     },
     {

@@ -343,6 +343,37 @@ var mainManager = {
 
             export_css: function (e) {
                 settingManager.menuSettingPopup('Export CSS', null, utils.exportCss(mainManager.config.css));
+            },
+
+            preview: function (e) {
+                preview_window = window.open('', 'Preview', 'width=800,height=800');
+
+                var head = document.getElementsByTagName('HEAD')[0];
+                var copy_head = head.cloneNode(true).children;
+                var preview_head = preview_window.document.getElementsByTagName('HEAD')[0];
+                var preview_body = preview_window.document.getElementsByTagName('BODY')[0];
+
+                var removeArray = [];
+                for (var i = 0, len = copy_head.length; i < len; i++) {
+                    try {
+                        if (copy_head[i].getAttribute('attr-type') === 'html_builder') {
+                            removeArray.push(copy_head[i]);
+                        }
+                    } catch (err) {
+                        removeArray.push(copy_head[i]);
+                    }
+                }
+
+                while (removeArray.length > 0) {
+                    removeArray[removeArray.length - 1].remove();
+                    removeArray.splice(removeArray.length - 1, 1);
+                }
+
+                while (copy_head.length > 0) {
+                    preview_head.appendChild(copy_head[0]);
+                }
+
+                preview_body.innerHTML = utils.exportHtml(mainManager.config.ids[0]);
             }
         };
 
@@ -409,7 +440,6 @@ var mainManager = {
                 layoutManager.updateLayout(layoutManager.contentLayout);
                 mainManager.setFunctionBlock();
                 mainManager.draggableMenuBlock(true);
-                //U.showBlockAttr(false);
             },
 
             copy: function (e) {
@@ -417,7 +447,6 @@ var mainManager = {
                 layoutManager.updateLayout(layoutManager.contentLayout);
                 mainManager.setFunctionBlock();
                 mainManager.draggableMenuBlock(true);
-                //U.showBlockAttr(false);
             }
         }
 
