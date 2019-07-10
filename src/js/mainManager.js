@@ -258,10 +258,11 @@ var mainManager = {
         var blockEvents = {
             mousedown: function (e) {
                 if (layoutManager.selectedLayout) {
-                    layoutManager.selectDom({
+                    var chk = layoutManager.selectDom({
                         target: layoutManager.selectedLayout.dom
                     });
                     mainManager.setFunctionBlock();
+                    mainManager.draggableMenuBlock(!chk);
                 }
             },
             drag: function (e, option) {
