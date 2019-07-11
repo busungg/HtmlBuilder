@@ -88,7 +88,8 @@ const configs = [
         option: {
             element: 'img',
             attrs: {
-                class: ['block_half', 'block_border-basic', 'img-thumbnail']
+                class: ['block_half', 'block_border-basic', 'img-thumbnail'],
+                src: '../icon/img_thumbnail.jpg'
             }
         },
         icon: 'hb_btn-img'
