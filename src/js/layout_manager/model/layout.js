@@ -109,12 +109,12 @@ class Layout {
         copiedLayout.pos.height = this.pos.height;
 
         copiedLayout.prop = {};
-        for(name in this.prop) {
-            if(name === 'class') {
+        for (name in this.prop) {
+            if (name === 'class') {
                 copiedLayout.prop[name] = this.prop[name].slice();
-            } else if(name === 'style') {
+            } else if (name === 'style') {
                 copiedLayout.prop[name] = {};
-                for(var key in this.prop[name]) {
+                for (var key in this.prop[name]) {
                     copiedLayout.prop[name][key] = this.prop[name][key];
                 }
             } else {
@@ -126,12 +126,12 @@ class Layout {
     };
 
     updateProp(dom) {
-        if(!dom) {
+        if (!dom) {
             dom = this.dom;
         }
 
         try {
-            if(!this.prop) {
+            if (!this.prop) {
                 this.prop = {};
             }
 
@@ -171,16 +171,46 @@ class Layout {
                 }
             }
 
+            prop.option = [];
+            if (dom.options) {
+                for (var i = 0, len = dom.options.length; i < len; i++) {
+                    prop.option.push({
+                        text: dom.options[i].text,
+                        value: dom.options[i].value
+                    });
+                }
+            }
+
             prop.style = {};
             var domStyle = dom.style;
 
             //Group Property padding, margin, border-width, border-color, border-style
             var groupProperty = {};
-            groupProperty['padding'] = { checkSum: 0, value: null, group: true };
-            groupProperty['margin'] = { checkSum: 0, value: null, group: true };
-            groupProperty['border-width'] = { checkSum: 0, value: null, group: true };
-            groupProperty['border-color'] = { checkSum: 0, value: null, group: true };
-            groupProperty['border-style'] = { checkSum: 0, value: null, group: true };
+            groupProperty['padding'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['margin'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['border-width'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['border-color'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['border-style'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
 
             var direction = ['-left', '-right', '-top', '-bottom'];
 
@@ -204,7 +234,7 @@ class Layout {
                     groupProperty[groupName].checkSum++;
                 }
 
-                if(propertyName.indexOf('color') != -1) {
+                if (propertyName.indexOf('color') != -1) {
                     prop.style[propertyName] = utils.rgb2Hex(propertyValue);
                 } else {
                     prop.style[propertyName] = propertyValue;
@@ -213,7 +243,7 @@ class Layout {
 
             for (key in groupProperty) {
                 if (groupProperty[key].checkSum == 4 && groupProperty[key].group) {
-                    if(key.indexOf('color') != -1) {
+                    if (key.indexOf('color') != -1) {
                         prop.style[key] = utils.rgb2Hex(groupProperty[key].value);
                     } else {
                         prop.style[key] = groupProperty[key].value;

@@ -23,7 +23,8 @@ var mainManager = {
             ids: ['!content', '!menu'],
             width: ['80%', '18%'],
             height: ['100%', '100%'],
-            css: '#hb_css'
+            css: '#hb_css',
+            css_type: 'plain'
         };
 
         var c = config || {};
@@ -54,7 +55,7 @@ var mainManager = {
             mainManager.initFuncEvents();
 
             //default css setting
-            cssManager.init(mainManager.config.css);
+            cssManager.init(mainManager.config.css, mainManager.config.css_type);
             cssManager.render();
 
             //util set css id
@@ -136,41 +137,41 @@ var mainManager = {
                     id: '#main-nav'
                 },
                 child: [{
-                    element: 'button',
-                    attr: {
-                        class: 'hb_btn-nav hb_btn-nav-block',
-                        name: '#main-nav',
-                        value: 'block'
+                        element: 'button',
+                        attr: {
+                            class: 'hb_btn-nav hb_btn-nav-block',
+                            name: '#main-nav',
+                            value: 'block'
+                        },
+                        event: [{
+                            type: 'click',
+                            func: click
+                        }]
                     },
-                    event: [{
-                        type: 'click',
-                        func: click
-                    }]
-                },
-                {
-                    element: 'button',
-                    attr: {
-                        class: 'hb_btn-nav hb_btn-nav-attr',
-                        name: '#main-nav',
-                        value: 'prop'
+                    {
+                        element: 'button',
+                        attr: {
+                            class: 'hb_btn-nav hb_btn-nav-attr',
+                            name: '#main-nav',
+                            value: 'prop'
+                        },
+                        event: [{
+                            type: 'click',
+                            func: click
+                        }]
                     },
-                    event: [{
-                        type: 'click',
-                        func: click
-                    }]
-                },
-                {
-                    element: 'button',
-                    attr: {
-                        class: 'hb_btn-nav hb_btn-nav-setting',
-                        name: '#main-nav',
-                        value: 'setting'
-                    },
-                    event: [{
-                        type: 'click',
-                        func: click
-                    }]
-                }
+                    {
+                        element: 'button',
+                        attr: {
+                            class: 'hb_btn-nav hb_btn-nav-setting',
+                            name: '#main-nav',
+                            value: 'setting'
+                        },
+                        event: [{
+                            type: 'click',
+                            func: click
+                        }]
+                    }
                 ]
             };
 
@@ -203,20 +204,20 @@ var mainManager = {
                     style: 'display:none;'
                 },
                 child: [{
-                    element: 'div',
-                    attr: {
-                        class: 'hb_nav_content-prop',
-                        style: 'display:none;'
-                    }
-                },
-                {
-                    element: 'div',
-                    attr: {
-                        class: 'hb_nav_content-prop',
-                        style: 'display:block;'
+                        element: 'div',
+                        attr: {
+                            class: 'hb_nav_content-prop',
+                            style: 'display:none;'
+                        }
                     },
-                    text: 'There is no selected Block\nPlease select at least 1 block'
-                }
+                    {
+                        element: 'div',
+                        attr: {
+                            class: 'hb_nav_content-prop',
+                            style: 'display:block;'
+                        },
+                        text: 'There is no selected Block\nPlease select at least 1 block'
+                    }
                 ]
             };
             mainManager.nav.prop = utils.builder(_prop);
@@ -513,10 +514,18 @@ var mainManager = {
 
     getContentLayout: function () {
         return layoutManager.contentLayout;
+    },
+
+    changeCssType: function (type) {
+        mainManager.config.css_type = type;
+
+        cssManager.init(mainManager.config.css, mainManager.config.css_type);
+        cssManager.render();
     }
 };
 
 module.exports = {
     init: mainManager.init,
-    contentLayout: mainManager.getContentLayout
+    contentLayout: mainManager.getContentLayout,
+    changeCssType: mainManager.changeCssType
 };

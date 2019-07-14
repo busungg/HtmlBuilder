@@ -82,131 +82,11 @@ var HtmlBuilder =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-/**
- * propery css id
- */
-module.exports = {
-  sub_category_toggle_body_div: 'hb_sub_category_toggle_body_div',
-  category_body_div: 'hb_category_body_div',
-  category_body_title_div: 'hb_category_body_title_div',
-  category_body_title_label: 'hb_category_body_title_label',
-  prop_body_div: 'hb_prop_body_div',
-  prop_body_title_div: 'hb_prop_body_title_div',
-  prop_body_title_label: 'hb_prop_body_title_label',
-  prop_body_set_div: 'hb_prop_body_set_div',
-  prop_body_set_text: 'hb_prop_body_set_text',
-  prop_body_set_btn: 'hb_prop_body_set_btn',
-  prop_body_set_select: 'hb_prop_body_set_select',
-  prop_body_set_multi_select: 'hb_prop_body_set_multi_select',
-  prop_body_set_color: 'hb_prop_body_set_color'
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var config = __webpack_require__(4);
-
-var configs = config.configs;
-
-var Proeprty =
-/*#__PURE__*/
-function () {
-  function Proeprty() {
-    _classCallCheck(this, Proeprty);
-
-    this.prop = null;
-    this.element = null;
-    this.selectedElement = null;
-    this._callback = null;
-  }
-
-  _createClass(Proeprty, [{
-    key: "eventDetect",
-    value: function eventDetect(e) {
-      var propName = e.target.getAttribute('hb_set_prop_name');
-
-      var _config;
-
-      for (var i = 0, len = configs.length; i < len; i++) {
-        _config = configs[i];
-
-        if (_config.prop.name === propName) {
-          if (_config.model.event) {
-            _config.model.event(e);
-          }
-
-          break;
-        }
-      }
-    }
-  }, {
-    key: "update",
-    value: function update() {}
-  }, {
-    key: "render",
-    value: function render() {
-      return null;
-    }
-  }, {
-    key: "property",
-    set: function set(prop) {
-      this.prop = {};
-      this.prop.name = prop.name;
-      this.prop.title = prop.title;
-      this.prop.attr_type = prop.attr_type;
-      this.prop.category = prop.category;
-    },
-    get: function get() {
-      return this.prop;
-    }
-  }, {
-    key: "dom",
-    set: function set(element) {
-      this.element = element;
-    },
-    get: function get() {
-      return this.element;
-    }
-  }, {
-    key: "selected",
-    set: function set(selectedElement) {
-      this.selectedElement = selectedElement;
-    },
-    get: function get() {
-      return this.selectedElement.element;
-    }
-  }, {
-    key: "callback",
-    set: function set(_callback) {
-      this._callback = _callback;
-    },
-    get: function get() {
-      return this._callback.func;
-    }
-  }]);
-
-  return Proeprty;
-}();
-
-;
-module.exports = Proeprty;
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports) {
 
 var utils = {
@@ -342,6 +222,52 @@ var utils = {
       console.log(err.message);
     }
   },
+  changeResolution: function changeResolution(id, width, height) {
+    try {
+      var content = document.getElementById(id);
+
+      if (width) {
+        content.style.width = width;
+      }
+
+      if (height) {
+        content.style.height = height;
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  },
+  exportHtml: function exportHtml(id) {
+    try {
+      var html = {
+        result: ''
+      };
+      var content = document.getElementById(id);
+      var tempContent = document.createElement('div');
+      tempContent.setAttribute('style', 'position: absolute; x:0; y:-1000;');
+      tempContent.innerHTML = content.innerHTML;
+      document.body.appendChild(tempContent);
+      utils.beautifyHtml(tempContent, ' '.repeat(4), -1, html);
+      document.body.removeChild(tempContent);
+
+      if (html.result === '') {
+        return '';
+      }
+
+      return html.result;
+    } catch (err) {
+      console.log(err.message);
+    }
+  },
+  exportCss: function exportCss(id) {
+    try {
+      var cssElement = document.getElementById(id);
+      var css = cssElement.textContent;
+      return css;
+    } catch (err) {
+      console.log(err.message);
+    }
+  },
   obj2Css: function obj2Css(css) {
     try {
       var cssText = '';
@@ -357,9 +283,180 @@ var utils = {
     } catch (err) {
       console.log(err.message);
     }
+  },
+  cssId: null,
+
+  /**
+   * change style to css object
+   * @param {string} name is css Name 
+   * @param {object} style is for css content
+   */
+  style2Css: function style2Css(name, style) {
+    try {
+      var cssElement = document.getElementById(utils.cssId);
+      var cssObj = {
+        title: '.' + name,
+        content: {}
+      };
+
+      for (var attr in style) {
+        if (style[attr] != null) {
+          cssObj.content[attr] = style[attr];
+        }
+      }
+
+      cssElement.appendChild(document.createTextNode(utils.obj2Css(cssObj) + '\n\n'));
+      return true;
+    } catch (err) {
+      console.log(err.message);
+      return false;
+    }
   }
 };
 module.exports = utils;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/**
+ * propery css id
+ */
+module.exports = {
+  sub_category_toggle_body_div: 'hb_sub_category_toggle_body_div',
+  category_body_div: 'hb_category_body_div',
+  category_body_title_div: 'hb_category_body_title_div',
+  category_body_title_label: 'hb_category_body_title_label',
+  prop_body_div: 'hb_prop_body_div',
+  prop_body_title_div: 'hb_prop_body_title_div',
+  prop_body_title_label: 'hb_prop_body_title_label',
+  prop_body_set_div: 'hb_prop_body_set_div',
+  prop_body_set_text: 'hb_prop_body_set_text',
+  prop_body_set_btn: 'hb_prop_body_set_btn',
+  prop_body_set_select: 'hb_prop_body_set_select',
+  prop_body_set_multi_select: 'hb_prop_body_set_multi_select',
+  prop_body_set_color: 'hb_prop_body_set_color'
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var config = __webpack_require__(4);
+
+var configs = config.configs;
+
+var Proeprty =
+/*#__PURE__*/
+function () {
+  function Proeprty() {
+    _classCallCheck(this, Proeprty);
+
+    this.prop = null;
+    this.element = null;
+    this.selectedElement = null;
+    this._callback = null;
+  }
+
+  _createClass(Proeprty, [{
+    key: "eventDetect",
+    value: function eventDetect(e) {
+      var propName = e.target.getAttribute('hb_set_prop_name');
+
+      var _config,
+          eventChecked = 0;
+
+      for (var i = 0, len = configs.length; i < len; i++) {
+        _config = configs[i];
+
+        if (_config.prop.name === propName) {
+          if (_config.model.event) {
+            _config.model.event(e);
+
+            eventChecked++;
+          }
+        }
+
+        if (eventChecked != 0) {
+          break;
+        }
+
+        if (_config.child) {
+          for (var j = 0, lenj = _config.child.length; j < lenj; j++) {
+            if (_config.child[j].prop.name === propName) {
+              if (_config.child[j].model.event) {
+                _config.child[j].model.event(e);
+
+                eventChecked++;
+              }
+
+              break;
+            }
+          }
+
+          if (eventChecked != 0) {
+            break;
+          }
+        }
+      }
+    }
+  }, {
+    key: "update",
+    value: function update() {}
+  }, {
+    key: "render",
+    value: function render() {
+      return null;
+    }
+  }, {
+    key: "property",
+    set: function set(prop) {
+      this.prop = {};
+      this.prop.name = prop.name;
+      this.prop.title = prop.title;
+      this.prop.attr_type = prop.attr_type;
+      this.prop.category = prop.category;
+    },
+    get: function get() {
+      return this.prop;
+    }
+  }, {
+    key: "dom",
+    set: function set(element) {
+      this.element = element;
+    },
+    get: function get() {
+      return this.element;
+    }
+  }, {
+    key: "selected",
+    set: function set(selectedElement) {
+      this.selectedElement = selectedElement;
+    },
+    get: function get() {
+      return this.selectedElement.element;
+    }
+  }, {
+    key: "callback",
+    set: function set(_callback) {
+      this._callback = _callback;
+    },
+    get: function get() {
+      return this._callback.func;
+    }
+  }]);
+
+  return Proeprty;
+}();
+
+;
+module.exports = Proeprty;
 
 /***/ }),
 /* 3 */
@@ -447,7 +544,8 @@ var configs = [{
   option: {
     element: 'img',
     attrs: {
-      "class": ['block_half', 'block_border-basic', 'img-thumbnail']
+      "class": ['block_half', 'block_border-basic', 'img-thumbnail'],
+      src: '../icon/img_thumbnail.jpg'
     }
   },
   icon: 'hb_btn-img'
@@ -499,24 +597,6 @@ var configs = [{
       type: 'radio',
       "class": ['block_border-basic'],
       style: 'width:15px; height:15px;'
-    }
-  },
-  icon: 'hb_btn-radio'
-}, {
-  title: 'Section',
-  option: {
-    element: 'section',
-    attrs: {
-      "class": ['block_border-basic', 'block_half']
-    }
-  },
-  icon: 'hb_btn-radio'
-}, {
-  title: 'Form',
-  option: {
-    element: 'form',
-    attrs: {
-      "class": ['block_border-basic', 'block_half']
     }
   },
   icon: 'hb_btn-radio'
@@ -623,6 +703,14 @@ var configs = [//For attributes
     category: 'common'
   },
   model_name: 'propertyClass'
+}, {
+  prop: {
+    name: 'option',
+    title: 'Option',
+    attr_type: 'attr',
+    category: 'common'
+  },
+  model_name: 'propertyOption'
 }, {
   prop: {
     name: 'style2css',
@@ -994,17 +1082,143 @@ module.exports = {
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+var configs = [{
+  title: {
+    element: 'label',
+    prop: {
+      name: 'preview',
+      title: 'Preview'
+    }
+  },
+  content: [{
+    element: 'button',
+    prop: {
+      name: 'preview',
+      title: 'Preview',
+      "class": 'hb_setting-btn',
+      hb_set_name: 'preview'
+    }
+  }]
+}, {
+  title: {
+    element: 'label',
+    prop: {
+      name: 'resolution',
+      title: 'Change Resolution'
+    }
+  },
+  content: [{
+    element: 'button',
+    prop: {
+      name: 'btn_resolution_phone',
+      "class": 'hb_setting-btn-phone',
+      hb_set_name: 'resolution'
+    }
+  }, {
+    element: 'button',
+    prop: {
+      name: 'btn_resolution_tablet',
+      "class": 'hb_setting-btn-tablet',
+      hb_set_name: 'resolution'
+    }
+  }, {
+    element: 'button',
+    prop: {
+      name: 'btn_resolution_browser',
+      "class": 'hb_setting-btn-browser',
+      hb_set_name: 'resolution'
+    }
+  }]
+}, {
+  title: {
+    element: 'label',
+    prop: {
+      name: 'import_html',
+      title: 'Import HTML'
+    }
+  },
+  content: [{
+    element: 'button',
+    prop: {
+      name: 'import_html',
+      title: 'Import HTML',
+      "class": 'hb_setting-btn',
+      hb_set_name: 'import_html'
+    }
+  }]
+}, {
+  title: {
+    element: 'label',
+    prop: {
+      name: 'import_css',
+      title: 'Import CSS'
+    }
+  },
+  content: [{
+    element: 'button',
+    prop: {
+      name: 'import_css',
+      title: 'Import CSS',
+      "class": 'hb_setting-btn',
+      hb_set_name: 'import_css'
+    }
+  }]
+}, {
+  title: {
+    element: 'label',
+    prop: {
+      name: 'export_html',
+      title: 'Export HTML'
+    }
+  },
+  content: [{
+    element: 'button',
+    prop: {
+      name: 'export_html',
+      title: 'Export HTML',
+      "class": 'hb_setting-btn',
+      hb_set_name: 'export_html'
+    }
+  }]
+}, {
+  title: {
+    element: 'label',
+    prop: {
+      name: 'export_css',
+      title: 'Export CSS'
+    }
+  },
+  content: [{
+    element: 'button',
+    prop: {
+      name: 'export_css',
+      title: 'Export CSS',
+      "class": 'hb_setting-btn',
+      hb_set_name: 'export_css'
+    }
+  }]
+}];
+module.exports = configs;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(0);
 
-var blockManager = __webpack_require__(6);
+var blockManager = __webpack_require__(7);
 
-var funcManager = __webpack_require__(8);
+var funcManager = __webpack_require__(9);
 
-var layoutManager = __webpack_require__(10);
+var layoutManager = __webpack_require__(11);
 
-var propertyManager = __webpack_require__(12);
+var propertyManager = __webpack_require__(13);
+
+var settingManager = __webpack_require__(22);
+
+var cssManager = __webpack_require__(25);
 /**
  * set main view and manages all manager
  */
@@ -1024,7 +1238,8 @@ var mainManager = {
       ids: ['!content', '!menu'],
       width: ['80%', '18%'],
       height: ['100%', '100%'],
-      css: '#hb_css'
+      css: '#hb_css',
+      css_type: 'plain'
     };
     var c = config || {};
 
@@ -1048,7 +1263,12 @@ var mainManager = {
 
       funcManager.init();
       funcManager.render(document.body);
-      mainManager.initFuncEvents();
+      mainManager.initFuncEvents(); //default css setting
+
+      cssManager.init(mainManager.config.css, mainManager.config.css_type);
+      cssManager.render(); //util set css id
+
+      utils.cssId = mainManager.config.css;
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -1216,16 +1436,21 @@ var mainManager = {
 
     propertyManager.init();
     propertyManager.render(mainManager.nav.prop.children[0]);
-    mainManager.initPropertyEvents();
+    mainManager.initPropertyEvents(); //Setting
+
+    settingManager.init();
+    settingManager.render(mainManager.nav.setting);
+    mainManager.initSettingEvents();
   },
   initBlockEvents: function initBlockEvents() {
     var blockEvents = {
       mousedown: function mousedown(e) {
         if (layoutManager.selectedLayout) {
-          layoutManager.selectDom({
+          var chk = layoutManager.selectDom({
             target: layoutManager.selectedLayout.dom
           });
           mainManager.setFunctionBlock();
+          mainManager.draggableMenuBlock(!chk);
         }
       },
       drag: function drag(e, option) {
@@ -1236,6 +1461,98 @@ var mainManager = {
       }
     };
     blockManager.setEvent(blockEvents);
+  },
+  initPropertyEvents: function initPropertyEvents() {
+    var callbackFunc = function callbackFunc() {
+      layoutManager.updateLayout(layoutManager.contentLayout);
+      layoutManager.updateLayoutProp();
+      propertyManager.updateProp(layoutManager.getLayoutProp());
+      mainManager.setFunctionBlock();
+    };
+
+    propertyManager.setCallback(callbackFunc);
+  },
+  initSettingEvents: function initSettingEvents() {
+    var settingEvents = {
+      btn_resolution_phone: function btn_resolution_phone(e) {
+        utils.changeResolution(mainManager.config.ids[0], '320px', null);
+      },
+      btn_resolution_tablet: function btn_resolution_tablet(e) {
+        utils.changeResolution(mainManager.config.ids[0], '768px', null);
+      },
+      btn_resolution_browser: function btn_resolution_browser(e) {
+        utils.changeResolution(mainManager.config.ids[0], mainManager.config.width[0], null);
+      },
+      import_html: function import_html(e) {
+        applyFunc = function applyFunc(e) {
+          var div = e.target.parentNode;
+          var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+
+          try {
+            var content = document.getElementById(mainManager.config.ids[0]);
+            content.innerHTML = textarea.value;
+            layoutManager.contentLayout.child = []; //init child
+
+            layoutManager.importLayout(content, null);
+            layoutManager.updateLayout(layoutManager.contentLayout);
+          } catch (err) {
+            console.log(err.message);
+          }
+
+          div.remove();
+        };
+
+        settingManager.menuSettingPopup('Import HTML', applyFunc, utils.exportHtml(mainManager.config.ids[0]));
+      },
+      export_html: function export_html(e) {
+        settingManager.menuSettingPopup('Export HTML', null, utils.exportHtml(mainManager.config.ids[0]));
+      },
+      import_css: function import_css(e) {
+        applyFunc = function applyFunc(e) {
+          var div = e.target.parentNode;
+          var textarea = e.target.parentNode.getElementsByTagName('TEXTAREA')[0];
+          var cssElement = document.getElementById(mainManager.config.css);
+          cssElement.innerHTML = textarea.value;
+          div.remove();
+        };
+
+        var cssElement = document.getElementById(mainManager.config.css);
+        settingManager.menuSettingPopup('Import CSS', applyFunc, cssElement.textContent);
+      },
+      export_css: function export_css(e) {
+        settingManager.menuSettingPopup('Export CSS', null, utils.exportCss(mainManager.config.css));
+      },
+      preview: function preview(e) {
+        preview_window = window.open('', 'Preview', 'width=800,height=800');
+        var head = document.getElementsByTagName('HEAD')[0];
+        var copy_head = head.cloneNode(true).children;
+        var preview_head = preview_window.document.getElementsByTagName('HEAD')[0];
+        var preview_body = preview_window.document.getElementsByTagName('BODY')[0];
+        var removeArray = [];
+
+        for (var i = 0, len = copy_head.length; i < len; i++) {
+          try {
+            if (copy_head[i].getAttribute('attr-type') === 'html_builder') {
+              removeArray.push(copy_head[i]);
+            }
+          } catch (err) {
+            removeArray.push(copy_head[i]);
+          }
+        }
+
+        while (removeArray.length > 0) {
+          removeArray[removeArray.length - 1].remove();
+          removeArray.splice(removeArray.length - 1, 1);
+        }
+
+        while (copy_head.length > 0) {
+          preview_head.appendChild(copy_head[0]);
+        }
+
+        preview_body.innerHTML = utils.exportHtml(mainManager.config.ids[0]);
+      }
+    };
+    settingManager.setEvent(settingEvents);
   },
   initLayoutEvents: function initLayoutEvents() {
     var layoutEvents = {
@@ -1290,31 +1607,47 @@ var mainManager = {
     };
     layoutManager.setEvent(layoutEvents);
   },
-  initPropertyEvents: function initPropertyEvents() {
-    var callbackFunc = function callbackFunc() {
-      layoutManager.updateLayout(layoutManager.contentLayout);
-      layoutManager.updateLayoutProp();
-      mainManager.setFunctionBlock();
-    };
-
-    propertyManager.setCallback(callbackFunc);
-  },
   initFuncEvents: function initFuncEvents() {
     var funcEvents = {
       "delete": function _delete(e) {
         layoutManager.deleteDom();
         layoutManager.updateLayout(layoutManager.contentLayout);
         mainManager.setFunctionBlock();
-        mainManager.draggableMenuBlock(true); //U.showBlockAttr(false);
+        mainManager.draggableMenuBlock(true);
       },
       copy: function copy(e) {
         layoutManager.copyDom(layoutManager.selectedLayout.info.parentLayoutId, layoutManager.selectedLayout.info.layoutId);
         layoutManager.updateLayout(layoutManager.contentLayout);
         mainManager.setFunctionBlock();
-        mainManager.draggableMenuBlock(true); //U.showBlockAttr(false);
+        mainManager.draggableMenuBlock(true);
       }
     };
     funcManager.setEvent(funcEvents);
+  },
+  setFunctionBlock: function setFunctionBlock() {
+    try {
+      if (layoutManager.selectedLayout) {
+        var body = layoutManager.contentLayout.dom;
+        var x = layoutManager.selectedLayout.pos.x - body.scrollLeft;
+        var y = layoutManager.selectedLayout.pos.y - body.scrollTop - 21;
+        funcManager.setPos(x, y);
+
+        if (!body.attachedScroll) {
+          body.attachedScroll = true;
+          body.addEventListener('scroll', function (e) {
+            if (layoutManager.selectedLayout) {
+              var x = layoutManager.selectedLayout.pos.x - e.target.scrollLeft;
+              var y = layoutManager.selectedLayout.pos.y - e.target.scrollTop - 21;
+              funcManager.setPos(x, y);
+            }
+          });
+        }
+      } else {
+        funcManager.setPos(0, -100);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   },
   draggableMenuBlock: function draggableMenuBlock(chk) {
     try {
@@ -1345,166 +1678,26 @@ var mainManager = {
       console.log(err.message);
     }
   },
-  setFunctionBlock: function setFunctionBlock() {
-    try {
-      if (layoutManager.selectedLayout) {
-        var body = layoutManager.contentLayout.dom;
-        var x = layoutManager.selectedLayout.pos.x - body.scrollLeft;
-        var y = layoutManager.selectedLayout.pos.y - body.scrollTop - 21;
-        funcManager.setPos(x, y);
-
-        if (!body.attachedScroll) {
-          body.attachedScroll = true;
-          body.addEventListener('scroll', function (e) {
-            if (layoutManager.selectedLayout) {
-              var x = layoutManager.selectedLayout.pos.x - e.target.scrollLeft;
-              var y = layoutManager.selectedLayout.pos.y - e.target.scrollTop - 21;
-              funcManager.setPos(x, y);
-            }
-          });
-        }
-      } else {
-        funcManager.setPos(0, -100);
-      }
-    } catch (err) {
-      console.log(err.message);
-    }
+  getContentLayout: function getContentLayout() {
+    return layoutManager.contentLayout;
+  },
+  changeCssType: function changeCssType(type) {
+    mainManager.config.css_type = type;
+    cssManager.init(mainManager.config.css, mainManager.config.css_type);
+    cssManager.render();
   }
 };
-module.exports = mainManager;
-/*
-U.setBlockAttr = function() {
-    try {
-    var attrs = U.getBlockAttr();
-
-    if(attrs) {
-        U.showBlockAttr(true);
-
-        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'id', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.id;
-        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'name', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.name;
-        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'title', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.title;
-        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'text', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.text;
-        U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'value', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text)).value = attrs.value;
-
-        var srcAttr = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'src', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text));
-        var hrefAttr = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'href', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.text));
-
-        if(attrs.src != undefined) {
-        srcAttr.parentElement.parentElement.style.display = 'block';
-        srcAttr.value = attrs.src;
-        } else {
-        srcAttr.parentElement.parentElement.style.display = 'none';
-        }
-
-        if(attrs.href != undefined) {
-        hrefAttr.parentElement.parentElement.style.display = 'block';
-        hrefAttr.value = attrs.href;
-        } else {
-        hrefAttr.parentElement.parentElement.style.display = 'none';
-        }
-
-        var classSelect = U.getElementByAttribute(U.getQueryOption(O.HB_ATTR_ID, 'class', O.HB_ATTR_TYPE, O.HB_ATTR_TYPE_OPTION.select)), i = 0;
-
-        for(i = classSelect.options.length - 1 ; i >= 0 ; i--)
-        {
-            classSelect.remove(i);
-        }
-
-        var option;
-        for(i = 0, len = attrs.classList.length; i < len; i++) {
-        option = document.createElement('option');
-        option.text = attrs.classList[i];
-        option.value = attrs.classList[i];
-        classSelect.add(option);
-        }
-    } else {
-        U.showBlockAttr(false);
-    }
-    } catch(err) {
-    console.log(err.message);
-    }
+module.exports = {
+  init: mainManager.init,
+  contentLayout: mainManager.getContentLayout,
+  changeCssType: mainManager.changeCssType
 };
-
-U.setBlockStyle = function() {
-    try {
-        var styles = U.getBlockStyle(false);
-
-        var name, value, domValue, domUnit;
-        // Init Style Html
-        O.style.forEach(function(obj) {
-            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.text));
-            if(!domValue) {
-            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.select));
-            }
-
-            if(!domValue) {
-            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.color));
-            }
-            domUnit = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.units));
-            
-            if(domValue.nodeName == 'INPUT') {
-            domValue.value = '';
-            if(domUnit != null) {
-                domUnit.value = obj.units[0];
-            }
-            } else {
-            domValue.value = obj.options[0];
-            }
-        });
-        
-        for(name in styles) {
-            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.text));
-            if(!domValue) {
-            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.select));
-            }
-
-            if(!domValue) {
-            domValue = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, obj.name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.color));
-            }
-            domUnit = U.getElementByAttribute(U.getQueryOption(O.HB_STYLE_ID, name, O.HB_STYLE_TYPE, O.HB_STYLE_TYPE_OPTION.units));
-            
-            if(domValue.nodeName == 'INPUT') {
-            if(domUnit != null) {
-                for(idx in domUnit.children) {
-                if(styles[name].indexOf(domUnit.children[idx].value) != -1) {
-                    domValue.value = styles[name].replace(domUnit.children[idx].value, '');
-                    domUnit.value = domUnit.children[idx].value;
-                    break;
-                }
-                }
-            } else {
-                if(domValue.getAttribute('type') == O.HB_STYLE_TYPE_OPTION.color) {
-                domValue.value = U.rgb2Hex(styles[name]);
-                } else {
-                domValue.value = styles[name];  
-                }
-            }
-            } else {
-            if(domUnit != null) {
-                for(idx in domUnit.children) {
-                if(styles[name].indexOf(domUnit.children[idx].value) != -1) {
-                    value = styles[name].replace(domUnit.children[idx].value, '');
-                    domUnit.value = domUnit.children[idx].value;
-                    break;
-                }
-                }
-                domValue.value = value;
-            } else {
-                domValue.value = styles[name];
-            }
-            }
-        }
-    } catch (err) {
-        console.log(err.message);
-    }
-};
-*/
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(0);
 /**
     Attributes View Manager
 **/
@@ -1513,7 +1706,7 @@ var utils = __webpack_require__(2);
 var blockManager = {
   config: __webpack_require__(3),
   model: {
-    block: __webpack_require__(7)
+    block: __webpack_require__(8)
   },
   selected: null,
   init: function init() {
@@ -1558,34 +1751,9 @@ var blockManager = {
   }
 };
 module.exports = blockManager;
-/*
-{
-  type: 'mousedown',
-  func: function(e) {
-    if(U.selectedLayout) {
-      U.selectBlock({
-        target: U.selectedLayout.getBlock()
-      });
-      U.setFunctionBlock();
-    }
-  }
-},
-{
-  type: 'drag',
-  func: function(e) {
-    U.moveBlock(e);
-  }
-},
-{
-  type: 'dragend',
-  func: function(e) {
-    U.setBlock();
-  }
-}
-*/
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1719,12 +1887,12 @@ function () {
 module.exports = Block;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(0);
 
-var Func = __webpack_require__(9);
+var Func = __webpack_require__(10);
 
 var funcManager = {
   func: null,
@@ -1746,7 +1914,7 @@ var funcManager = {
 module.exports = funcManager;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1884,12 +2052,12 @@ instance = new Func();
 module.exports = instance;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Layout = __webpack_require__(11);
+var Layout = __webpack_require__(12);
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(0);
 /**
  * Layout Manager(Layout을 관리한다)
  */
@@ -2013,7 +2181,7 @@ var layoutManager = {
         }
 
         if (posParent) {
-          parentLayout = layoutManager.selectLayout(posParent.getAttribute('hb_layout_id'), layoutManager.contentLayout);
+          parentLayout = layoutManager.selectLayoutDom(posParent, layoutManager.contentLayout);
           layout.pos.x = child.offsetLeft ? child.offsetLeft + parentLayout.pos.x : parentLayout.pos.x;
           layout.pos.y = child.offsetTop ? child.offsetTop + parentLayout.pos.y : parentLayout.pos.y;
           layout.pos.width = child.scrollWidth ? child.scrollWidth : childRect.width;
@@ -2193,7 +2361,7 @@ var layoutManager = {
 
           var child = nearLayout.dom;
 
-          if (nearLayout.y < y && nearLayout.pos.y + nearLayout.pos.height > y) {
+          if (nearLayout.pos.y < y && nearLayout.pos.y + nearLayout.pos.height > y) {
             if (nearLayout.pos.x > x) {
               child.classList.add('hb_border-left-move');
               layoutManager.eventInfo.posIdx = layoutPos - 1 < 0 ? 0 : layoutPos;
@@ -2406,7 +2574,7 @@ var layoutManager = {
 
       if (parentLayout && copyLayout) {
         var copiedLayout = copyLayout.copy();
-        copiedLayout.info.layoutId = copiedLayout.info.element + '_' + layoutManager.idIdx;
+        copiedLayout.info.layoutId = copiedLayout.info.elementType + '_' + layoutManager.idIdx;
         layoutManager.idIdx++;
         copiedLayout.child = [];
         copiedLayout.info.parentLayoutId = parentLayout.layoutId;
@@ -2455,6 +2623,7 @@ var layoutManager = {
         var copiedBlock = utils.builder(_copiedBlock);
         copiedLayout.dom = copiedBlock;
         parentDom.appendChild(copiedBlock);
+        copiedLayout.updateProp();
 
         for (var i = 0, len = copyLayout.child.length; i < len; i++) {
           layoutManager.copyDom(copiedLayout, copyLayout.child[i]);
@@ -2469,12 +2638,60 @@ var layoutManager = {
   },
   updateLayoutProp: function updateLayoutProp() {
     layoutManager.selectedLayout.updateProp(null);
+  },
+  importLayout: function importLayout(child, parent) {
+    try {
+      var layout = null,
+          parentLayout = null;
+
+      if (parent != null) {
+        //hb_layout_id가 없으니깐 어떻게 할까?
+        parentLayout = layoutManager.selectLayoutDom(parent, layoutManager.contentLayout);
+        layout = new Layout();
+        layout.info.elementType = child.tagName.toLowerCase();
+        layout.info.layoutId = layout.info.elementType + '_' + layoutManager.idIdx;
+        layout.info.parentLayoutId = parentLayout.info.layoutId;
+        var layoutEvents = [{
+          type: 'mouseover',
+          func: layoutManager.eventDetect
+        }, {
+          type: 'mouseout',
+          func: layoutManager.eventDetect
+        }, {
+          type: 'mousedown',
+          func: layoutManager.eventDetect
+        }, {
+          type: 'pointerup',
+          func: layoutManager.eventDetect
+        }, {
+          type: 'drag',
+          func: layoutManager.eventDetect
+        }, {
+          type: 'dragend',
+          func: layoutManager.eventDetect
+        }];
+        layout.dom = child;
+
+        for (var idx in layoutEvents) {
+          child.addEventListener(layoutEvents[idx].type, layoutEvents[idx].func);
+        }
+
+        parentLayout.child.push(layout);
+        layoutManager.idIdx++;
+      }
+
+      for (var i = 0, len = child.children.length; i < len; i++) {
+        layoutManager.importLayout(child.children[i], child);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 };
 module.exports = layoutManager;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2483,7 +2700,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(0);
 
 var Layout =
 /*#__PURE__*/
@@ -2548,16 +2765,29 @@ function () {
     key: "copy",
     value: function copy() {
       var copiedLayout = new Layout();
-      copiedLayout._info.layoutId = this._info.layoutId;
-      copiedLayout._info.parentLayoutId = this._info.parentLayoutId;
-      copiedLayout._info.elementType = this._info.elementType;
-      copiedLayout._pos.x = this._pos.x;
-      copiedLayout._pos.y = this._pos.y;
-      copiedLayout._pos.width = this._pos.width;
-      copiedLayout._pos.height = this._pos.height;
-      copiedLayout._prop.prop = this._prop.prop;
-      copiedLayout._prop.style = this._prop.style;
-      copiedLayout._prop["class"] = this._prop["class"];
+      copiedLayout.info.layoutId = this.info.layoutId;
+      copiedLayout.info.parentLayoutId = this.info.parentLayoutId;
+      copiedLayout.info.elementType = this.info.elementType;
+      copiedLayout.pos.x = this.pos.x;
+      copiedLayout.pos.y = this.pos.y;
+      copiedLayout.pos.width = this.pos.width;
+      copiedLayout.pos.height = this.pos.height;
+      copiedLayout.prop = {};
+
+      for (name in this.prop) {
+        if (name === 'class') {
+          copiedLayout.prop[name] = this.prop[name].slice();
+        } else if (name === 'style') {
+          copiedLayout.prop[name] = {};
+
+          for (var key in this.prop[name]) {
+            copiedLayout.prop[name][key] = this.prop[name][key];
+          }
+        } else {
+          copiedLayout.prop[name] = this.prop[name];
+        }
+      }
+
       return copiedLayout;
     }
   }, {
@@ -2606,6 +2836,17 @@ function () {
         for (var i = 0, len = dom.classList.length; i < len; i++) {
           if (dom.classList[i].indexOf('hb_selectable') == -1 && dom.classList[i].indexOf('hb_selected') == -1) {
             prop["class"].push(dom.classList[i]);
+          }
+        }
+
+        prop.option = [];
+
+        if (dom.options) {
+          for (var i = 0, len = dom.options.length; i < len; i++) {
+            prop.option.push({
+              text: dom.options[i].text,
+              value: dom.options[i].value
+            });
           }
         }
 
@@ -2737,12 +2978,12 @@ function () {
 module.exports = Layout;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var utils = __webpack_require__(2);
+var utils = __webpack_require__(0);
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 /**
     Attributes View Manager
 **/
@@ -2751,13 +2992,14 @@ var CSS = __webpack_require__(0);
 var propertyManager = {
   config: __webpack_require__(4),
   model: {
-    propertyClass: __webpack_require__(13),
-    propertyColor: __webpack_require__(14),
-    propertySelect: __webpack_require__(15),
-    propertyStyle2Save: __webpack_require__(16),
-    propertyText: __webpack_require__(17),
-    propertyTextUnit: __webpack_require__(18),
-    propertyTextAppend: __webpack_require__(19)
+    propertyClass: __webpack_require__(14),
+    propertyColor: __webpack_require__(15),
+    propertySelect: __webpack_require__(16),
+    propertyStyle2Save: __webpack_require__(17),
+    propertyText: __webpack_require__(18),
+    propertyTextUnit: __webpack_require__(19),
+    propertyTextAppend: __webpack_require__(20),
+    propertyOption: __webpack_require__(21)
   },
   selected: {
     element: null
@@ -2932,7 +3174,8 @@ var propertyManager = {
     }
   },
   updateProp: function updateProp(prop) {
-    if (propertyManager.selected) {
+    if (propertyManager.selected.element) {
+      var domType = propertyManager.selected.element.dom.nodeName;
       var configs = propertyManager.config.configs;
 
       var _config = null,
@@ -2940,6 +3183,30 @@ var propertyManager = {
 
       for (var i = 0, len = configs.length; i < len; i++) {
         _config = configs[i];
+
+        if (_config.model.prop.name == 'src') {
+          if (domType == 'IMG') {
+            _config.model.dom.parentElement.style['display'] = 'block';
+          } else {
+            _config.model.dom.parentElement.style['display'] = 'none';
+          }
+        }
+
+        if (_config.model.prop.name == 'href') {
+          if (domType == 'A') {
+            _config.model.dom.parentElement.style['display'] = 'block';
+          } else {
+            _config.model.dom.parentElement.style['display'] = 'none';
+          }
+        }
+
+        if (_config.model.prop.name == 'option') {
+          if (domType == 'SELECT') {
+            _config.model.dom.style['display'] = 'block';
+          } else {
+            _config.model.dom.style['display'] = 'none';
+          }
+        }
 
         _config.model.update(prop);
 
@@ -2965,7 +3232,7 @@ var propertyManager = {
 module.exports = propertyManager;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -2990,9 +3257,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 
-var Property = __webpack_require__(1);
+var Property = __webpack_require__(2);
 
 var PropertyClass =
 /*#__PURE__*/
@@ -3167,7 +3434,7 @@ function (_Property) {
 module.exports = PropertyClass;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3192,9 +3459,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 
-var Property = __webpack_require__(1);
+var Property = __webpack_require__(2);
 
 var PropertyColor =
 /*#__PURE__*/
@@ -3301,7 +3568,7 @@ function (_Property) {
 module.exports = PropertyColor;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3326,9 +3593,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 
-var Property = __webpack_require__(1);
+var Property = __webpack_require__(2);
 
 var PropertySelect =
 /*#__PURE__*/
@@ -3461,7 +3728,7 @@ function (_Property) {
 module.exports = PropertySelect;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3486,9 +3753,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 
-var Property = __webpack_require__(1);
+var Property = __webpack_require__(2);
+
+var utils = __webpack_require__(0);
 
 var PropertyStyle2Save =
 /*#__PURE__*/
@@ -3505,15 +3774,17 @@ function (_Property) {
     key: "event",
     value: function event(e) {
       if (this.selected) {
-        var eventDom = e.target.previousSibling; //U.style2Css 수정 필요 -- selected를 인식하지 못하는 상태
+        var selected = this.selected;
+        var eventDom = e.target.previousSibling;
 
-        /*
-        if(U.style2Css(eventDom.value)) {
-          propertyStyle2Save.selected.setAttribute('style', '');
-          var classText = propertyStyle2Save.selected.getAttribute('class');
-          propertyStyle2Save.selected.setAttribute('class', classText + ' ' + value);
+        if (eventDom.value != '') {
+          if (utils.style2Css(eventDom.value, selected.prop.style)) {
+            selected.dom.removeAttribute('style');
+            var classText = selected.dom.getAttribute('class');
+            selected.dom.setAttribute('class', classText + ' ' + eventDom.value);
+            eventDom.value = '';
+          }
         }
-        */
 
         if (this.callback && typeof this.callback === 'function') {
           this.callback();
@@ -3586,7 +3857,7 @@ function (_Property) {
 module.exports = PropertyStyle2Save;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3611,9 +3882,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 
-var Property = __webpack_require__(1);
+var Property = __webpack_require__(2);
 
 var PropertyText =
 /*#__PURE__*/
@@ -3719,7 +3990,7 @@ function (_Property) {
 module.exports = PropertyText;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3744,9 +4015,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 
-var Property = __webpack_require__(1);
+var Property = __webpack_require__(2);
 
 var PropertyTextUnit =
 /*#__PURE__*/
@@ -3915,7 +4186,7 @@ function (_Property) {
 module.exports = PropertyTextUnit;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -3940,9 +4211,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var CSS = __webpack_require__(0);
+var CSS = __webpack_require__(1);
 
-var Property = __webpack_require__(1);
+var Property = __webpack_require__(2);
 
 var PropertyTextAppend =
 /*#__PURE__*/
@@ -4044,6 +4315,616 @@ function (_Property) {
 
 ;
 module.exports = PropertyTextAppend;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var CSS = __webpack_require__(1);
+
+var Property = __webpack_require__(2);
+
+var PropertyOption =
+/*#__PURE__*/
+function (_Property) {
+  _inherits(PropertyOption, _Property);
+
+  function PropertyOption() {
+    _classCallCheck(this, PropertyOption);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(PropertyOption).apply(this, arguments));
+  }
+
+  _createClass(PropertyOption, [{
+    key: "event",
+    value: function event(e) {
+      var eventType = e.target.getAttribute('hb_set_event_type');
+
+      if (eventType === 'add') {
+        this.addEvent(e);
+      } else {
+        this.removeEvent(e);
+      }
+    }
+  }, {
+    key: "addEvent",
+    value: function addEvent(e) {
+      if (this.selected) {
+        var selected = this.selected.dom;
+        var valueDom = this.dom.querySelector('[hb_set_type=value]');
+        var textDom = this.dom.querySelector('[hb_set_type=text]');
+        var optionDom = this.dom.querySelector('[hb_set_type=option]');
+
+        if (textDom.value != '') {
+          //for option list of property 
+          var option = document.createElement('option');
+
+          if (valueDom.value) {
+            option.setAttribute('value', valueDom.value);
+          }
+
+          option.appendChild(document.createTextNode(textDom.value));
+          optionDom.appendChild(option); //for option list of selected
+
+          option = document.createElement('option');
+
+          if (valueDom.value) {
+            option.setAttribute('value', valueDom.value);
+          }
+
+          option.appendChild(document.createTextNode(textDom.value));
+          selected.appendChild(option);
+        }
+
+        if (this.callback && typeof this.callback === 'function') {
+          this.callback();
+        }
+      }
+    }
+  }, {
+    key: "removeEvent",
+    value: function removeEvent(e) {
+      if (this.selected) {
+        var selected = this.selected.dom;
+        var optionDom = this.dom.querySelector('[hb_set_type=option]');
+
+        for (var i = 0; i < optionDom.options.length; i++) {
+          if (optionDom.options[i].selected == true) {
+            selected.removeChild(selected.options[i]);
+            optionDom.removeChild(optionDom.options[i]);
+            i--;
+          }
+        }
+
+        if (this.callback && typeof this.callback === 'function') {
+          this.callback();
+        }
+      }
+    }
+  }, {
+    key: "update",
+    value: function update(prop) {
+      optionDom = this.dom.querySelector('[hb_set_type=option]');
+
+      if (prop.option.length == 0) {
+        while (optionDom.options.length != 0) {
+          optionDom.options[0].remove();
+        }
+      } else {
+        while (optionDom.options.length != 0) {
+          optionDom.options[0].remove();
+        }
+
+        var option;
+
+        for (var i = 0, len = prop.option.length; i < len; i++) {
+          option = document.createElement('option');
+
+          if (prop.option[i].value) {
+            option.setAttribute('value', prop.option[i].value);
+          }
+
+          option.appendChild(document.createTextNode(prop.option[i].text));
+          optionDom.appendChild(option);
+        }
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var prop = this.property;
+
+      var eventDetect = _get(_getPrototypeOf(PropertyOption.prototype), "eventDetect", this);
+
+      return {
+        element: 'div',
+        attr: {
+          "class": CSS.prop_body_div
+        },
+        child: [{
+          //div for title
+          element: 'div',
+          attr: {
+            "class": CSS.prop_body_title_div
+          },
+          child: [{
+            element: 'label',
+            attr: {
+              "class": CSS.prop_body_title_label
+            },
+            text: prop.title
+          }]
+        }, {
+          //div for property set
+          element: 'div',
+          attr: {
+            "class": CSS.prop_body_set_div
+          },
+          child: [{
+            element: 'label',
+            attr: {
+              "class": CSS.prop_body_set_text
+            },
+            text: 'Value'
+          }, {
+            element: 'input',
+            attr: {
+              type: 'text',
+              "class": CSS.prop_body_set_text,
+              hb_set_type: 'value'
+            }
+          }, {
+            element: 'label',
+            attr: {
+              "class": CSS.prop_body_set_text
+            },
+            text: 'Text'
+          }, {
+            element: 'input',
+            attr: {
+              type: 'text',
+              "class": CSS.prop_body_set_text,
+              hb_set_type: 'text'
+            }
+          }, {
+            element: 'button',
+            attr: {
+              "class": CSS.prop_body_set_btn,
+              title: 'Add option',
+              hb_set_prop_name: prop.name,
+              hb_set_event_type: 'add'
+            },
+            text: 'Add option',
+            event: [{
+              type: 'click',
+              func: eventDetect
+            }]
+          }, {
+            element: 'button',
+            attr: {
+              "class": CSS.prop_body_set_btn,
+              title: 'Delete option',
+              hb_set_prop_name: prop.name,
+              hb_set_event_type: 'delete'
+            },
+            text: 'Delete option',
+            event: [{
+              type: 'click',
+              func: eventDetect
+            }]
+          }, {
+            element: 'select',
+            attr: {
+              "class": CSS.prop_body_set_multi_select,
+              multiple: true,
+              hb_set_type: 'option'
+            }
+          }]
+        }]
+      };
+    }
+  }]);
+
+  return PropertyOption;
+}(Property);
+
+;
+module.exports = PropertyOption;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var utils = __webpack_require__(0);
+/**
+    Settings View Manager
+**/
+
+
+var settingManager = {
+  configs: __webpack_require__(5),
+  model: {
+    settingClass: __webpack_require__(23)
+  },
+  init: function init() {
+    var configs = settingManager.configs;
+    var _config = null;
+
+    for (var i = 0, len = configs.length; i < len; i++) {
+      _config = configs[i];
+      _config.model = settingManager.newModel('settingClass');
+      _config.model.prop = _config;
+    }
+  },
+  newModel: function newModel(name) {
+    return new settingManager.model[name]();
+  },
+
+  /**
+   * set event
+   * @param {object} event 
+   */
+  setEvent: function setEvent(event) {
+    var configs = settingManager.configs;
+    var _config = null;
+
+    for (var i = 0, len = configs.length; i < len; i++) {
+      _config = configs[i];
+
+      _config.model.setEvent(event);
+    }
+  },
+
+  /**
+   * init setting view
+   * @param {Element} parent 
+   */
+  render: function render(parent) {
+    var configs = settingManager.configs;
+    var _config = null,
+        dom;
+
+    for (var i = 0, len = configs.length; i < len; i++) {
+      _config = configs[i];
+      dom = utils.builder(_config.model.render());
+      _config.model.dom = dom;
+      parent.appendChild(dom);
+    }
+  },
+  menuSettingPopup: function menuSettingPopup(section, applyFunc, text) {
+    try {
+      var close = function close(e) {
+        div.remove();
+      };
+
+      var div = document.createElement('div');
+      div.setAttribute('class', 'hb_setting-popup');
+      var div_title = document.createElement('div');
+      div_title.setAttribute('class', 'hb_setting-popup-titlediv');
+      div_title.appendChild(document.createTextNode(section));
+      var button_cancel = document.createElement('button');
+      button_cancel.setAttribute('class', 'hb_setting-popup-clossbutton');
+      button_cancel.addEventListener('click', close);
+      div_title.appendChild(button_cancel);
+      var div_text = document.createElement('div');
+      div_text.setAttribute('class', 'hb_setting-popup-textdiv');
+      var textarea = document.createElement('textarea');
+      textarea.setAttribute('class', 'hb_setting-popup-textarea');
+      textarea.setAttribute('style', 'resize: none');
+
+      if (text) {
+        textarea.value = text;
+      }
+
+      div_text.appendChild(textarea);
+      div.appendChild(div_title);
+      div.appendChild(div_text);
+
+      if (applyFunc) {
+        var button_apply = document.createElement('button');
+        button_apply.setAttribute('class', 'hb_setting-popup-applybutton');
+        button_apply.appendChild(document.createTextNode('Apply'));
+        button_apply.addEventListener('click', applyFunc);
+        div.appendChild(button_apply);
+      }
+
+      document.body.appendChild(div);
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+};
+module.exports = settingManager;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var configs = __webpack_require__(5);
+
+var CSS = __webpack_require__(24);
+
+var setting =
+/*#__PURE__*/
+function () {
+  function setting() {
+    _classCallCheck(this, setting);
+
+    this._prop = null;
+    this._dom = null;
+    this._event = null;
+  }
+
+  _createClass(setting, [{
+    key: "setEvent",
+    value: function setEvent(_event) {
+      this._event = _event;
+    }
+  }, {
+    key: "eventDetect",
+    value: function eventDetect(e) {
+      var propName = e.target.getAttribute('hb_set_name');
+
+      var _config;
+
+      for (var i = 0, len = configs.length; i < len; i++) {
+        _config = configs[i];
+
+        if (_config.title.prop.name === propName) {
+          _config.model.event(e);
+        }
+      }
+    }
+  }, {
+    key: "event",
+    value: function event(e) {
+      var eventType = e.target.name;
+
+      this._event[eventType]();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var prop = this.prop;
+      var eventDetect = this.eventDetect;
+      var render = {
+        element: 'div',
+        attr: {
+          "class": CSS.setting_div
+        },
+        child: [{
+          element: 'div',
+          attr: {
+            "class": CSS.setting_title_div
+          },
+          child: [{
+            element: prop.title.element,
+            attr: {
+              name: prop.title.prop.name,
+              "class": CSS.setting_title_label
+            },
+            text: prop.title.prop.title
+          }]
+        }, {
+          element: 'div',
+          attr: {
+            "class": CSS.setting_content_div
+          },
+          child: []
+        }]
+      };
+      var _content = null;
+
+      for (var i = 0, len = prop.content.length; i < len; i++) {
+        _content = prop.content[i];
+        render.child[1].child.push({
+          element: _content.element,
+          attr: {
+            name: _content.prop.name,
+            "class": _content.prop["class"],
+            hb_set_name: _content.prop.hb_set_name
+          },
+          text: _content.prop.title,
+          event: [{
+            type: 'click',
+            func: eventDetect
+          }]
+        });
+      }
+
+      ;
+      return render;
+    }
+  }, {
+    key: "prop",
+    set: function set(_prop) {
+      this._prop = _prop;
+    },
+    get: function get() {
+      return this._prop;
+    }
+  }, {
+    key: "dom",
+    set: function set(_dom) {
+      this._dom = _dom;
+    },
+    get: function get() {
+      return this._dom;
+    }
+  }]);
+
+  return setting;
+}();
+
+;
+module.exports = setting;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+/**
+ * setting css id
+ */
+module.exports = {
+  setting_div: 'hb_setting_div',
+  setting_title_div: 'hb_setting_title_div',
+  setting_content_div: 'hb_setting_content_div',
+  setting_title_label: 'hb_setting_title_label'
+};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var utils = __webpack_require__(0);
+
+var cssManager = {
+  cssId: null,
+  cssContent: {
+    bootstrap: [{
+      element: 'link',
+      src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+    }, {
+      element: 'script',
+      src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
+    }, {
+      element: 'script',
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+    }, {
+      element: 'script',
+      src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
+    }, {
+      element: 'link',
+      src: './html_builder.css'
+    }],
+    plain: [{
+      element: 'link',
+      src: './html_builder.css'
+    }]
+  },
+  config: __webpack_require__(26),
+  init: function init(id, type) {
+    var head = document.getElementsByTagName('head')[0]; //remove css content
+
+    for (var i = 0; i < head.children.length; i++) {
+      if (head.children[i].getAttribute('head_type')) {
+        if (head.children[i].getAttribute('head_type') === 'css') {
+          head.removeChild(head.children[i]);
+          i--;
+        }
+      }
+    }
+
+    var cssList = cssManager.cssContent[type];
+
+    for (var idx = 0; idx < cssList.length; idx++) {
+      element = document.createElement(cssList[idx].element);
+
+      if (cssList[idx].element === 'link') {
+        element.setAttribute('rel', 'stylesheet');
+        element.setAttribute('href', cssList[idx].src);
+        element.setAttribute('head_type', 'css');
+      } else {
+        element.setAttribute('type', 'text/javascript');
+        element.setAttribute('src', cssList[idx].src);
+        element.setAttribute('head_type', 'css');
+      }
+
+      head.appendChild(element);
+    }
+
+    cssManager.cssId = id;
+    var defaultCss = document.createElement('style');
+    defaultCss.setAttribute('id', cssManager.cssId);
+    defaultCss.setAttribute('type', 'text/css');
+    defaultCss.setAttribute('head_type', 'css');
+    head.appendChild(defaultCss);
+  },
+  render: function render() {
+    var defaultCss = document.getElementById(cssManager.cssId);
+    var configs = cssManager.config;
+
+    for (var i = 0, len = configs.length; i < len; i++) {
+      defaultCss.appendChild(document.createTextNode(utils.obj2Css(configs[i]) + '\n\n'));
+    }
+  }
+};
+module.exports = cssManager;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+/*
+  1. Default CSS options
+*/
+module.exports = [{
+  title: '.block_full',
+  content: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    'box-sizing': 'border-box'
+  }
+}, {
+  title: '.block_half',
+  content: {
+    width: '50%',
+    height: '50%',
+    'box-sizing': 'border-box'
+  }
+}, {
+  title: '.block_select_half_25px',
+  content: {
+    width: '50%',
+    height: '25px',
+    'box-sizing': 'border-box'
+  }
+}, {
+  title: '.block_border-basic',
+  content: {
+    border: '1px solid #000000'
+  }
+}, {
+  title: '.block_padding-10px',
+  content: {
+    padding: '10px'
+  }
+}, {
+  title: '.block_margin-10px',
+  content: {
+    margin: '10px'
+  }
+}];
 
 /***/ })
 /******/ ]);

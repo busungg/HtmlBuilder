@@ -87,70 +87,70 @@ class PropertyClass extends Property {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
-        element: 'div',
-        attr: {
-          class: CSS.prop_body_title_div
-        },
-        child: [{
-          element: 'label',
+          element: 'div',
           attr: {
-            class: CSS.prop_body_title_label
+            class: CSS.prop_body_title_div
           },
-          text: prop.title
-        }]
-      },
+          child: [{
+            element: 'label',
+            attr: {
+              class: CSS.prop_body_title_label
+            },
+            text: prop.title
+          }]
+        },
 
-      { //div for property set
-        element: 'div',
-        attr: {
-          class: CSS.prop_body_set_div
-        },
-        child: [{
-          element: 'input',
+        { //div for property set
+          element: 'div',
           attr: {
-            type: 'text',
-            class: CSS.prop_body_set_text,
-            hb_set_type: 'name'
-          }
-        },
-        {
-          element: 'button',
-          attr: {
-            class: CSS.prop_body_set_btn,
-            title: 'Add class',
-            hb_set_prop_name: prop.name,
-            hb_set_event_type: 'add'
+            class: CSS.prop_body_set_div
           },
-          text: 'Add class',
-          event: [{
-            type: 'click',
-            func: eventDetect
-          }]
-        },
-        {
-          element: 'button',
-          attr: {
-            class: CSS.prop_body_set_btn,
-            title: 'Delete class',
-            hb_set_prop_name: prop.name,
-            hb_set_event_type: 'delete'
-          },
-          text: 'Delete class',
-          event: [{
-            type: 'click',
-            func: eventDetect
-          }]
-        },
-        {
-          element: 'select',
-          attr: {
-            class: CSS.prop_body_set_multi_select,
-            multiple: true,
-            hb_set_type: 'value'
-          }
+          child: [{
+              element: 'input',
+              attr: {
+                type: 'text',
+                class: CSS.prop_body_set_text,
+                hb_set_type: 'name'
+              }
+            },
+            {
+              element: 'button',
+              attr: {
+                class: CSS.prop_body_set_btn,
+                title: 'Add class',
+                hb_set_prop_name: prop.name,
+                hb_set_event_type: 'add'
+              },
+              text: 'Add class',
+              event: [{
+                type: 'click',
+                func: eventDetect
+              }]
+            },
+            {
+              element: 'button',
+              attr: {
+                class: CSS.prop_body_set_btn,
+                title: 'Delete class',
+                hb_set_prop_name: prop.name,
+                hb_set_event_type: 'delete'
+              },
+              text: 'Delete class',
+              event: [{
+                type: 'click',
+                func: eventDetect
+              }]
+            },
+            {
+              element: 'select',
+              attr: {
+                class: CSS.prop_body_set_multi_select,
+                multiple: true,
+                hb_set_type: 'value'
+              }
+            }
+          ]
         }
-        ]
-      }
       ]
     };
   }

@@ -14,7 +14,8 @@ var propertyManager = {
     propertyStyle2Save: require('./model/propertyStyle2Save'),
     propertyText: require('./model/propertyText'),
     propertyTextUnit: require('./model/propertyTextUnit'),
-    propertyTextAppend: require('./model/PropertyTextAppend')
+    propertyTextAppend: require('./model/PropertyTextAppend'),
+    propertyOption: require('./model/propertyOption')
   },
 
   selected: {
@@ -224,6 +225,14 @@ var propertyManager = {
             _config.model.dom.parentElement.style['display'] = 'block';
           } else {
             _config.model.dom.parentElement.style['display'] = 'none';
+          }
+        }
+
+        if(_config.model.prop.name == 'option') {
+          if(domType == 'SELECT') {
+            _config.model.dom.style['display'] = 'block';
+          } else {
+            _config.model.dom.style['display'] = 'none';
           }
         }
 

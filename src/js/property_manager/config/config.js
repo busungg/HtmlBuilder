@@ -131,6 +131,16 @@ const configs = [
 
   {
     prop: {
+      name: 'option',
+      title: 'Option',
+      attr_type: 'attr',
+      category: 'common'
+    },
+    model_name: 'propertyOption'
+  },
+
+  {
+    prop: {
       name: 'style2css',
       title: 'Style to CSS',
       attr_type: 'style2css',
