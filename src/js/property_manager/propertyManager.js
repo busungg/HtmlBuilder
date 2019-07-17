@@ -159,7 +159,7 @@ var propertyManager = {
   /**
    * 
    * @param {string} category 
-   * @param {Dom Element} categoryDom 
+   * @param {Dom Element} categoryDom
    */
   renderCategoryContent: function (category, categoryDom) {
     var configs = propertyManager.config.configs;

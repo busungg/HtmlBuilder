@@ -1,43 +1,227 @@
-/*
-    1. block 종류
-    - Basic
-    1) Div
-    2) P
-    
-    - Forms
-    1) Input(Text)
-    2) Input(Number)
-    3) Text Area
-    4) Link
-    5) Image
-    6) Select
-    7) Button
-    8) Label
-    9) Checkbox
-    10) Radio
-*/
+//https://developer.mozilla.org/ko/docs/Web/HTML/Element 참고
+
+const category = [{
+        name: 'section',
+        title: 'Section'
+    },
+    {
+        name: 'title',
+        title: 'Title'
+    },
+    {
+        name: 'form',
+        title: 'Form'
+    },
+    {
+        name: 'text',
+        title: 'Text'
+    },
+    {
+        name: 'image',
+        title: 'Image'
+    },
+    {
+        name: 'table',
+        title: 'Table'
+    },
+    {
+        name: 'extra',
+        title: 'Extra'
+    }
+];
 
 const configs = [
+    //section
+    {
+        title: 'Header',
+        option: {
+            element: 'header',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+            },
+            isHave: true
+        },
+        icon: 'hb_btn-div',
+        category: 'section'
+    },
+    {
+        title: 'Main',
+        option: {
+            element: 'main',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+            },
+            isHave: true
+        },
+        icon: 'hb_btn-div',
+        category: 'section'
+    },
+    {
+        title: 'Footer',
+        option: {
+            element: 'footer',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+            },
+            isHave: true
+        },
+        icon: 'hb_btn-div',
+        category: 'section'
+    },
+    {
+        title: 'Article',
+        option: {
+            element: 'article',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+            },
+            isHave: true
+        },
+        icon: 'hb_btn-div',
+        category: 'section'
+    },
+    {
+        title: 'Section',
+        option: {
+            element: 'section',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+            },
+            isHave: true
+        },
+        icon: 'hb_btn-div',
+        category: 'section'
+    },
     {
         title: 'Div',
         option: {
             element: 'div',
             attrs: {
                 class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
-            }
+            },
+            isHave: true
         },
-        icon: 'hb_btn-div'
+        icon: 'hb_btn-div',
+        category: 'section'
     },
+
+    //title
     {
-        title: 'P',
+        title: 'h1',
         option: {
-            element: 'p',
+            element: 'h1',
             attrs: {
                 class: ['block_border-basic']
             },
-            text: 'P element text'
+            text: 'h1 element text',
+            isHave: false
         },
-        icon: 'hb_btn-p'
+        icon: 'hb_btn-p',
+        category: 'title'
+    },
+    {
+        title: 'h2',
+        option: {
+            element: 'h2',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'h2 element text',
+            isHave: false
+        },
+        icon: 'hb_btn-p',
+        category: 'title'
+    },
+    {
+        title: 'h3',
+        option: {
+            element: 'h3',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'h3 element text',
+            isHave: false
+        },
+        icon: 'hb_btn-p',
+        category: 'title'
+    },
+    {
+        title: 'h4',
+        option: {
+            element: 'h4',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'h4 element text',
+            isHave: false
+        },
+        icon: 'hb_btn-p',
+        category: 'title'
+    },
+    {
+        title: 'h5',
+        option: {
+            element: 'h5',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'h5 element text',
+            isHave: false
+        },
+        icon: 'hb_btn-p',
+        category: 'title'
+    },
+    {
+        title: 'h6',
+        option: {
+            element: 'h6',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'h6 element text',
+            isHave: false
+        },
+        icon: 'hb_btn-p',
+        category: 'title'
+    },
+
+    //form
+    {
+        title: 'Form',
+        option: {
+            element: 'form',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+            },
+            isHave: true
+        },
+        icon: 'hb_btn-div',
+        category: 'form'
+    },
+    {
+        title: 'FieldSet',
+        option: {
+            element: 'fieldset',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+            },
+            isHave: true
+        },
+        icon: 'hb_btn-div',
+        category: 'form'
+    },
+    {
+        title: 'Legend',
+        option: {
+            element: 'legend',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'Legend element text',
+            isHave: false
+        },
+        icon: 'hb_btn-p',
+        category: 'form'
     },
     {
         title: 'Input (Text)',
@@ -46,9 +230,11 @@ const configs = [
             attrs: {
                 type: 'text',
                 class: ['block_border-basic', 'form-control']
-            }
+            },
+            isHave: false
         },
-        icon: 'hb_btn-input'
+        icon: 'hb_btn-input',
+        category: 'form'
     },
     {
         title: 'Input (Number)',
@@ -57,42 +243,11 @@ const configs = [
             attrs: {
                 type: 'number',
                 class: ['block_border-basic', 'form-control']
-            }
-        },
-        icon: 'hb_btn-input'
-    },
-    {
-        title: 'Text Area',
-        option: {
-            element: 'textarea',
-            attrs: {
-                class: ['block_border-basic', 'form-control']
-            }
-        },
-        icon: 'hb_btn-text-area'
-    },
-    {
-        title: 'Link',
-        option: {
-            element: 'a',
-            attrs: {
-                class: ['block_border-basic'],
-                target: '_blank'
             },
-            text: 'A element text'
+            isHave: false
         },
-        icon: 'hb_btn-link'
-    },
-    {
-        title: 'Image',
-        option: {
-            element: 'img',
-            attrs: {
-                class: ['block_half', 'block_border-basic', 'img-thumbnail'],
-                src: '../icon/img_thumbnail.jpg'
-            }
-        },
-        icon: 'hb_btn-img'
+        icon: 'hb_btn-input',
+        category: 'form'
     },
     {
         title: 'Select',
@@ -100,9 +255,11 @@ const configs = [
             element: 'select',
             attrs: {
                 class: ['block_select_half_25px', 'block_border-basic']
-            }
+            },
+            isHave: false
         },
-        icon: 'hb_btn-select'
+        icon: 'hb_btn-select',
+        category: 'form'
     },
     {
         title: 'Button',
@@ -111,20 +268,11 @@ const configs = [
             attrs: {
                 class: ['block_border-basic', 'btn', 'btn-primary']
             },
-            text: 'Button element text'
+            text: 'Button element text',
+            isHave: false
         },
-        icon: 'hb_btn-button'
-    },
-    {
-        title: 'Label',
-        option: {
-            element: 'label',
-            attrs: {
-                class: ['block_border-basic']
-            },
-            text: 'Label element text'
-        },
-        icon: 'hb_btn-label'
+        icon: 'hb_btn-button',
+        category: 'form'
     },
     {
         title: 'Checkbox',
@@ -134,9 +282,11 @@ const configs = [
                 type: 'checkbox',
                 class: ['block_border-basic'],
                 style: 'width:15px; height:15px;'
-            }
+            },
+            isHave: false
         },
-        icon: 'hb_btn-check-box'
+        icon: 'hb_btn-check-box',
+        category: 'form'
     },
     {
         title: 'Radio',
@@ -146,10 +296,100 @@ const configs = [
                 type: 'radio',
                 class: ['block_border-basic'],
                 style: 'width:15px; height:15px;'
-            }
+            },
+            isHave: false
         },
-        icon: 'hb_btn-radio'
+        icon: 'hb_btn-radio',
+        category: 'form'
+    },
+    {
+        title: 'Label',
+        option: {
+            element: 'label',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'Label element text',
+            isHave: false
+        },
+        icon: 'hb_btn-label',
+        category: 'form'
+    },
+    {
+        title: 'Text Area',
+        option: {
+            element: 'textarea',
+            attrs: {
+                class: ['block_border-basic', 'form-control']
+            },
+            isHave: false
+        },
+        icon: 'hb_btn-text-area',
+        category: 'form'
+    },
+
+    //text
+    {
+        title: 'P',
+        option: {
+            element: 'p',
+            attrs: {
+                class: ['block_border-basic']
+            },
+            text: 'P element text',
+            isHave: false
+        },
+        icon: 'hb_btn-p',
+        category: 'text'
+    },
+
+    //image
+    {
+        title: 'Image',
+        option: {
+            element: 'img',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'img-thumbnail'],
+                src: '../icon/img_thumbnail.jpg'
+            },
+            isHave: false
+        },
+        icon: 'hb_btn-img',
+        category: 'image'
+    },
+
+    //table
+    {
+        title: 'Table',
+        option: {
+            element: 'table',
+            attrs: {
+                class: ['block_half', 'block_border-basic', 'block_margin-10px']
+            },
+            isHave: false
+        },
+        icon: 'hb_btn-div',
+        category: 'table'
+    },
+
+    //extra
+    {
+        title: 'Link',
+        option: {
+            element: 'a',
+            attrs: {
+                class: ['block_border-basic'],
+                target: '_blank'
+            },
+            text: 'A element text',
+            isHave: false
+        },
+        icon: 'hb_btn-link',
+        category: 'extra'
     }
 ];
 
-module.exports = configs;
+module.exports = {
+    category: category,
+    configs: configs
+};

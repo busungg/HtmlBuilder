@@ -28,6 +28,7 @@ var layoutManager = {
         };
 
         contentLayout.dom = dom;
+        contentLayout.isHave = true;
     },
 
     eventDetect: function (e) {
@@ -385,6 +386,8 @@ var layoutManager = {
                 _newChild.text = (blockOption.text ? blockOption.text : null);
                 var newChild = utils.builder(_newChild);
                 newChildLayout.dom = newChild;
+
+                newChildLayout.isHave = blockOption.isHave;
 
                 //posIdx
                 if (parentLayout.child[layoutManager.eventInfo.posIdx]) {

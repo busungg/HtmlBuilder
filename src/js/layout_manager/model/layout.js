@@ -19,6 +19,7 @@ class Layout {
         this._prop = null;
 
         this._dom = null;
+        this._isHave = null;
     };
 
     set info(_info) {
@@ -51,7 +52,15 @@ class Layout {
 
     get prop() {
         return this._prop;
-    }
+    };
+
+    set isHave(_isHave) {
+        this._isHave = _isHave;
+    };
+
+    get isHave() {
+        return this._isHave;  
+    };
 
     set dom(_dom) {
         this._dom = _dom;
@@ -80,7 +89,7 @@ class Layout {
 
     contain(x, y) {
         try {
-            if (this._info.elementType !== 'div') {
+            if (!this._isHave) {
                 return false;
             }
 
@@ -121,6 +130,8 @@ class Layout {
                 copiedLayout.prop[name] = this.prop[name];
             }
         }
+
+        copiedLayout.isHave = this.isHave;
 
         return copiedLayout;
     };

@@ -109,11 +109,6 @@ var mainManager = {
 
         mainManager.initMenuNav(menu);
         mainManager.initMenuNavContent();
-
-        /*
-        H.menuSetting(menu); //manager 생성 필요
-        H.cssSetting(); //manager 생성 필요
-        */
     },
 
     initMenuNav: function (container) {

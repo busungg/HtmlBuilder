@@ -55,8 +55,8 @@ class Block {
 
     eventDetect(e) {
         var _config;
-        for (var i = 0, len = config.length; i < len; i++) {
-            _config = config[i];
+        for (var i = 0, len = config.configs.length; i < len; i++) {
+            _config = config.configs[i];
             if (_config.model.dom === e.target) {
                 _config.model.event(e);
             }

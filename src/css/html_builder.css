@@ -10,26 +10,6 @@
 	- 
 */
 
-/*
-.block_half {
-	width: 50%;
-	height: 50%;
-	box-sizing: border-box;	
-}
-
-.block_border-basic {
-	border: 1px solid #000000;
-}
-
-.block_padding-10px {
-	padding: 10px;
-}
-
-.block_margin-10px {
-	margin: 10px;
-}
-*/
-
 html, 
 body
 {
@@ -256,9 +236,9 @@ body
 /*--------------- BLOCK -------------- */
 .hb_btn-block
 {
-	float:left;
-	width: 35%;
-	height: 100px;
+	display: inline-block;
+	width: 40%;
+	height: 120px;
 	padding: 5px;
 	margin-left: 5px;
 	margin-bottom: 5px;
