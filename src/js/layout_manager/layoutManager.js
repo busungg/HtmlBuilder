@@ -1,5 +1,6 @@
 const Layout = require('./model/layout');
 const utils = require('../utils/utils');
+const blockConfig = require('../block_manager/config/config');
 
 /**
  * Layout Manager(Layout을 관리한다)
@@ -611,7 +612,6 @@ var layoutManager = {
                 parentLayout = null;
 
             if (parent != null) {
-                //hb_layout_id가 없으니깐 어떻게 할까?
                 parentLayout = layoutManager.selectLayoutDom(parent, layoutManager.contentLayout);
 
                 layout = new Layout();
@@ -649,6 +649,13 @@ var layoutManager = {
 
                 for (var idx in layoutEvents) {
                     child.addEventListener(layoutEvents[idx].type, layoutEvents[idx].func);
+                }
+
+                //is have
+                for(var i = 0, len = blockConfig.configs.length; i < len; i++) {
+                    if(layout.info.elementType == blockConfig.configs[i].option.element) {
+                        layout.isHave = blockConfig.configs[i].option.isHave;
+                    }
                 }
 
                 parentLayout.child.push(layout);
