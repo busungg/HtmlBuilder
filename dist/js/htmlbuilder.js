@@ -462,43 +462,209 @@ module.exports = Proeprty;
 /* 3 */
 /***/ (function(module, exports) {
 
+//https://developer.mozilla.org/ko/docs/Web/HTML/Element 참고
+var category = [{
+  name: 'section',
+  title: 'Section'
+}, {
+  name: 'title',
+  title: 'Title'
+}, {
+  name: 'form',
+  title: 'Form'
+}, {
+  name: 'text',
+  title: 'Text'
+}, {
+  name: 'image',
+  title: 'Image'
+},
 /*
-    1. block 종류
-    - Basic
-    1) Div
-    2) P
-    
-    - Forms
-    1) Input(Text)
-    2) Input(Number)
-    3) Text Area
-    4) Link
-    5) Image
-    6) Select
-    7) Button
-    8) Label
-    9) Checkbox
-    10) Radio
+{
+    name: 'table',
+    title: 'Table'
+},
 */
-var configs = [{
+{
+  name: 'extra',
+  title: 'Extra'
+}];
+var configs = [//section
+{
+  title: 'Header',
+  option: {
+    element: 'header',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+    },
+    isHave: true
+  },
+  icon: 'hb_btn-div',
+  category: 'section'
+}, {
+  title: 'Main',
+  option: {
+    element: 'main',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+    },
+    isHave: true
+  },
+  icon: 'hb_btn-div',
+  category: 'section'
+}, {
+  title: 'Footer',
+  option: {
+    element: 'footer',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+    },
+    isHave: true
+  },
+  icon: 'hb_btn-div',
+  category: 'section'
+}, {
+  title: 'Article',
+  option: {
+    element: 'article',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+    },
+    isHave: true
+  },
+  icon: 'hb_btn-div',
+  category: 'section'
+}, {
+  title: 'Section',
+  option: {
+    element: 'section',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+    },
+    isHave: true
+  },
+  icon: 'hb_btn-div',
+  category: 'section'
+}, {
   title: 'Div',
   option: {
     element: 'div',
     attrs: {
       "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
-    }
+    },
+    isHave: true
   },
-  icon: 'hb_btn-div'
-}, {
-  title: 'P',
+  icon: 'hb_btn-div',
+  category: 'section'
+}, //title
+{
+  title: 'h1',
   option: {
-    element: 'p',
+    element: 'h1',
     attrs: {
       "class": ['block_border-basic']
     },
-    text: 'P element text'
+    text: 'h1 element text',
+    isHave: false
   },
-  icon: 'hb_btn-p'
+  icon: 'hb_btn-h',
+  category: 'title'
+}, {
+  title: 'h2',
+  option: {
+    element: 'h2',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'h2 element text',
+    isHave: false
+  },
+  icon: 'hb_btn-h',
+  category: 'title'
+}, {
+  title: 'h3',
+  option: {
+    element: 'h3',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'h3 element text',
+    isHave: false
+  },
+  icon: 'hb_btn-h',
+  category: 'title'
+}, {
+  title: 'h4',
+  option: {
+    element: 'h4',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'h4 element text',
+    isHave: false
+  },
+  icon: 'hb_btn-h',
+  category: 'title'
+}, {
+  title: 'h5',
+  option: {
+    element: 'h5',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'h5 element text',
+    isHave: false
+  },
+  icon: 'hb_btn-h',
+  category: 'title'
+}, {
+  title: 'h6',
+  option: {
+    element: 'h6',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'h6 element text',
+    isHave: false
+  },
+  icon: 'hb_btn-h',
+  category: 'title'
+}, //form
+{
+  title: 'Form',
+  option: {
+    element: 'form',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px'],
+      action: 'javascript:void(0);'
+    },
+    isHave: true
+  },
+  icon: 'hb_btn-div',
+  category: 'form'
+}, {
+  title: 'FieldSet',
+  option: {
+    element: 'fieldset',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+    },
+    isHave: true
+  },
+  icon: 'hb_btn-div',
+  category: 'form'
+}, {
+  title: 'Legend',
+  option: {
+    element: 'legend',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'Legend element text',
+    isHave: false
+  },
+  icon: 'hb_btn-p',
+  category: 'form'
 }, {
   title: 'Input (Text)',
   option: {
@@ -506,9 +672,11 @@ var configs = [{
     attrs: {
       type: 'text',
       "class": ['block_border-basic', 'form-control']
-    }
+    },
+    isHave: false
   },
-  icon: 'hb_btn-input'
+  icon: 'hb_btn-input',
+  category: 'form'
 }, {
   title: 'Input (Number)',
   option: {
@@ -516,48 +684,22 @@ var configs = [{
     attrs: {
       type: 'number',
       "class": ['block_border-basic', 'form-control']
-    }
-  },
-  icon: 'hb_btn-input'
-}, {
-  title: 'Text Area',
-  option: {
-    element: 'textarea',
-    attrs: {
-      "class": ['block_border-basic', 'form-control']
-    }
-  },
-  icon: 'hb_btn-text-area'
-}, {
-  title: 'Link',
-  option: {
-    element: 'a',
-    attrs: {
-      "class": ['block_border-basic'],
-      target: '_blank'
     },
-    text: 'A element text'
+    isHave: false
   },
-  icon: 'hb_btn-link'
-}, {
-  title: 'Image',
-  option: {
-    element: 'img',
-    attrs: {
-      "class": ['block_half', 'block_border-basic', 'img-thumbnail'],
-      src: '../icon/img_thumbnail.jpg'
-    }
-  },
-  icon: 'hb_btn-img'
+  icon: 'hb_btn-input',
+  category: 'form'
 }, {
   title: 'Select',
   option: {
     element: 'select',
     attrs: {
       "class": ['block_select_half_25px', 'block_border-basic']
-    }
+    },
+    isHave: false
   },
-  icon: 'hb_btn-select'
+  icon: 'hb_btn-select',
+  category: 'form'
 }, {
   title: 'Button',
   option: {
@@ -565,19 +707,11 @@ var configs = [{
     attrs: {
       "class": ['block_border-basic', 'btn', 'btn-primary']
     },
-    text: 'Button element text'
+    text: 'Button element text',
+    isHave: false
   },
-  icon: 'hb_btn-button'
-}, {
-  title: 'Label',
-  option: {
-    element: 'label',
-    attrs: {
-      "class": ['block_border-basic']
-    },
-    text: 'Label element text'
-  },
-  icon: 'hb_btn-label'
+  icon: 'hb_btn-button',
+  category: 'form'
 }, {
   title: 'Checkbox',
   option: {
@@ -586,9 +720,11 @@ var configs = [{
       type: 'checkbox',
       "class": ['block_border-basic'],
       style: 'width:15px; height:15px;'
-    }
+    },
+    isHave: false
   },
-  icon: 'hb_btn-check-box'
+  icon: 'hb_btn-check-box',
+  category: 'form'
 }, {
   title: 'Radio',
   option: {
@@ -597,11 +733,95 @@ var configs = [{
       type: 'radio',
       "class": ['block_border-basic'],
       style: 'width:15px; height:15px;'
-    }
+    },
+    isHave: false
   },
-  icon: 'hb_btn-radio'
+  icon: 'hb_btn-radio',
+  category: 'form'
+}, {
+  title: 'Label',
+  option: {
+    element: 'label',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'Label element text',
+    isHave: false
+  },
+  icon: 'hb_btn-label',
+  category: 'form'
+}, {
+  title: 'Text Area',
+  option: {
+    element: 'textarea',
+    attrs: {
+      "class": ['block_border-basic', 'form-control']
+    },
+    isHave: false
+  },
+  icon: 'hb_btn-text-area',
+  category: 'form'
+}, //text
+{
+  title: 'P',
+  option: {
+    element: 'p',
+    attrs: {
+      "class": ['block_border-basic']
+    },
+    text: 'P element text',
+    isHave: false
+  },
+  icon: 'hb_btn-p',
+  category: 'text'
+}, //image
+{
+  title: 'Image',
+  option: {
+    element: 'img',
+    attrs: {
+      "class": ['block_half', 'block_border-basic', 'img-thumbnail'],
+      src: '../icon/img_thumbnail.jpg'
+    },
+    isHave: false
+  },
+  icon: 'hb_btn-img',
+  category: 'image'
+}, //table
+
+/*
+{
+    title: 'Table',
+    option: {
+        element: 'table',
+        attrs: {
+            class: ['block_half', 'block_margin-10px', 'table']
+        },
+        isHave: false
+    },
+    icon: 'hb_btn-div',
+    category: 'table'
+},
+*/
+//extra
+{
+  title: 'Link',
+  option: {
+    element: 'a',
+    attrs: {
+      "class": ['block_border-basic'],
+      target: '_blank'
+    },
+    text: 'A element text',
+    isHave: false
+  },
+  icon: 'hb_btn-link',
+  category: 'extra'
 }];
-module.exports = configs;
+module.exports = {
+  category: category,
+  configs: configs
+};
 
 /***/ }),
 /* 4 */
@@ -892,6 +1112,15 @@ var configs = [//For attributes
   }]
 }, //Font
 {
+  prop: {
+    name: 'font-size',
+    title: 'Font size',
+    attr_type: 'style',
+    units: ['px', 'cm', 'mm', 'in'],
+    category: 'font'
+  },
+  model_name: 'propertyTextUnit'
+}, {
   prop: {
     name: 'color',
     title: 'Color',
@@ -1239,7 +1468,8 @@ var mainManager = {
       width: ['80%', '18%'],
       height: ['100%', '100%'],
       css: '#hb_css',
-      css_type: 'plain'
+      css_type: 'plain',
+      css_path_prefix: './'
     };
     var c = config || {};
 
@@ -1265,7 +1495,7 @@ var mainManager = {
       funcManager.render(document.body);
       mainManager.initFuncEvents(); //default css setting
 
-      cssManager.init(mainManager.config.css, mainManager.config.css_type);
+      cssManager.init(mainManager.config.css, mainManager.config.css_type, mainManager.config.css_path_prefix);
       cssManager.render(); //util set css id
 
       utils.cssId = mainManager.config.css;
@@ -1313,10 +1543,6 @@ var mainManager = {
     container.appendChild(menu);
     mainManager.initMenuNav(menu);
     mainManager.initMenuNavContent();
-    /*
-    H.menuSetting(menu); //manager 생성 필요
-    H.cssSetting(); //manager 생성 필요
-    */
   },
   initMenuNav: function initMenuNav(container) {
     try {
@@ -1683,7 +1909,7 @@ var mainManager = {
   },
   changeCssType: function changeCssType(type) {
     mainManager.config.css_type = type;
-    cssManager.init(mainManager.config.css, mainManager.config.css_type);
+    cssManager.init(mainManager.config.css, mainManager.config.css_type, mainManager.config.css_path_prefix);
     cssManager.render();
   }
 };
@@ -1710,7 +1936,7 @@ var blockManager = {
   },
   selected: null,
   init: function init() {
-    var configs = blockManager.config;
+    var configs = blockManager.config.configs;
     var _config = null;
 
     for (var i = 0, len = configs.length; i < len; i++) {
@@ -1725,7 +1951,7 @@ var blockManager = {
     return new blockManager.model[name]();
   },
   setEvent: function setEvent(event) {
-    var configs = blockManager.config;
+    var configs = blockManager.config.configs;
 
     for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
@@ -1735,19 +1961,117 @@ var blockManager = {
   },
 
   /**
+   * category, sub category toggle event
+   * @param {event} e 
+   */
+  eventToggle: function eventToggle(e) {
+    var target;
+
+    if (e.target.nodeName == 'LABEL') {
+      target = e.target.parentNode;
+    } else {
+      target = e.target;
+    }
+
+    if (target.innerHTML.indexOf("\u25B2") != -1) {
+      target.innerHTML = target.innerHTML.replace("\u25B2", "\u25BC");
+    } else {
+      target.innerHTML = target.innerHTML.replace("\u25BC", "\u25B2");
+    }
+
+    var sibling = target.nextSibling;
+
+    while (sibling) {
+      if (sibling.style.display == 'none') {
+        sibling.style.display = 'inline-block';
+      } else {
+        sibling.style.display = 'none';
+      }
+
+      sibling = sibling.nextSibling;
+    }
+  },
+
+  /**
+   * set category element
+   * @param {Element} parent 
+   */
+  renderCategory: function renderCategory(parent) {
+    var category = blockManager.config.category;
+
+    var _category, dom;
+
+    for (var i = 0, leni = category.length; i < leni; i++) {
+      _category = {
+        element: 'div',
+        attr: {
+          "class": 'hb_category_body_div'
+        },
+        child: [{
+          element: 'div',
+          attr: {
+            "class": 'hb_category_body_title_div'
+          },
+          event: [{
+            type: 'click',
+            func: blockManager.eventToggle
+          }],
+          child: [{
+            element: 'label',
+            attr: {
+              name: category[i].name
+            },
+            html: category[i].title + " \u25B2",
+            event: [{
+              type: 'click',
+              func: blockManager.eventToggle
+            }]
+          }]
+        }]
+      };
+      dom = utils.builder(_category);
+      blockManager.renderCategoryContent(category[i].name, dom);
+      parent.appendChild(dom);
+    }
+  },
+
+  /**
+   * 
+   * @param {string} category 
+   * @param {Dom Element} categoryDom 
+   */
+  renderCategoryContent: function renderCategoryContent(category, categoryDom) {
+    var configs = blockManager.config.configs;
+    var _config = null,
+        dom = null;
+
+    for (var i = 0, len = configs.length; i < len; i++) {
+      _config = configs[i];
+
+      if (_config.category === category) {
+        dom = utils.builder(_config.model.render());
+        _config.model.dom = dom;
+        categoryDom.appendChild(dom);
+      }
+    }
+  },
+
+  /**
    * render block element
    * @param {Element} parent 
    */
   render: function render(parent) {
+    blockManager.renderCategory(parent);
+    /*
     var configs = blockManager.config;
     var _config = null;
-
     for (var i = 0, len = configs.length; i < len; i++) {
       _config = configs[i];
-      var dom = utils.builder(_config.model.render());
+        var dom = utils.builder(_config.model.render());
       _config.model.dom = dom;
       parent.appendChild(dom);
     }
+    */
   }
 };
 module.exports = blockManager;
@@ -1795,8 +2119,8 @@ function () {
     value: function eventDetect(e) {
       var _config;
 
-      for (var i = 0, len = config.length; i < len; i++) {
-        _config = config[i];
+      for (var i = 0, len = config.configs.length; i < len; i++) {
+        _config = config.configs[i];
 
         if (_config.model.dom === e.target) {
           _config.model.event(e);
@@ -2058,6 +2382,8 @@ module.exports = instance;
 var Layout = __webpack_require__(12);
 
 var utils = __webpack_require__(0);
+
+var blockConfig = __webpack_require__(3);
 /**
  * Layout Manager(Layout을 관리한다)
  */
@@ -2087,6 +2413,7 @@ var layoutManager = {
       height: contentRect.height
     };
     contentLayout.dom = dom;
+    contentLayout.isHave = true;
   },
   eventDetect: function eventDetect(e) {
     if (layoutManager.event) {
@@ -2440,7 +2767,8 @@ var layoutManager = {
 
         _newChild.text = blockOption.text ? blockOption.text : null;
         var newChild = utils.builder(_newChild);
-        newChildLayout.dom = newChild; //posIdx
+        newChildLayout.dom = newChild;
+        newChildLayout.isHave = blockOption.isHave; //posIdx
 
         if (parentLayout.child[layoutManager.eventInfo.posIdx]) {
           parent.insertBefore(newChild, parent.children[layoutManager.eventInfo.posIdx]);
@@ -2645,7 +2973,6 @@ var layoutManager = {
           parentLayout = null;
 
       if (parent != null) {
-        //hb_layout_id가 없으니깐 어떻게 할까?
         parentLayout = layoutManager.selectLayoutDom(parent, layoutManager.contentLayout);
         layout = new Layout();
         layout.info.elementType = child.tagName.toLowerCase();
@@ -2674,6 +3001,13 @@ var layoutManager = {
 
         for (var idx in layoutEvents) {
           child.addEventListener(layoutEvents[idx].type, layoutEvents[idx].func);
+        } //is have
+
+
+        for (var i = 0, len = blockConfig.configs.length; i < len; i++) {
+          if (layout.info.elementType == blockConfig.configs[i].option.element) {
+            layout.isHave = blockConfig.configs[i].option.isHave;
+          }
         }
 
         parentLayout.child.push(layout);
@@ -2722,6 +3056,7 @@ function () {
     this._child = [];
     this._prop = null;
     this._dom = null;
+    this._isHave = null;
   }
 
   _createClass(Layout, [{
@@ -2746,7 +3081,7 @@ function () {
     key: "contain",
     value: function contain(x, y) {
       try {
-        if (this._info.elementType !== 'div') {
+        if (!this._isHave) {
           return false;
         }
 
@@ -2788,6 +3123,7 @@ function () {
         }
       }
 
+      copiedLayout.isHave = this.isHave;
       return copiedLayout;
     }
   }, {
@@ -2961,6 +3297,14 @@ function () {
       return this._prop;
     }
   }, {
+    key: "isHave",
+    set: function set(_isHave) {
+      this._isHave = _isHave;
+    },
+    get: function get() {
+      return this._isHave;
+    }
+  }, {
     key: "dom",
     set: function set(_dom) {
       this._dom = _dom;
@@ -3132,7 +3476,7 @@ var propertyManager = {
   /**
    * 
    * @param {string} category 
-   * @param {Dom Element} categoryDom 
+   * @param {Dom Element} categoryDom
    */
   renderCategoryContent: function renderCategoryContent(category, categoryDom) {
     var configs = propertyManager.config.configs;
@@ -4048,11 +4392,18 @@ function (_Property) {
         var value,
             selected = this.selected.dom;
 
-        if (valueDom.value != null && valueDom.value != '') {
-          value = valueDom.value + unitDom.value;
-          selected.style[this.property.name] = value;
+        if (unitDom.value != 'auto') {
+          if (valueDom.value != null && valueDom.value != '') {
+            value = valueDom.value + unitDom.value;
+            selected.style[this.property.name] = value;
+          } else {
+            selected.style[this.property.name] = null;
+          }
         } else {
-          selected.style[this.property.name] = null;
+          /*
+            width, height auto style exception
+          */
+          selected.style[this.property.name] = unitDom.value;
         }
 
         if (this.callback && typeof this.callback === 'function') {
@@ -4812,27 +5163,33 @@ var cssManager = {
   cssContent: {
     bootstrap: [{
       element: 'link',
-      src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+      src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css',
+      extra: true
     }, {
       element: 'script',
-      src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
+      src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+      extra: true
     }, {
       element: 'script',
-      src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
+      extra: true
     }, {
       element: 'script',
-      src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
+      src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',
+      extra: true
     }, {
       element: 'link',
-      src: './html_builder.css'
+      src: 'html_builder.css',
+      extra: false
     }],
     plain: [{
       element: 'link',
-      src: './html_builder.css'
+      src: 'html_builder.css',
+      extra: false
     }]
   },
   config: __webpack_require__(26),
-  init: function init(id, type) {
+  init: function init(id, type, path_prefix) {
     var head = document.getElementsByTagName('head')[0]; //remove css content
 
     for (var i = 0; i < head.children.length; i++) {
@@ -4851,7 +5208,13 @@ var cssManager = {
 
       if (cssList[idx].element === 'link') {
         element.setAttribute('rel', 'stylesheet');
-        element.setAttribute('href', cssList[idx].src);
+
+        if (!cssList[idx].extra) {
+          element.setAttribute('href', path_prefix + cssList[idx].src);
+        } else {
+          element.setAttribute('href', cssList[idx].src);
+        }
+
         element.setAttribute('head_type', 'css');
       } else {
         element.setAttribute('type', 'text/javascript');

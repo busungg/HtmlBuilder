@@ -29,11 +29,19 @@ class PropertyTextUnit extends Property {
       }
 
       var value, selected = this.selected.dom;
-      if (valueDom.value != null && valueDom.value != '') {
-        value = valueDom.value + unitDom.value;
-        selected.style[this.property.name] = value;
+      if (unitDom.value != 'auto') {
+        if (valueDom.value != null && valueDom.value != '') {
+          value = valueDom.value + unitDom.value;
+          selected.style[this.property.name] = value;
+        } else {
+          selected.style[this.property.name] = null;
+        }
       } else {
-        selected.style[this.property.name] = null;
+        /*
+          width, height auto style exception
+        */
+        
+       selected.style[this.property.name] = unitDom.value;
       }
 
       if (this.callback && typeof this.callback === 'function') {

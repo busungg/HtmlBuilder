@@ -10,26 +10,6 @@
 	- 
 */
 
-/*
-.block_half {
-	width: 50%;
-	height: 50%;
-	box-sizing: border-box;	
-}
-
-.block_border-basic {
-	border: 1px solid #000000;
-}
-
-.block_padding-10px {
-	padding: 10px;
-}
-
-.block_margin-10px {
-	margin: 10px;
-}
-*/
-
 html, 
 body
 {
@@ -210,7 +190,7 @@ body
 
 .hb_btn-nav-attr
 {
-	background-image: url("../icon/nav-attr-bootstrap.svg");
+	background-image: url("../icon/nav/nav-attr.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 70% 70%;
@@ -218,7 +198,7 @@ body
 
 .hb_btn-nav-block
 {
-	background-image: url("../icon/nav-blocks-bootstrap.svg");
+	background-image: url("../icon/nav/nav-blocks.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 70% 70%;
@@ -227,7 +207,7 @@ body
 
 .hb_btn-nav-setting
 {
-	background-image: url("../icon/nav-setting-bootstrap.svg");
+	background-image: url("../icon/nav/nav-setting.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 70% 70%;
@@ -256,9 +236,9 @@ body
 /*--------------- BLOCK -------------- */
 .hb_btn-block
 {
-	float:left;
-	width: 35%;
-	height: 100px;
+	display: inline-block;
+	width: 40%;
+	height: 120px;
 	padding: 5px;
 	margin-left: 5px;
 	margin-bottom: 5px;
@@ -296,57 +276,62 @@ body
 
 .hb_btn-div 
 {
-	background-image: url("../icon/div.svg");
+	background-image: url("../icon/block/div.svg");
+}
+
+.hb_btn-h
+{
+	background-image: url("../icon/block/h.svg");
 }
 
 .hb_btn-p 
 {
-	background-image: url("../icon/p.svg");
+	background-image: url("../icon/block/p.svg");
 }
 
 .hb_btn-input 
 {
-	background-image: url("../icon/input.svg");
+	background-image: url("../icon/block/input.svg");
 }
 
 .hb_btn-text-area 
 {
-	background-image: url("../icon/text-area.svg");
+	background-image: url("../icon/block/text-area.svg");
 }
 
 .hb_btn-link
 {
-	background-image: url("../icon/link.svg");
+	background-image: url("../icon/block/link.svg");
 }
 
 .hb_btn-img 
 {
-	background-image: url("../icon/img.svg");
+	background-image: url("../icon/block/img.svg");
 }
 
 .hb_btn-select
 {
-	background-image: url("../icon/select-box.svg");
+	background-image: url("../icon/block/select-box.svg");
 }
 
 .hb_btn-button
 {
-	background-image: url("../icon/button.svg");
+	background-image: url("../icon/block/button.svg");
 }
 
 .hb_btn-label
 {
-	background-image: url("../icon/label.svg");
+	background-image: url("../icon/block/label.svg");
 }
 
 .hb_btn-check-box 
 {
-	background-image: url("../icon/check-box.svg");
+	background-image: url("../icon/block/check-box.svg");
 }
 
 .hb_btn-radio 
 {
-	background-image: url("../icon/radio.svg");
+	background-image: url("../icon/block/radio.svg");
 }
 
 /*--------------- PROPERTY --------------*/
@@ -499,7 +484,7 @@ body
 
 .hb_btn-delete
 {
-	background-image: url("../icon/btn-delete.svg");
+	background-image: url("../icon/func/btn-delete.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 90% 90%;
@@ -507,7 +492,7 @@ body
 
 .hb_btn-copy
 {
-	background-image: url("../icon/btn-copy.svg");
+	background-image: url("../icon/func/btn-copy.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 90% 90%;
@@ -575,7 +560,7 @@ body
 	width: 30px;
 	height: 30px;
 	margin: 5px;
-	background-image: url("../icon/btn-resolution-phone.svg");
+	background-image: url("../icon/setting/btn-resolution-phone.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 70% 70%;
@@ -594,7 +579,7 @@ body
 	width: 30px;
 	height: 30px;
 	margin: 5px;
-	background-image: url("../icon/btn-resolution-tablet.svg");
+	background-image: url("../icon/setting/btn-resolution-tablet.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 70% 70%;
@@ -613,7 +598,7 @@ body
 	width: 30px;
 	height: 30px;
 	margin: 5px;
-	background-image: url("../icon/btn-resolution-computer.svg");
+	background-image: url("../icon/setting/btn-resolution-computer.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 70% 70%;
@@ -699,7 +684,7 @@ body
 	height: 25px;
 	float: right;
 	margin: 10px;
-	background-image: url("../icon/btn-cancel.svg");
+	background-image: url("../icon/setting/btn-cancel.svg");
 	background-position: center;
     background-repeat: no-repeat;
     background-size: 80% 80%;

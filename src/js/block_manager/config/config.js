@@ -20,10 +20,12 @@ const category = [{
         name: 'image',
         title: 'Image'
     },
+    /*
     {
         name: 'table',
         title: 'Table'
     },
+    */
     {
         name: 'extra',
         title: 'Extra'
@@ -116,7 +118,7 @@ const configs = [
             text: 'h1 element text',
             isHave: false
         },
-        icon: 'hb_btn-p',
+        icon: 'hb_btn-h',
         category: 'title'
     },
     {
@@ -129,7 +131,7 @@ const configs = [
             text: 'h2 element text',
             isHave: false
         },
-        icon: 'hb_btn-p',
+        icon: 'hb_btn-h',
         category: 'title'
     },
     {
@@ -142,7 +144,7 @@ const configs = [
             text: 'h3 element text',
             isHave: false
         },
-        icon: 'hb_btn-p',
+        icon: 'hb_btn-h',
         category: 'title'
     },
     {
@@ -155,7 +157,7 @@ const configs = [
             text: 'h4 element text',
             isHave: false
         },
-        icon: 'hb_btn-p',
+        icon: 'hb_btn-h',
         category: 'title'
     },
     {
@@ -168,7 +170,7 @@ const configs = [
             text: 'h5 element text',
             isHave: false
         },
-        icon: 'hb_btn-p',
+        icon: 'hb_btn-h',
         category: 'title'
     },
     {
@@ -181,7 +183,7 @@ const configs = [
             text: 'h6 element text',
             isHave: false
         },
-        icon: 'hb_btn-p',
+        icon: 'hb_btn-h',
         category: 'title'
     },
 
@@ -191,7 +193,8 @@ const configs = [
         option: {
             element: 'form',
             attrs: {
-                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+                class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px'],
+                action: 'javascript:void(0);'
             },
             isHave: true
         },
@@ -359,18 +362,20 @@ const configs = [
     },
 
     //table
+    /*
     {
         title: 'Table',
         option: {
             element: 'table',
             attrs: {
-                class: ['block_half', 'block_border-basic', 'block_margin-10px']
+                class: ['block_half', 'block_margin-10px', 'table']
             },
             isHave: false
         },
         icon: 'hb_btn-div',
         category: 'table'
     },
+    */
 
     //extra
     {

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>HtmlBuilder</title>
-  <script src="./htmlbuilder.js"></script>
+  <script src="./js/htmlbuilder.js"></script>
 </head>
 
 <body>
@@ -27,7 +27,8 @@
 <script type='text/javascript'>
   (function () {
     HtmlBuilder.init({
-      css_type: 'bootstrap'
+      css_type: 'bootstrap',
+      css_path_prefix: './css/'
     });
 
     var select_design = document.getElementById('#hb_select_design');

@@ -5,35 +5,41 @@ var cssManager = {
     cssContent: {
         bootstrap: [{
                 element: 'link',
-                src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+                src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css',
+                extra: true
             },
 
             {
                 element: 'script',
-                src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
+                src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+                extra: true
             },
             {
                 element: 'script',
-                src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+                src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js',
+                extra: true
             },
 
             {
                 element: 'script',
-                src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
+                src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js',
+                extra: true
             },
             {
                 element: 'link',
-                src: './html_builder.css'
+                src: 'html_builder.css',
+                extra: false
             }
         ],
         plain: [{
             element: 'link',
-            src: './html_builder.css'
+            src: 'html_builder.css',
+            extra: false
         }]
     },
     config: require('./config/config'),
 
-    init: function (id, type) {
+    init: function (id, type, path_prefix) {
         var head = document.getElementsByTagName('head')[0];
         //remove css content
         for (var i = 0; i < head.children.length; i++) {
@@ -50,8 +56,14 @@ var cssManager = {
             element = document.createElement(cssList[idx].element);
             if (cssList[idx].element === 'link') {
                 element.setAttribute('rel', 'stylesheet');
-                element.setAttribute('href', cssList[idx].src);
+                if(!cssList[idx].extra) {
+                    element.setAttribute('href', path_prefix + cssList[idx].src);
+                } else {
+                    element.setAttribute('href', cssList[idx].src);
+                }
                 element.setAttribute('head_type', 'css');
+
+                
             } else {
                 element.setAttribute('type', 'text/javascript');
                 element.setAttribute('src', cssList[idx].src);

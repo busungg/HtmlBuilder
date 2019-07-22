@@ -24,7 +24,8 @@ var mainManager = {
             width: ['80%', '18%'],
             height: ['100%', '100%'],
             css: '#hb_css',
-            css_type: 'plain'
+            css_type: 'plain',
+            css_path_prefix: './'
         };
 
         var c = config || {};
@@ -55,7 +56,7 @@ var mainManager = {
             mainManager.initFuncEvents();
 
             //default css setting
-            cssManager.init(mainManager.config.css, mainManager.config.css_type);
+            cssManager.init(mainManager.config.css, mainManager.config.css_type, mainManager.config.css_path_prefix);
             cssManager.render();
 
             //util set css id
@@ -514,7 +515,7 @@ var mainManager = {
     changeCssType: function (type) {
         mainManager.config.css_type = type;
 
-        cssManager.init(mainManager.config.css, mainManager.config.css_type);
+        cssManager.init(mainManager.config.css, mainManager.config.css_type, mainManager.config.css_path_prefix);
         cssManager.render();
     }
 };

@@ -359,6 +359,17 @@ const configs = [
   //Font
   {
     prop: {
+      name: 'font-size',
+      title: 'Font size',
+      attr_type: 'style',
+      units: ['px', 'cm', 'mm', 'in'],
+      category: 'font'
+    },
+    model_name: 'propertyTextUnit'
+  },
+
+  {
+    prop: {
       name: 'color',
       title: 'Color',
       attr_type: 'style',
