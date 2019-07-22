@@ -66,6 +66,14 @@
               }
             },
             {
+              title: '.block_select_half_25px',
+              content: {
+                width: '50%',
+                height: '25px',
+                'box-sizing' : 'border-box'
+              }
+            },
+            {
               title: '.block_border-basic',
               content: {
                 border: '1px solid #000000'
@@ -169,7 +177,7 @@
             title: 'Select',
             element: 'select',
             attrs: {
-              class: ['block_half', 'block_border-basic']  
+              class: ['block_select_half_25px', 'block_border-basic']  
             },
             icon: 'hb_btn-select'
           },
@@ -215,6 +223,8 @@
 
         /*
           1. attr
+          2. attr 구성 수정 - 옵션 처리 필요
+          3. H.menuAttr
         */
         attr: [
           {
@@ -355,7 +365,7 @@
             name: 'position',
             title: 'Position',
             type: 'select',
-            options: ['', 'static', 'relative', 'fixed', 'absolute', 'sticky'],
+            options: ['', 'static', 'relative', 'absolute'],
             units: [],
             category: 'position'
           },
@@ -812,10 +822,9 @@
 
         U.getJustTextContent = function(element) {
           var copyElement = element.cloneNode(true);
-          var childrenList = copyElement.children;
 
-          while(childrenList.length != 0) {
-            childrenList[0].remove();
+          while(copyElement.firstElementChild) {
+            copyElement.removeChild(copyElement.firstElementChild);
           }
 
           return copyElement.textContent;
@@ -961,21 +970,24 @@
             if(layout) {
               var child = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, layout.id));
               var childRect = child.getBoundingClientRect();
-              var style = window.getComputedStyle(child);
+              var style = window.getComputedStyle(child); //CSS 속성까지 적용 된다.
+              var parentLayout, parentStyle, posParent = child.parentElement;
               
-              if(style.position === 'relative') {
-                if(layout.parentLayoutId != null) {
-                  var parentLayout = LayoutController.selectLayout(layout.parentLayoutId, U.contentLayout);    
+              while(posParent) {
+                parentStyle = window.getComputedStyle(posParent);
+                if(parentStyle.position === 'relative' || parentStyle.position === 'absolute') {
+                    break;
+                }
+
+                posParent = posParent.parentElement;
+              }
+
+              if(posParent) {
+                  parentLayout = LayoutController.selectLayout(posParent.getAttribute('hb_layout_id'), U.contentLayout);
                   layout.x = (child.offsetLeft ? (child.offsetLeft + parentLayout.x) : parentLayout.x);
                   layout.y = (child.offsetTop ? (child.offsetTop + parentLayout.y) : parentLayout.y);
                   layout.width = (child.scrollWidth ? child.scrollWidth : childRect.width);
                   layout.height = (child.scrollHeight ? child.scrollHeight : childRect.height);
-                } else {
-                  layout.x = (child.offsetLeft ? child.offsetLeft  : childRect.left);
-                  layout.y = (child.offsetTop ? child.offsetTop : childRect.top);
-                  layout.width = (child.scrollWidth ? child.scrollWidth : childRect.width);
-                  layout.height = (child.scrollHeight ? child.scrollHeight : childRect.height);
-                }
               } else {
                 layout.x = (child.offsetLeft ? child.offsetLeft : childRect.left);
                 layout.y = (child.offsetTop ? child.offsetTop : childRect.top);
@@ -1474,8 +1486,8 @@
               if(U.selectedLayout) {
                 var body = U.getElementByAttribute(U.getQueryOption(O.HB_LAYOUT_ID, U.contentLayout.id));
                 var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
-                var x = (layout.x + U.contentLayout.x - body.scrollLeft);
-                var y = (layout.y + U.contentLayout.y - body.scrollTop) - 21;
+                var x = (layout.x - body.scrollLeft);
+                var y = (layout.y - body.scrollTop) - 21;
 
                 functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
 
@@ -1484,8 +1496,8 @@
                   body.addEventListener('scroll', function(e) {
                     if(U.selectedLayout) {
                       var layout = LayoutController.selectLayout(U.selectedLayout.id, U.contentLayout);
-                      var x = (layout.x + U.contentLayout.x - e.target.scrollLeft);
-                      var y = (layout.y + U.contentLayout.y - e.target.scrollTop) - 21;
+                      var x = (layout.x - e.target.scrollLeft);
+                      var y = (layout.y - e.target.scrollTop) - 21;
 
                       var functionBlock = document.getElementsByClassName('hb_func-menu');
                       functionBlock[0].setAttribute('style', 'position: absolute; left: ' + x + 'px; top: ' + y + 'px;');
@@ -1894,11 +1906,10 @@
 
         U.exportHtml = function(id) {
           try {
-            var html = null;
+            var html = {result: ''};
             var content = document.getElementById(id);
             var tempContent = document.createElement('div');
-            tempContent.setAttribute('id', 'temp_export_html');
-            tempContent.setAttribute('style', 'x:0, y:-1000');
+            tempContent.setAttribute('style', 'position: absolute; x:0; y:-1000;');
             tempContent.innerHTML = content.innerHTML;
             
             document.body.appendChild(tempContent);
@@ -1908,45 +1919,56 @@
                 blockArray[i].removeAttribute(O.HB_LAYOUT_ID);
             }
             
-            html = tempContent.innerHTML;
+            U.beautifyHtml(tempContent, ' '.repeat(4), -1, html);
             document.body.removeChild(tempContent);
-            
-            if(html === '') {
+
+            if(html.result === '') {
               return '';
             }
 
-            return U.beautifyHtml(html);
-            
+            return html.result;
           } catch (err) {
             console.log(err.message);
           }
         };
         
-        U.beautifyHtml = function(html) {
-            var tab = ' '.repeat(4);
-            var indent = 0;
-            var tag = null, nextTag = null;
-            
-            var result = '';
-            
-            for(var pos = 0, len = html.length; pos < len - 1; pos++) {
-                tag = html[pos];
-                nextTag = html[pos+1];
-                
-                if(tag === '<' && nextTag !== '/') {
-                    result += '\n' + tab.repeat(indent);
-                    if(nextTag.toUpperCase() !== 'I') { //input, img self-closing
-                        indent++;
-                    }
-                } else if(tag === '<' && nextTag === '/') {
-                    if(--indent < 0) indent = 0;
-                    result += '\n' + tab.repeat(indent);
-                }
-                result += tag;
+        /*
+          use recursive function
+          param: parent dom element
+
+          * delete top, bottom 
+        */
+        U.beautifyHtml = function(parent, tab, tabIdx, html) {
+          if(tabIdx == -1 && parent.children.length == 0) {
+            return;
+          }
+
+          if(tabIdx != -1) {
+            var clone = parent.cloneNode(true);
+            while (clone.firstElementChild) {
+                clone.removeChild(clone.firstElementChild);
             }
-            result += html[len - 1];
-            
-            return result;
+
+            var tags = clone.outerHTML.replace(/\n/g,'').split('</');
+            html.result += ('\n' + tab.repeat(tabIdx) + tags[0]);
+          }
+
+          if(parent.children.length == 0) {
+            if(tags.length == 2) {
+              html.result += ('\n' + tab.repeat(tabIdx) + '</' + tags[1]);
+            }
+            return;
+          } else {
+            for(var i = 0, len = parent.children.length; i < len; i++) {
+              U.beautifyHtml(parent.children[i], tab, tabIdx + 1, html);
+            }
+
+            if(tabIdx != -1) {
+              if(tags.length == 2) {
+                html.result += ('\n' + tab.repeat(tabIdx) + '</' + tags[1]);
+              }
+            }
+          }
         };
 
         U.importCss = function(cssText) {
@@ -2065,7 +2087,7 @@
                 attr: {
                     id: c.ids[0],
                     style: ('width:' + c.width[0] + ';height:' + c.height[0] + '; float:left; overflow: auto;'),
-                    class: 'hb_content hb_full hb_padding-10px hb_border-basic'
+                    class: 'hb_content hb_full hb_border-basic'
                 }
             };
             _content.attr[O.HB_LAYOUT_ID] = c.ids[0];

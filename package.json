@@ -1,0 +1,38 @@
+{
+  "name": "htmlbuilder",
+  "version": "1.0.0",
+  "description": "package for htmlbuilder v_1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "devserver": "webpack-dev-server --open --progress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/busungg/HtmlBuilder.git"
+  },
+  "keywords": [
+    "web",
+    "builder",
+    "javascript"
+  ],
+  "author": "busungg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/busungg/HtmlBuilder/issues"
+  },
+  "homepage": "https://github.com/busungg/HtmlBuilder#readme",
+  "dependencies": {
+    "@babel/polyfill": "^7.4.4",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-dev-server": "^3.7.2"
+  }
+}

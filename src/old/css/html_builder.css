@@ -1,0 +1,563 @@
+/*
+1. CSS Naming Rule
+	- Block: The sole root of the component.
+	- Element: A component part of the Block.
+	- Modifier: A variant or extension of the Block.
+
+2. CSS structure
+	- menu
+	- navigator
+	- 
+*/
+
+html, 
+body
+{
+	width: :100%;
+    height: 100%;
+    margin: 0;
+    padding: 5px;
+    overflow-y: hidden;
+}
+
+.hb_sub-menu,
+.hb_main-menu
+.hb_content
+{
+	display: block;
+}
+
+/*--------------- COMMON -------------- */
+.hb_cursor-move {
+	cursor: move;
+}
+
+.hb_full {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.hb_half {
+	width: 50%;
+	height: 50%;
+	box-sizing: border-box;	
+}
+
+.hb_width-75 {
+	position: : relative;
+	width: 75%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.hb_margin-5px {
+	margin: 2px;
+}
+
+.hb_margin-10px {
+	margin: 10px;
+}
+
+.hb_padding-5px {
+	padding: 5px;
+}
+
+.hb_padding-10px {
+	padding: 10px;
+}
+
+.hb_outline-solid
+{
+	outline: 1px solid #000000;
+}
+
+.hb_outline-dashed
+{
+	outline: 2px dashed #248f24;
+}
+
+.hb_border-basic
+{
+	border: 1px solid #000000;
+}
+
+.hb_border-dashed
+{
+	border: 1px dashed #000000;
+}
+
+.hb_border-contain
+{
+	border: 2px dashed #248f24 !important;
+}
+
+.hb_border-top-contain
+{
+	border-top: 7px solid #f4aa42 !important;
+}
+
+.hb_border-top-move
+{
+	box-shadow: 0px -3px 0px #f4aa42 !important;
+}
+
+.hb_border-bottom-move
+{
+	box-shadow: 0px 3px 0px #f4aa42 !important; 
+}
+
+.hb_border-left-move
+{
+	box-shadow: -3px 0px 0px #f4aa42 !important;
+}
+
+.hb_border-right-move
+{
+	box-shadow: 3px 0px 0px #f4aa42 !important;
+}
+
+/*--------------- FUNCTION BLOCK --------------*/
+
+.hb_func-menu 
+{
+	width: 50px;
+	height: 20px;
+}
+
+.hb_func-menu .hb_btn-func {
+	display: inline-block;
+	float: left;
+	width:50%;
+	height:100%;
+	outline: none;
+}
+
+.hb_btn-delete
+{
+	background-image: url("../icon/btn-delete.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_btn-copy
+{
+	background-image: url("../icon/btn-copy.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_btn-add
+{
+	background-image: url("../icon/btn-add.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_btn-save
+{
+	background-image: url("../icon/btn-save.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+/*--------------- CONTENT --------------*/
+.hb_selectable {
+	outline: 3px dashed #1da57a !important;
+}
+
+.hb_selected {
+	outline: 3px solid #1da57a !important;
+}
+
+
+/*--------------- NAV --------------*/
+.hb_main-menu .hb_nav
+{
+	width: 100%;
+	height: 4%;
+}
+
+.hb_main-menu .hb_nav .hb_btn-nav
+{
+	display: inline-block;
+	float: left;
+	width:33%;
+	height:100%;
+	outline: none;
+}
+
+.hb_btn-nav-attr
+{
+	background-image: url("../icon/nav-attr.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_btn-nav-block
+{
+	background-image: url("../icon/nav-blocks.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_btn-nav-setting
+{
+	background-image: url("../icon/nav-setting.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+/*--------------- CONTENT BLOCK --------------*/
+.hb_main-menu .hb_content
+{
+	width: 100%;
+	height: 95%;
+	margin-top: 5px;
+	overflow-y: scroll;
+}
+
+.hb_main-menu .hb_content-blocks
+{
+	width: 95%;
+	text-align: center;
+}
+
+.hb_main-menu .hb_content-blocks .hb_btn-block
+{
+	float:left;
+	width: 35%;
+	height: 100px;
+	padding: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	border: 1px solid #495267;
+}
+
+.hb_main-menu .hb_content-blocks .hb_btn-block:hover {
+	border:1px solid #a0a0a0;
+}
+
+.hb_btn-block .hb_lbl
+{
+	display: inline-block;
+	width: 100%;
+	white-space: normal;
+	text-align: center;
+	text-overflow: ellipsis;
+	font-size:12px; 
+	font-weight:bold;
+}
+
+.hb_btn-block .hb_img
+{
+	display: block;
+	width: 80%;
+	height: 65%;
+	margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    pointer-events : none;
+    background-position: center;
+    background-repeat: no-repeat;
+    /*background-size: cover;*/
+    background-size: contain;
+}
+
+.hb_btn-div 
+{
+	background-image: url("../icon/div.svg");
+}
+
+.hb_btn-p 
+{
+	background-image: url("../icon/p.svg");
+}
+
+.hb_btn-input 
+{
+	background-image: url("../icon/input.svg");
+}
+
+.hb_btn-text-area 
+{
+	background-image: url("../icon/text-area.svg");
+}
+
+.hb_btn-link
+{
+	background-image: url("../icon/link.svg");
+}
+
+.hb_btn-img 
+{
+	background-image: url("../icon/img.svg");
+}
+
+.hb_btn-select
+{
+	background-image: url("../icon/select-box.svg");
+}
+
+.hb_btn-button
+{
+	background-image: url("../icon/button.svg");
+}
+
+.hb_btn-label
+{
+	background-image: url("../icon/label.svg");
+}
+
+.hb_btn-check-box 
+{
+	background-image: url("../icon/check-box.svg");
+}
+
+.hb_btn-radio 
+{
+	background-image: url("../icon/radio.svg");
+}
+
+/*--------------- CONTENT ATTR --------------*/
+.hb_main-menu .hb_content-attr
+{
+	width: 100%;
+	text-align: center;
+}
+
+.hb_main-menu .hb_content-attr .hb_attr-block
+{
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+}
+
+.hb_main-menu .hb_content-attr .hb_attr-block .hb_title-block
+{
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_title-block .hb_lbl
+{
+	float: left;
+	width: 90%;
+	height: 25px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 13px;
+	font-weight: bold;
+	overflow-wrap: break-word;
+}
+
+.hb_title-block .hb_input
+{
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_title-block .hb_btn
+{
+	display: inline-block;
+	width: 90%;
+	height: 20px;
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+	color: #212529;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 12px;
+}
+
+.hb_title-block .hb_select
+{
+	width: 90%;
+	height: 100px;
+}
+
+.hb_main-menu .hb_content-attr .hb_attr-block .hb_attr-list-block
+{
+	width: 100%;
+}
+
+.hb_attr-list-block .hb_block {
+	width: 100%;
+}
+
+/*--------------- CONTENT STYLE --------------*/
+.hb_main-menu .hb_content-attr .hb_attr-block .hb_style_title-block
+{
+	width: 100%;
+	min-height: 30px;
+	background-color: #9fa8b7;
+}
+
+.hb_style_title-block .hb_style_lbl
+{
+	width: 90%;
+	height: 25px; 
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 13px;
+	font-weight: bold;
+	overflow-wrap: break-word;
+}
+
+.hb_title-block .hb_style_lbl
+{
+	width: 90%;
+	height: 25px;
+	margin-right: auto;
+	margin-left: auto;
+	font-size: 13px;
+	font-weight: bold;
+	overflow-wrap: break-word;
+}
+
+.hb_title-block .hb_style_input
+{
+	width: 90%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.hb_title-block .hb_style_select
+{
+	width: 90%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*--------------- MENU SETTING --------------*/
+.hb_setting-block
+{
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+}
+
+.hb_setting-block .hb_title-block
+{
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_setting-btn-phone
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-phone.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_setting-btn-tablet
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-tablet.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_setting-btn-browser
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/btn-resolution-computer.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/*--------------- MENU SETTING POPUP --------------*/
+.hb_setting-popup
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 70%;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	border: 2px solid #495267;
+	background-color: #3b4251;
+}
+
+.hb_setting-popup div {
+	box-sizing: border-box;
+	border-bottom: 1px solid #66728d;
+}
+
+.hb_setting-popup-titlediv
+{
+	width: 100%;
+	height: 10%;
+	color: #c3cee2;
+	font: 15px;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
+.hb_setting-popup-textdiv
+{
+	width: 100%;
+	height: 80%;
+	padding: 10px;
+}
+
+.hb_setting-popup-textarea
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.hb_setting-popup-applybutton
+{
+	margin: 10px;
+}
+
+.hb_setting-popup-clossbutton
+{
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin: 10px;
+	background-image: url("../icon/btn-cancel.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
