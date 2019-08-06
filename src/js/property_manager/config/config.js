@@ -17,6 +17,11 @@ const category = [{
   },
 
   {
+    name: 'table',
+    title: 'Table'
+  },
+
+  {
     name: 'style2css',
     title: 'Style to CSS'
   },
@@ -117,6 +122,16 @@ const configs = [
       category: 'href'
     },
     model_name: 'propertyText'
+  },
+
+  {
+    prop: {
+      name: 'table',
+      title: 'Table',
+      attr_type: 'attr',
+      category: 'table'
+    },
+    model_name: 'propertyTable'
   },
 
   {

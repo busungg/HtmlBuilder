@@ -20,12 +20,10 @@ const category = [{
         name: 'image',
         title: 'Image'
     },
-    /*
     {
         name: 'table',
         title: 'Table'
     },
-    */
     {
         name: 'extra',
         title: 'Extra'
@@ -362,7 +360,6 @@ const configs = [
     },
 
     //table
-    /*
     {
         title: 'Table',
         option: {
@@ -375,8 +372,7 @@ const configs = [
         icon: 'hb_btn-div',
         category: 'table'
     },
-    */
-
+    
     //extra
     {
         title: 'Link',

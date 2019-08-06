@@ -15,7 +15,8 @@ var propertyManager = {
     propertyText: require('./model/propertyText'),
     propertyTextUnit: require('./model/propertyTextUnit'),
     propertyTextAppend: require('./model/PropertyTextAppend'),
-    propertyOption: require('./model/propertyOption')
+    propertyOption: require('./model/propertyOption'),
+    propertyTable: require('./model/propertyTable')
   },
 
   selected: {
