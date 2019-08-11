@@ -93,15 +93,19 @@ var propertyManager = {
     }
 
     var sibling = target.nextSibling;
+    var prop_hidden = sibling.getAttribute('prop-hidden');
 
     while (sibling) {
-      if (sibling.style.display == 'none') {
+      if (sibling.style.display == 'none' && !prop_hidden) {
         sibling.style.display = 'block';
       } else {
         sibling.style.display = 'none';
       }
 
       sibling = sibling.nextSibling;
+      if(sibling) {
+        prop_hidden = sibling.getAttribute('prop-hidden');
+      }
     }
   },
 
@@ -216,24 +220,40 @@ var propertyManager = {
         if(_config.model.prop.name == 'src') {
           if(domType == 'IMG') {
             _config.model.dom.parentElement.style['display'] = 'block';
+            _config.model.dom.parentElement.removeAttribute('prop-hidden');
           } else {
             _config.model.dom.parentElement.style['display'] = 'none';
+            _config.model.dom.parentElement.setAttribute('prop-hidden', 'true');
           }
         }
 
         if(_config.model.prop.name == 'href') {
           if(domType == 'A') {
             _config.model.dom.parentElement.style['display'] = 'block';
+            _config.model.dom.parentElement.removeAttribute('prop-hidden');
           } else {
             _config.model.dom.parentElement.style['display'] = 'none';
+            _config.model.dom.parentElement.setAttribute('prop-hidden', 'true');
           }
         }
 
         if(_config.model.prop.name == 'option') {
           if(domType == 'SELECT') {
             _config.model.dom.style['display'] = 'block';
+            _config.model.dom.removeAttribute('prop-hidden');
           } else {
             _config.model.dom.style['display'] = 'none';
+            _config.model.dom.setAttribute('prop-hidden', 'true');
+          }
+        }
+
+        if(_config.model.prop.name == 'table') {
+          if(domType == 'TABLE') {
+            _config.model.dom.parentElement.style['display'] = 'block';
+            _config.model.dom.parentElement.removeAttribute('prop-hidden');
+          } else {
+            _config.model.dom.parentElement.style['display'] = 'none';
+            _config.model.dom.parentElement.setAttribute('prop-hidden', 'true');
           }
         }
 
