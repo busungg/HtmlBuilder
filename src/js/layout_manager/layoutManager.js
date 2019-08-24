@@ -451,10 +451,15 @@ var layoutManager = {
      */
     selectableLayout: function (e) {
         try {
+            var target = e.target;
+            if(target.getAttribute('is-table')) {
+                target = target.parentElement.parentElement;
+            }
+
             if (e.type === 'mouseover') {
-                e.target.classList.add('hb_selectable');
+                target.classList.add('hb_selectable');
             } else if (e.type === 'mouseout') {
-                e.target.classList.remove('hb_selectable');
+                target.classList.remove('hb_selectable');
             }
         } catch (err) {
             console.log(err.message);
@@ -467,12 +472,18 @@ var layoutManager = {
      */
     selectDom: function (e) {
         try {
+            var target = e.target;
+            if(target.getAttribute('is-table')) {
+                target = target.parentElement.parentElement;
+            }
+
             if (layoutManager.selectedLayout) {
                 var selectedDom = layoutManager.selectedLayout.dom;
                 selectedDom.classList.remove('hb_selected');
                 selectedDom.removeAttribute('draggable');
 
-                if (selectedDom === e.target) {
+
+                if (selectedDom === target) {
                     layoutManager.selectedLayout = null;
                     return false;
 
@@ -481,10 +492,10 @@ var layoutManager = {
                 }
             }
 
-            layoutManager.selectedLayout = layoutManager.selectLayoutDom(e.target, layoutManager.contentLayout);
-            e.target.setAttribute('draggable', 'true');
-            e.target.classList.add('hb_selected');
-            e.target.classList.add('hb_selectable');
+            layoutManager.selectedLayout = layoutManager.selectLayoutDom(target, layoutManager.contentLayout);
+            target.setAttribute('draggable', 'true');
+            target.classList.add('hb_selected');
+            target.classList.add('hb_selectable');
 
             return true;
         } catch (err) {
