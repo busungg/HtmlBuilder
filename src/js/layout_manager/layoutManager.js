@@ -527,6 +527,7 @@ var layoutManager = {
         try {
             var parentLayout, copyLayout;
 
+            //copyLayout - Table tr,td는 layout이 없기 때문에 생성 필요
             if (typeof parent === 'string') {
                 parentLayout = layoutManager.selectLayout(parent, layoutManager.contentLayout);
             } else {
