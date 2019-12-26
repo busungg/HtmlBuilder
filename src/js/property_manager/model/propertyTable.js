@@ -34,7 +34,6 @@ class PropertyTable extends Property {
 
                     for (var j = 0; j < prop.table.col; j++) {
                         td = document.createElement('td');
-                        td.setAttribute('is-table', true);
                         tr.appendChild(td);
                     }
 

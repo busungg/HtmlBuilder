@@ -452,7 +452,7 @@ var layoutManager = {
     selectableLayout: function (e) {
         try {
             var target = e.target;
-            if(target.getAttribute('is-table')) {
+            if(target.nodeName == 'TR'|| target.nodeName == 'TD') {
                 target = target.parentElement.parentElement;
             }
 
@@ -473,7 +473,7 @@ var layoutManager = {
     selectDom: function (e) {
         try {
             var target = e.target;
-            if(target.getAttribute('is-table')) {
+            if(target.nodeName == 'TR'|| target.nodeName == 'TD') {
                 target = target.parentElement.parentElement;
             }
 
