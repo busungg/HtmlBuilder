@@ -24,8 +24,25 @@ Object.prototype.layout = {
         } catch (err) {
             console.log(err);
         }
-    }
+    },
+    child: null
 };
+
+Object.prototype.getProperty = function() {
+    console.log(this);
+    console.log(this.attributes);
+
+    /*
+        정리해서 보내주기
+    */
+
+};
+
+Object.prototype.getChildLayout = function() {
+
+}
+
+//element.attributes
 
 /*
 1. Event 관리 
