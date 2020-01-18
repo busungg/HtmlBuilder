@@ -1,4 +1,10 @@
-Object.prototype.layout = {
+/*
+  DOM 은 Element Object로 관리 되기 때문에 
+  Element 객체의 Prototype으로 관리한다.
+  각 Element의 기능으로 관리하는 것을 추천한다.
+*/
+
+Element.prototype.layout = {
     id: null,
     parentId: null,
     pos: {
@@ -8,27 +14,10 @@ Object.prototype.layout = {
         height: 0
     },
     canHaveChild: null,
-    containDOM: function(x, y) {
-        try {
-            if (!this.canHaveChild) {
-                return false;
-            }
-
-            let pos = this.pos;
-            if (pos.x <= x && x <= (pos.x + pos.width) &&
-                pos.y <= y && y <= (pos.y + pos.height)) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    },
     child: null
 };
 
-Object.prototype.getProperty = function() {
+Element.prototype.getProperty = function() {
     console.log(this);
     console.log(this.attributes);
 
@@ -38,13 +27,38 @@ Object.prototype.getProperty = function() {
 
 };
 
-Object.prototype.getChildLayout = function() {
+Element.prototype.getChildLayout = function() {
+    console.log(this.layout);
+};
 
-}
+Element.prototype.containElement = function(x, y) {
+    try {
+        if (!this.layout.canHaveChild) {
+            return false;
+        }
+
+        let pos = this.layout.pos;
+        if (pos.x <= x && x <= (pos.x + pos.width) &&
+            pos.y <= y && y <= (pos.y + pos.height)) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (err) {
+        console.log(err);
+    }
+};
 
 //element.attributes
 
 /*
+Element에 prototype을 저장한다.
+
+Element -> Node 
+=> Element는 Node를 상속 받는다.
+Node -> EventTarget
+=> Node는 EventTarget을 상속 받는다.
+
 1. Event 관리 
   1) Event 발생 시 관련된 기능이 많음(Function, Property 등)
   2) Evnet를 분리하고 싶지만 그러기는 쉽지 않기 때문에 MainManager에서 Event를 만들어두고 관리를 하도록 함
