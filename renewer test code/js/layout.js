@@ -6,71 +6,77 @@
 
 Element.prototype.layout = {
     id: null,
-    parentId: null,
     pos: {
         x: 0,
         y: 0,
         width: 0,
         height: 0
     },
-    canHaveChild: null,
-    child: null
+    canHaveChild: null
+};
+
+Element.prototype.containElement = function(x, y) {
+    try {
+        let layout = this.layout;
+
+        if (!layout.canHaveChild) {
+            return false;
+        }
+
+        let pos = layout.pos;
+        if (pos.x <= x && x <= (pos.x + pos.width) &&
+            pos.y <= y && y <= (pos.y + pos.height)) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 Element.prototype.updateLayout = function() {
-    /*
-        try {
-            if (layout) {
-                var child = layout.dom;
-                var childRect = child.getBoundingClientRect();
-                var style = window.getComputedStyle(child); //CSS 속성까지 적용 된다.
-                var parentLayout, parentStyle, posParent = child.parentElement;
+    try {
+        let rect = this.getBoundingClientRect(), layout = this.layout;
+        let startParent = this.parentElement, startParentStyle = null, startParentLayout; //parentElement는 부모가 Element가 아닐 시 null을 보낸다.
+        //startParentLayout은 position의 기준을 잡아주는 parent Element이다.
 
-                while (posParent) {
-                    parentStyle = window.getComputedStyle(posParent);
-                    if (parentStyle.position === 'relative' || parentStyle.position === 'absolute') {
-                        break;
-                    }
-
-                    posParent = posParent.parentElement;
-                }
-
-                if (posParent) {
-                    parentLayout = layoutManager.selectLayoutDom(posParent, layoutManager.contentLayout);
-                    layout.pos.x = (child.offsetLeft ? (child.offsetLeft + parentLayout.pos.x) : parentLayout.pos.x);
-                    layout.pos.y = (child.offsetTop ? (child.offsetTop + parentLayout.pos.y) : parentLayout.pos.y);
-                    layout.pos.width = (child.scrollWidth ? child.scrollWidth : childRect.width);
-                    layout.pos.height = (child.scrollHeight ? child.scrollHeight : childRect.height);
-                } else {
-                    layout.pos.x = (child.offsetLeft ? child.offsetLeft : childRect.left);
-                    layout.pos.y = (child.offsetTop ? child.offsetTop : childRect.top);
-                    layout.pos.width = (child.scrollWidth ? child.scrollWidth : childRect.width);
-                    layout.pos.height = (child.scrollHeight ? child.scrollHeight : childRect.height);
-                }
-
-                for (var i = 0, len = layout.child.length; i < len; i++) {
-                    layoutManager.updateLayout(layout.child[i]);
-                }
+        while(startParent) {
+            startParentStyle = window.getComputedStyle(startParent);
+            if(startParentStyle.position === 'relative' || startParentStyle.position === 'absolute') {
+                break;
             }
-        } catch (err) {
-            console.log(err.message);
+
+            startParent = startParent.parentElement;
         }
-    */
+
+        if (startParent) {
+            startParentLayout = startParent.layout;
+            startParentLayout.pos.x = (this.offsetLeft ? (this.offsetLeft + startParentLayout.pos.x) : startParentLayout.pos.x);
+            startParentLayout.pos.y = (this.offsetTop ? (this.offsetTop + startParentLayout.pos.y) : startParentLayout.pos.y);
+            startParentLayout.pos.width = (this.scrollWidth ? this.scrollWidth : rect.width);
+            startParentLayout.pos.height = (this.scrollHeight ? this.scrollHeight : rect.height);
+        } else {
+            layout.pos.x = (this.offsetLeft ? this.offsetLeft : rect.left);
+            layout.pos.y = (this.offsetTop ? this.offsetTop : rect.top);
+            layout.pos.width = (this.scrollWidth ? this.scrollWidth : rect.width);
+            layout.pos.height = (this.scrollHeight ? this.scrollHeight : rect.height);
+        }
+
+    } catch(err) {
+        console.log(err);
+    }
 };
 
 Element.prototype.initCss = function() {
     try {
-        var dom = this;
-        if (dom) {
-            console.log(dom.classList);
-
-            dom.classList.remove('hb_border-contain');
-            dom.classList.remove('hb_border-top-contain');
-            dom.classList.remove('hb_border-top-move');
-            dom.classList.remove('hb_border-bottom-move');
-            dom.classList.remove('hb_border-left-move');
-            dom.classList.remove('hb_border-right-move');
-        }
+            var classList = this.classList;
+            classList.remove('hb_border-contain');
+            classList.remove('hb_border-top-contain');
+            classList.remove('hb_border-top-move');
+            classList.remove('hb_border-bottom-move');
+            classList.remove('hb_border-left-move');
+            classList.remove('hb_border-right-move');
     } catch (err) {
         console.log(err);
     }
@@ -91,23 +97,7 @@ Element.prototype.getChildLayout = function() {
     console.log(this.layout);
 };
 
-Element.prototype.containElement = function(x, y) {
-    try {
-        if (!this.layout.canHaveChild) {
-            return false;
-        }
 
-        let pos = this.layout.pos;
-        if (pos.x <= x && x <= (pos.x + pos.width) &&
-            pos.y <= y && y <= (pos.y + pos.height)) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (err) {
-        console.log(err);
-    }
-};
 
 //element.attributes
 
@@ -147,4 +137,6 @@ var tr = document.createElement('tr');
 tr.setAttribute('id', '1');
 tr.setAttribute('class', '123');
 tr.setAttribute('style', 'width: 10px;');
+
+document.body.appendChild(tr);
 console.log(tr);
