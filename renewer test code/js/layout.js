@@ -12,10 +12,16 @@ Element.prototype.layout = {
         width: 0,
         height: 0
     },
+    prop: {}, //for function for update attribute
     canHaveChild: null
 };
 
-Element.prototype.containElement = function(x, y) {
+/**
+ * isContain
+ * 1. return boolean
+ * 2. return if this element contain x, y postion 
+ */
+Element.prototype.isContain = function(x, y) {
     try {
         let layout = this.layout;
 
@@ -35,6 +41,11 @@ Element.prototype.containElement = function(x, y) {
     }
 };
 
+/**
+ * updateLayout
+ * 1. return void
+ * 2. Update layout postion
+ */
 Element.prototype.updateLayout = function() {
     try {
         let rect = this.getBoundingClientRect(), layout = this.layout;
@@ -84,11 +95,161 @@ Element.prototype.initCss = function() {
 
 
 Element.prototype.getProperty = function() {
-    console.log(this);
     console.log(this.attributes);
+    try {
+        var prop = this.prop;
+        var attr = this.attributes;
+        prop.id = attr['id'] || null; // expr1 || expr2 일때 If expr1 can be converted to true, returns expr1; else, returns expr2.
+        prop.name = attr['name'] || null;
+        prop.title = attr['title'] || null;
+        
+        var firstChild = null;
+        if(firstChild = this.firstChild) {
+            if(firstChild.nodeType == Node.TEXT_NODE) {
+                prop.text = firstChild.textContent;
+            } else {
+                prop.text = null;
+            }
+        } else {
+            prop.text = null;
+        }
+
+    } catch(err) {
+        console.log(err);
+    }
 
     /*
-        정리해서 보내주기
+    if (!dom) {
+            dom = this.dom;
+        }
+
+        try {
+            if (!this.prop) {
+                this.prop = {};
+            }
+
+            var prop = this.prop;
+            prop.id = (dom.id ? dom.id : null);
+            prop.name = (dom.getAttribute('name') ? dom.getAttribute('name') : null);
+            prop.title = (dom.title ? dom.title : null);
+
+            if (dom.firstChild) {
+                if (dom.firstChild.nodeType == Node.TEXT_NODE) {
+                    prop.text = dom.firstChild.textContent;
+                } else {
+                    prop.text = null;
+                }
+            } else {
+                prop.text = null;
+            }
+
+            if (dom.nodeName == 'INPUT' || dom.nodeName == 'TEXTAREA') {
+                prop.value = (dom.value ? dom.value : '');
+            } else {
+                prop.value = (dom.getAttribute('value') ? dom.getAttribute('value') : '');
+            }
+
+            if (dom.nodeName == 'IMG') {
+                prop.src = (dom.getAttribute('src') ? dom.getAttribute('src') : '');
+            }
+
+            if (dom.nodeName == 'A') {
+                prop.href = (dom.getAttribute('href') ? dom.getAttribute('href') : '');
+            }
+
+            prop.class = [];
+            for (var i = 0, len = dom.classList.length; i < len; i++) {
+                if (dom.classList[i].indexOf('hb_selectable') == -1 && dom.classList[i].indexOf('hb_selected') == -1) {
+                    prop.class.push(dom.classList[i]);
+                }
+            }
+
+            prop.option = [];
+            if (dom.options) {
+                for (var i = 0, len = dom.options.length; i < len; i++) {
+                    prop.option.push({
+                        text: dom.options[i].text,
+                        value: dom.options[i].value
+                    });
+                }
+            }
+
+            prop.style = {};
+            var domStyle = dom.style;
+
+            //Group Property padding, margin, border-width, border-color, border-style
+            var groupProperty = {};
+            groupProperty['padding'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['margin'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['border-width'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['border-color'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+            groupProperty['border-style'] = {
+                checkSum: 0,
+                value: null,
+                group: true
+            };
+
+            var direction = ['-left', '-right', '-top', '-bottom'];
+
+            var i, len, groupName, propertyName, propertyValue;
+            for (i = 0, len = domStyle.length; i < len; i++) {
+                propertyName = domStyle.item(i);
+                propertyValue = domStyle[propertyName];
+
+                groupName = propertyName.split(/-left|-right|-top|-bottom/);
+                groupName = groupName[0] + groupName[1];
+
+                if (groupProperty[groupName]) {
+                    if (groupProperty[groupName].checkSum == 0) {
+                        groupProperty[groupName].value = propertyValue;
+                    } else {
+                        if (groupProperty[groupName].value != propertyValue) {
+                            groupProperty[groupName].group = false;
+                        }
+                    }
+
+                    groupProperty[groupName].checkSum++;
+                }
+
+                if (propertyName.indexOf('color') != -1) {
+                    prop.style[propertyName] = utils.rgb2Hex(propertyValue);
+                } else {
+                    prop.style[propertyName] = propertyValue;
+                }
+            }
+
+            for (key in groupProperty) {
+                if (groupProperty[key].checkSum == 4 && groupProperty[key].group) {
+                    if (key.indexOf('color') != -1) {
+                        prop.style[key] = utils.rgb2Hex(groupProperty[key].value);
+                    } else {
+                        prop.style[key] = groupProperty[key].value;
+                    }
+
+                    //group 화 할 시 사용
+                    groupName = key.split('-');
+                    for (i = 0, len = direction.length; i < len; i++) {
+                        propertyName = ((groupName.length > 1) ? (groupName[0] + direction[i] + '-' + groupName[1]) : (groupName[0] + direction[i]));
+                        prop.style[propertyName] = null;
+                    }
+                }
+            }
     */
 
 };
