@@ -99,7 +99,7 @@ class Layout {
             //This Layout
             const dom = this.dom
             const pos = this.pos;
-            //const rect = dom.getBoundingClientRect() //render된 후의 top, left, width, height을 제공;
+            const rect = dom.getBoundingClientRect() //render된 후의 top, left, width, height을 제공;
 
             //Offset의 기준이 되는 Parent Element
             const offsetParent = dom.offsetParent;
@@ -125,10 +125,13 @@ class Layout {
             const isScrollX = (dom.scrollWidth - dom.clientWidth);
             const isScrollY = (dom.scrollHeight - dom.clientHeight);
 
-            //rect에서 margin값을 무조건 빼는게 좋을듯?
+            //rect를 사용하는 이유 -> inline 요소의 width, height값을 확인하기 위함
 
-            pos.width = (isScrollX ? dom.scrollWidth : dom.clientWidth);
-            pos.height = (isScrollY ? dom.scrollHeight : dom.clientHeight);
+            console.log('client', dom.clientWidth, dom.clientHeight);
+            console.log('rect', rect.width, rect.height);
+
+            pos.width = (isScrollX ? dom.scrollWidth : rect.width);
+            pos.height = (isScrollY ? dom.scrollHeight : rect.height);
 
         } catch (err) {
             console.log(err);
@@ -151,5 +154,11 @@ const LayoutDiv2 = new Layout({
     }
 });
 
+const LayoutSpan = new Layout({
+    element: 'span',
+    text: 'text'
+});
+
 document.body.appendChild(LayoutDiv1.dom);
 LayoutDiv1.dom.appendChild(LayoutDiv2.dom);
+LayoutDiv2.dom.appendChild(LayoutSpan.dom);

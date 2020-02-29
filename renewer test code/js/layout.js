@@ -294,10 +294,44 @@ Node -> EventTarget
   * 생성된 Model의 size가 크지만 유지보수 측면에서는 더 좋을 수도 있다.
 */
 
+//새로운 방식
+function Layout(tagName, options) {
+    let layout = this;
+    var dom = document.createElement(tagName);
+
+    dom.addEventListener('click', function(e) {
+        let proto = Object.getPrototypeOf(layout);
+        proto.click(e);
+    });
+
+    this.dom = dom;
+}
+
+Layout.prototype.click = function(e) {
+    console.log('prototype click', e);
+}
+
+//Layout의 prototype은 따로 있다.
+//Layout class로 끝내고 싶은데 어떻게 해야할까?
+/*이 방법이 class보다 나은점이 있는지 확인이 필요하다. 
+ - ES5 문법을 사용하는 곳에서 쉽게 사용 가능하다
+ - 별 장점이 없는거 같다. ES5를 연습하는 것 보다 ES6를 연습하는게 좋지 않을까?
+ - class의 method는 자동적으로 prototype에 선언되는거 같다. 그렇다면?
+*/
+
+var trLayout = new Layout('div');
+
+console.dir(trLayout);
+
+trLayout.dom.setAttribute('id', '1');
+trLayout.dom.setAttribute('class', '123');
+trLayout.dom.setAttribute('style', 'width: 100px; height:50px;');
+
+/*
 var tr = document.createElement('tr');
 tr.setAttribute('id', '1');
 tr.setAttribute('class', '123');
 tr.setAttribute('style', 'width: 10px;');
+*/
 
-document.body.appendChild(tr);
-console.log(tr);
+document.body.appendChild(trLayout.dom);
