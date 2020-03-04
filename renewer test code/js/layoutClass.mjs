@@ -138,19 +138,6 @@ class Layout { //단일 Dom처럼 사용하기 위해 생성한 Class
         */
         const dragStart = (evt) => {
             evt.dataTransfer.setTransferElement(this.dom);
-            console.log('dragStart', evt);
-
-            evt.stopPropagation();
-        };
-
-        /*
-             1. for drag end
-             2. set dragged layout
-         */
-        const dragEnd = (evt) => {
-            console.log('dragEnd', evt, evt.dataTransfer.getTransferElement());
-            evt.dataTransfer.setTransferElement(null);
-
             evt.stopPropagation();
         };
 
@@ -158,6 +145,7 @@ class Layout { //단일 Dom처럼 사용하기 위해 생성한 Class
             1. for drag over -> drag하는 대상이 존재 할때 mousemove 대신 사용
         */
         const dragOver = (evt) => {
+            evt.preventDefault();
             evt.stopPropagation();
 
             //전체 view의 scrollLeft를 더해줘야 한다.
@@ -175,83 +163,118 @@ class Layout { //단일 Dom처럼 사용하기 위해 생성한 Class
                 }
             }
 
-            evt.target.classList.add('hb_border-contain');
-
-            //현재 target의 children과의 순서를 표시한다.
             const target =  evt.target;
+            target.classList.add('hb_border-top-contain');
             if(target.children.length !== 0) {
-
-                //이 부분을 좀 자연스럽게 할 수는 없을까?
-                //새로운 event를 바인드 할까?
-
                 let nearChild = null, minDistance = Infinity, distance = 0;
+                let order = 0, dropOrder = 0;
                 for(let child of target.children) {
+                    child.layout.initCss(); //모든 child의 css를 초기화한다.
                     distance = child.layout.distance(evt.clientX, evt.clientY);
                     if(minDistance > distance) {
                         minDistance = distance;
                         nearChild = child;
+                        dropOrder = order;
                     }
+                    order++;
                 }
-
+                
+                const dataTransfer = evt.dataTransfer;
                 const nearChildPos = nearChild.layout.pos;
                 if (nearChildPos.y < evt.clientY && (nearChildPos.y + nearChildPos.height) > evt.clientY) {
                     if (nearChildPos.x > evt.clientX) {
                         nearChild.classList.add('hb_border-left-move');
-                        //layoutManager.eventInfo.posIdx = ((layoutPos - 1) < 0) ? 0 : layoutPos;
+                        dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
                     } else {
                         nearChild.classList.add('hb_border-right-move');
-                        //layoutManager.eventInfo.posIdx = layoutPos + 1;
+                        dropOrder += 1;
                     }
                 } else {
                     if (nearChildPos.y > evt.clientY) {
                         nearChild.classList.add('hb_border-top-move');
-                        //layoutManager.eventInfo.posIdx = ((layoutPos - 1) < 0) ? 0 : layoutPos;
+                        dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
                     } else {
                         nearChild.classList.add('hb_border-bottom-move');
-                        //layoutManager.eventInfo.posIdx = layoutPos + 1;
+                        dropOrder += 1;
                     }
                 }
 
-                //nearChild가 initCss가 되어야 한다.
+                dataTransfer.setTransferOrder(dropOrder);
             }
-
-            //console.log('dragOver', evt);
         };
 
         /*
-            1. for drag leave -> drag하는 대상이 존재 할때 mousemove 대신 사용
+            1. for drag leave
         */
         const dragLeave = (evt) => {
-
-            evt.target.classList.remove('hb_border-contain');
-            console.log('dragLeave', evt);
+            const target =  evt.target;
+            target.classList.remove('hb_border-top-contain');
+            if(target.children.length !== 0) {
+                for(let child of target.children) {
+                    child.layout.initCss(); //모든 child의 css를 초기화한다.
+                }
+            }
         }
 
-        //dragleave
-        //drop
-
         /*
-         function drag(ev) {
-         ev.dataTransfer.setData("text", ev.target.id);
-         }
- 
-         function drop(ev) {
-         ev.preventDefault();
-         var data = ev.dataTransfer.getData("text");
-         
-         console.log(data);
-         
-         ev.target.appendChild(document.getElementById(data));
-         }
-        */
+             1. for drop
+             2. set dragged layout
+         */
+        const drop = (evt) => {
+            /*
+                If you want to allow a drop, you must prevent the default handling 
+                by cancelling both the dragenter and dragover events - From MDN
+            */
+            event.preventDefault();
+            const dropTarget = evt.target;
+
+            if(dropTarget.layout.canHaveChild) {
+                const draggedElement = evt.dataTransfer.getTransferElement();
+                const dropOrder = evt.dataTransfer.getTransferOrder();
+
+                //drop
+                draggedElement.parentNode.removeChild(draggedElement);
+
+                if(dropTarget.children.length > 0) {
+                    let order = 0, isDropped = false;
+                    for(let child of dropTarget.children) {
+                        if(order === dropOrder) {
+                            dropTarget.insertBefore(draggedElement, child);
+                            isDropped = true;
+                            break;
+                        }
+                        order++;
+                    }
+
+                    if(!isDropped) {
+                        dropTarget.appendChild(draggedElement);
+                    }
+                } else {
+                    dropTarget.appendChild(draggedElement);    
+                }
+            } 
+
+            evt.dataTransfer.setTransferElement(null);
+            evt.stopPropagation();
+
+            //drop이 모두 잘 끝나게 되면 parent, child의 css를 init해야한다.
+            dropTarget.classList.remove('hb_border-top-contain');
+            if(dropTarget.children.length !== 0) {
+                for(let child of dropTarget.children) {
+                    child.layout.initCss(); //모든 child의 css를 초기화한다.
+                }
+            }
+
+            //selected도 변경되어야 한다.
+        };
 
         this.dom.addEventListener('mouseover', mouseOver);
         this.dom.addEventListener('mouseout', mouseOut);
         this.dom.addEventListener('click', click);
         this.dom.addEventListener('dragstart', dragStart);
-        this.dom.addEventListener('dragend', dragEnd);
         this.dom.addEventListener('dragover', dragOver);
         this.dom.addEventListener('dragleave', dragLeave);
+        this.dom.addEventListener('drop', drop);
     }
 
     initCss() {
@@ -528,21 +551,21 @@ class Layout { //단일 Dom처럼 사용하기 위해 생성한 Class
 const LayoutDiv1 = new Layout({
     element: 'div',
     attr: {
-        style: 'width:300px; height:300px; padding:5px; margin:10px; border: 1px solid #dddddd'
+        style: 'width:300px; height:300px; padding:5px; margin:10px; border: 2px solid #000'
     }
 });
 
 const LayoutDiv2 = new Layout({
     element: 'div',
     attr: {
-        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 1px solid #dddddd'
+        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
     }
 });
 
 const LayoutDiv3 = new Layout({
     element: 'div',
     attr: {
-        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 1px solid #dddddd'
+        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
     }
 });
 
