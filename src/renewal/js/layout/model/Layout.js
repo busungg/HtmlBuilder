@@ -1,61 +1,8 @@
-//import Utils from '../../src/js/utils/utils';
-
-
-const Utils = {
-    builder: function (option) {
-        try {
-            var parent = document.createElement(option.element);
-
-            for (key in option.attrs) {
-                if (option.attrs[key] != null && option.attrs[key] != undefined) {
-
-                    if (Array.isArray(option.attrs[key])) {
-                        var values = '';
-                        for (keyArray in option.attrs[key]) {
-                            values += (option.attrs[key][keyArray] + ' ');
-                        }
-
-                        parent.setAttribute(key, values);
-                    } else {
-                        parent.setAttribute(key, option.attrs[key]);
-                    }
-                }
-            }
-
-            if (option.text) {
-                parent.appendChild(document.createTextNode(option.text));
-            }
-
-            if (option.html) {
-                parent.innerHTML = option.html;
-            }
-
-            if (option.event) {
-                for (var i = 0, len = option.event.length; i < len; i++) {
-                    parent.addEventListener(option.event[i].type, option.event[i].func);
-                }
-            }
-
-            if (option.child) {
-                for (var i = 0, len = option.child.length; i < len; i++) {
-                    parent.appendChild(utils.builder(option.child[i]));
-                }
-            }
-
-            return parent;
-        } catch (err) {
-            console.log(err.message);
-        }
-    },
-
-    rgb2Hex: () => {
-        return '#fff';
-    }
-};
+import Utils from '../../utils/utils';
 
 //단일 Dom처럼 사용하기 위해 생성한 Class
-class Layout { 
-    constructor(option, body) {
+class Layout {
+    constructor(option, frame, observer) {
         /*
             1. option은 변경되면 안되기 때문에 closuer를 이용하여 private 접근자를 사용한다.
             2. Object.assign 메소드 사용 시 내부 객체는 shallow copy가 되므로 JSON 객체를 사용한다.
@@ -66,13 +13,15 @@ class Layout {
         };
 
         //Dom Class
-        this.getBody = () => {
-            return body;
+        this.getFrame = () => {
+            return frame;
         }
 
         this.dom = Utils.builder(option);
         this.dom.layout = this;
         this.canHaveChild = true; //option.canHaveChild; 임시
+
+        this.observer = observer;
 
         /*
             1. Dom마다 event 생성 이유
@@ -142,9 +91,8 @@ class Layout {
             evt.preventDefault();
             evt.stopPropagation();
 
-            //전체 view의 scrollLeft를 더해줘야 한다.
-            const clientX = evt.clientX + this.getBody().scrollLeft;
-            const clientY = evt.clientY + this.getBody().scrollTop;
+            const clientX = evt.clientX + this.getFrame().scrollLeft;
+            const clientY = evt.clientY + this.getFrame().scrollTop;
 
             /*
                 dataTransfer의 element와 target이 같을 시 return
@@ -153,47 +101,54 @@ class Layout {
             const transferLayout = evt.dataTransfer.getTransferElement()?.layout
             if (transferLayout) { //if not undefined
                 if (transferLayout.isContain(clientX, clientY)) {
-                    return false;
+                    return;
                 }
             }
 
             const target = evt.target;
-            target.classList.add('hb_border-top-contain');
-            if (target.children.length !== 0) {
-                let nearChild = null, minDistance = Infinity, distance = 0;
-                let order = 0, dropOrder = 0;
-                for (let child of target.children) {
-                    child.layout.initCss(); //모든 child의 css를 초기화한다.
-                    distance = child.layout.distance(clientX, clientY);
-                    if (minDistance > distance) {
-                        minDistance = distance;
-                        nearChild = child;
-                        dropOrder = order;
+            if (target.layout.canHaveChild) {
+                target.classList.add('hb_border-top-contain');
+                if (target.children.length !== 0) {
+                    let nearChild = null,
+                        minDistance = Infinity,
+                        distance = 0;
+                    let order = 0,
+                        dropOrder = 0;
+                    for (let child of target.children) {
+                        child.layout.initCss(); //모든 child의 css를 초기화한다.
+                        distance = child.layout.distance(clientX, clientY);
+                        if (minDistance > distance) {
+                            minDistance = distance;
+                            nearChild = child;
+                            dropOrder = order;
+                        }
+                        order++;
                     }
-                    order++;
-                }
 
-                const dataTransfer = evt.dataTransfer;
-                const nearChildPos = nearChild.layout.pos;
-                if (nearChildPos.y < clientY && (nearChildPos.y + nearChildPos.height) > clientY) {
-                    if (nearChildPos.x > clientX) {
-                        nearChild.classList.add('hb_border-left-move');
-                        dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
+                    const dataTransfer = evt.dataTransfer;
+                    const nearChildPos = nearChild.layout.pos;
+                    if (nearChildPos.y < clientY && (nearChildPos.y + nearChildPos.height) > clientY) {
+                        if (nearChildPos.x > clientX) {
+                            nearChild.classList.add('hb_border-left-move');
+                            dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
+                        } else {
+                            nearChild.classList.add('hb_border-right-move');
+                            dropOrder += 1;
+                        }
                     } else {
-                        nearChild.classList.add('hb_border-right-move');
-                        dropOrder += 1;
+                        if (nearChildPos.y > clientY) {
+                            nearChild.classList.add('hb_border-top-move');
+                            dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
+                        } else {
+                            nearChild.classList.add('hb_border-bottom-move');
+                            dropOrder += 1;
+                        }
                     }
-                } else {
-                    if (nearChildPos.y > clientY) {
-                        nearChild.classList.add('hb_border-top-move');
-                        dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
-                    } else {
-                        nearChild.classList.add('hb_border-bottom-move');
-                        dropOrder += 1;
-                    }
-                }
 
-                dataTransfer.setTransferOrder(dropOrder);
+                    dataTransfer.setTransferOrder(dropOrder);
+                }
+            } else {
+                dataTransfer.setTransferOrder(-1);
             }
         };
 
@@ -216,21 +171,27 @@ class Layout {
          */
         const drop = (evt) => {
             /*
+                block 을 drop할 시에는 다르게 작동해야 한다.
+
                 If you want to allow a drop, you must prevent the default handling 
                 by cancelling both the dragenter and dragover events - From MDN
             */
             event.preventDefault();
             const dropTarget = evt.target;
-
             if (dropTarget.layout.canHaveChild) {
                 const draggedElement = evt.dataTransfer.getTransferElement();
+                const draggedOption = evt.dataTransfer.getTransferOption();
                 const dropOrder = evt.dataTransfer.getTransferOrder();
 
-                //drop
-                draggedElement.parentNode.removeChild(draggedElement);
+                if(draggedElement) { //Null이 아니면 기존 Layout을 이동 시키는 것   
+                    draggedElement.parentNode.removeChild(draggedElement);
+                } else { //Null이면 Block정보로 새로운 Layout을 생성하는 것
+                    draggedElement = (new Layout(draggedOption, this.frame, layoutObserver)).dom;
+                }
 
                 if (dropTarget.children.length > 0) {
-                    let order = 0, isDropped = false;
+                    let order = 0,
+                        isDropped = false;
                     for (let child of dropTarget.children) {
                         if (order === dropOrder) {
                             dropTarget.insertBefore(draggedElement, child);
@@ -248,9 +209,6 @@ class Layout {
                 }
             }
 
-            evt.dataTransfer.setTransferElement(null);
-            evt.stopPropagation();
-
             //drop이 모두 잘 끝나게 되면 parent, child의 css를 init해야한다.
             dropTarget.classList.remove('hb_border-top-contain');
             if (dropTarget.children.length !== 0) {
@@ -260,6 +218,11 @@ class Layout {
             }
 
             //selected도 변경되어야 한다.
+
+
+            evt.dataTransfer.setTransferElement(null);
+            evt.dataTransfer.setTransferOption(null);
+            evt.stopPropagation();
         };
 
         this.dom.addEventListener('mouseover', mouseOver);
@@ -498,18 +461,18 @@ class Layout {
             const property = parentDom.layout.property;
             option.attrs = option.attrs || {};
             property.id && (option.attrs.id = property.id);
-            property.name && (option.attrs.name = property.name); 
-            property.title && (option.attrs.title = property.title); 
-            property.text && (option.attrs.text = property.text); 
-            property.value && (option.attrs.value = property.value); 
-            property.src && (option.attrs.src = property.src); 
+            property.name && (option.attrs.name = property.name);
+            property.title && (option.attrs.title = property.title);
+            property.text && (option.attrs.text = property.text);
+            property.value && (option.attrs.value = property.value);
+            property.src && (option.attrs.src = property.src);
             property.href && (option.attrs.href = property.href);
             option.attrs.class = property.class.length !== 0 ? property.class : [];
             option.attrs.style = parentDom.style.cssText;
 
-            const body = parentDom.layout.getBody();
+            const frame = parentDom.layout.getFrame();
 
-            const copiedLayout = new Layout(option, body);
+            const copiedLayout = new Layout(option, frame);
             for (let child of parentDom.children) {
                 copiedLayout.dom.appendChild(copyRecursive(child));
             }
@@ -541,111 +504,3 @@ class Layout {
         parent.removeChild(this.dom);
     }
 }
-
-
-const LayoutDiv1 = new Layout({
-    element: 'div',
-    attrs: {
-        style: 'width:300px; height:300px; padding:5px; margin:10px; border: 2px solid #000'
-    }
-}, document.body);
-
-const LayoutDiv2 = new Layout({
-    element: 'div',
-    attrs: {
-        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
-    }
-}, document.body);
-
-const LayoutDiv3 = new Layout({
-    element: 'div',
-    attrs: {
-        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
-    }
-}, document.body);
-
-const LayoutSpan = new Layout({
-    element: 'span',
-    text: 'text'
-}, document.body);
-
-document.body.appendChild(LayoutDiv1.dom);
-LayoutDiv1.dom.appendChild(LayoutDiv2.dom);
-LayoutDiv1.dom.appendChild(LayoutDiv3.dom);
-LayoutDiv2.dom.appendChild(LayoutSpan.dom);
-
-const LayoutCopyDiv1 = LayoutDiv1.copy();
-document.body.appendChild(LayoutCopyDiv1);
-
-setTimeout(function() {
-    LayoutCopyDiv1.layout.delete();
-}, 5000);
-/*
-try {
-    layoutManager.initCss(layoutManager.contentLayout);
-
-    if (e.clientX == 0 && e.clientY == 0) {
-        return;
-    }
-
-    var body = layoutManager.contentLayout.dom,
-        x = e.clientX + body.scrollLeft,
-        y = e.clientY + body.scrollTop,
-        parentLayout = layoutManager.containBlock(x, y, layoutManager.contentLayout);
-
-    if (parentLayout) {
-        layoutManager.eventInfo = {
-            parentLayout: parentLayout,
-            selectedLayout: (layoutManager.selectedLayout ? layoutManager.selectedLayout : null),
-            posIdx: 0,
-            layoutOption: option
-        };
-
-        var parent = parentLayout.dom;
-        parent.classList.add('hb_border-contain');
-
-        if (parentLayout.child.length > 0) {
-            var nearLayout, layoutPos = 0,
-                minDistance = Infinity,
-                distance = 0;
-            for (var i = 0, len = parentLayout.child.length; i < len; i++) {
-                distance = Math.sqrt(
-                    Math.pow(x - (parentLayout.child[i].pos.x + parentLayout.child[i].pos.width * 0.5), 2) +
-                    Math.pow(y - (parentLayout.child[i].pos.y + parentLayout.child[i].pos.height * 0.5), 2)
-                );
-
-                if (minDistance > distance) {
-                    minDistance = distance;
-                    nearLayout = parentLayout.child[i];
-                    layoutPos = i;
-                }
-            }
-
-            var child = nearLayout.dom;
-            if (nearLayout.pos.y < y && (nearLayout.pos.y + nearLayout.pos.height) > y) {
-                if (nearLayout.pos.x > x) {
-                    child.classList.add('hb_border-left-move');
-                    layoutManager.eventInfo.posIdx = ((layoutPos - 1) < 0) ? 0 : layoutPos;
-                } else {
-                    child.classList.add('hb_border-right-move');
-                    layoutManager.eventInfo.posIdx = layoutPos + 1;
-                }
-            } else {
-                if (nearLayout.pos.y > y) {
-                    child.classList.add('hb_border-top-move');
-                    layoutManager.eventInfo.posIdx = ((layoutPos - 1) < 0) ? 0 : layoutPos;
-                } else {
-                    child.classList.add('hb_border-bottom-move');
-                    layoutManager.eventInfo.posIdx = layoutPos + 1;
-                }
-            }
-        } else {
-            parent.classList.add('hb_border-top-contain');
-        }
-    } else {
-        layoutManager.eventInfo = null;
-    }
-} catch (err) {
-    console.log(err.message);
-}
-*/

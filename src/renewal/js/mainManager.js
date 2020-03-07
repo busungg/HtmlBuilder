@@ -1,10 +1,17 @@
 const utils = require('./utils/utils');
 const blockManager = require('./block_manager/blockManager');
 const funcManager = require('./function_manager/funcManager');
-const layoutManager = require('./layout_manager/layoutManager');
+const layoutManager = require('./layout/layoutManager');
 const propertyManager = require('./property_manager/propertyManager');
 const settingManager = require('./setting_manager/settingManager');
 const cssManager = require('./css_manager/cssManager');
+
+
+
+/*
+    1. Polyfill.js 사용
+*/
+
 
 /**
  * set main view and manages all manager
