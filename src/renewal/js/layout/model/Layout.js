@@ -96,9 +96,9 @@ class Layout {
 
             /*
                 dataTransfer의 element와 target이 같을 시 return
-                null propagation operatior = ?. if null -> return undefined
+                null propagation operatior = ?. if null -> return undefined //Babel에서 안됨
             */
-            const transferLayout = evt.dataTransfer.getTransferElement()?.layout
+            const transferLayout = evt.dataTransfer.getTransferElement() ? evt.dataTransfer.getTransferElement().layout : undefined;
             if (transferLayout) { //if not undefined
                 if (transferLayout.isContain(clientX, clientY)) {
                     return;

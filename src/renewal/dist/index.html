@@ -591,12 +591,12 @@
 <body>
 </body>
 
-<script src="./js/polyfill.js"></script>
-<script type="module" src=".dist/Htmlbuilder.js"></script>
-<script type="module">
+<script src="./polyfill.js"></script>
+<script src="./htmlbuilder.js"></script>
+<script>
   (function () {
 
-    layoutManager.initFrameLayout(
+    Htmlbuilder.initFrameLayout(
     {
       element: 'div',
       attrs: {
@@ -611,28 +611,28 @@
       attrs: {
         style: 'width:300px; height:300px; padding:5px; margin:10px; border: 2px solid #000'
       }
-    }, layoutManager.frameLayout.dom);
+    }, Htmlbuilder.frameLayout.dom);
 
     const LayoutDiv2 = new Layout({
       element: 'div',
       attrs: {
         style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
       }
-    }, layoutManager.frameLayout.dom);
+    }, Htmlbuilder.frameLayout.dom);
 
     const LayoutDiv3 = new Layout({
       element: 'div',
       attrs: {
         style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
       }
-    }, layoutManager.frameLayout.dom);
+    }, Htmlbuilder.frameLayout.dom);
 
     const LayoutSpan = new Layout({
       element: 'span',
       text: 'text'
-    }, layoutManager.frameLayout.dom);
+    }, Htmlbuilder.frameLayout.dom);
 
-    layoutManager.frameLayout.dom.appendChild(LayoutDiv1.dom);
+    Htmlbuilder.frameLayout.dom.appendChild(LayoutDiv1.dom);
     LayoutDiv1.dom.appendChild(LayoutDiv2.dom);
     LayoutDiv1.dom.appendChild(LayoutDiv3.dom);
     LayoutDiv2.dom.appendChild(LayoutSpan.dom);
