@@ -1,8 +1,11 @@
 import Utils from '../../utils/utils';
+import { componentObserver } from '../../observer/observerManager';
+//Observer를 import하여 사용하자
+
 
 //단일 Dom처럼 사용하기 위해 생성한 Class
-class Layout {
-    constructor(option, frame, observer) {
+class Component {
+    constructor(option, frame, isFrame = false) {
         /*
             1. option은 변경되면 안되기 때문에 closuer를 이용하여 private 접근자를 사용한다.
             2. Object.assign 메소드 사용 시 내부 객체는 shallow copy가 되므로 JSON 객체를 사용한다.
@@ -18,10 +21,9 @@ class Layout {
         }
 
         this.dom = Utils.builder(option);
-        this.dom.layout = this;
+        this.dom.component = this;
         this.canHaveChild = true; //option.canHaveChild; 임시
-
-        this.observer = observer;
+        this.selected = false;
 
         /*
             1. Dom마다 event 생성 이유
@@ -29,6 +31,19 @@ class Layout {
             2. 주의 사항
                 - method의 this는 현재 scope로 정해지기 때문에 this를 사용할 수 있다.
         */
+
+        /*
+            1. 사용 목적
+              - Component click 시 전에 선택 되었던 component를 초기화한다.
+        */
+        const deSelect = () => {
+            if (this.selected) {
+                this.dom.removeAttribute('draggable');
+                this.dom.classList.remove('hb_selected');
+                this.selected = false;
+            }
+        };
+        componentObserver.register('deSelect', deSelect, this);
 
         /*
             1. 사용 목적
@@ -64,15 +79,15 @@ class Layout {
             1. for select
         */
         const click = (evt) => {
-            //만약 기존에 선택된 것이 있으면 해당 선택된 것은 제외 해야 한다.
-            //만약 선택되어 있었다면? 취소 되어야 한다.
-            //layout내에 selected를 삭제해야 겠구만
-
-            this.dom.setAttribute('draggable', 'true');
-            this.dom.classList.add('hb_selected');
-
+            if(this.selected) {
+                componentObserver.notify('deSelect');
+            } else {
+                componentObserver.notify('deSelect');
+                this.dom.setAttribute('draggable', 'true');
+                this.dom.classList.add('hb_selected');
+                this.selected = true;
+            }
             // 클릭되면 property를 수정할 수 있어야 한다.
-            // 결국 callback 함수가 필요하다.
             evt.stopPropagation();
         };
 
@@ -98,54 +113,22 @@ class Layout {
                 dataTransfer의 element와 target이 같을 시 return
                 null propagation operatior = ?. if null -> return undefined //Babel에서 안됨
             */
-            const transferLayout = evt.dataTransfer.getTransferElement() ? evt.dataTransfer.getTransferElement().layout : undefined;
-            if (transferLayout) { //if not undefined
-                if (transferLayout.isContain(clientX, clientY)) {
+            const transferComponent = evt.dataTransfer.getTransferElement() ? evt.dataTransfer.getTransferElement().component : undefined;
+            if (transferComponent) { //if not undefined
+                if (transferComponent.isContain(clientX, clientY)) {
                     return;
                 }
             }
 
             const target = evt.target;
-            if (target.layout.canHaveChild) {
+            const targetComponent = evt.target.component;
+            if (targetComponent.canHaveChild) {
                 target.classList.add('hb_border-top-contain');
                 if (target.children.length !== 0) {
-                    let nearChild = null,
-                        minDistance = Infinity,
-                        distance = 0;
-                    let order = 0,
-                        dropOrder = 0;
-                    for (let child of target.children) {
-                        child.layout.initCss(); //모든 child의 css를 초기화한다.
-                        distance = child.layout.distance(clientX, clientY);
-                        if (minDistance > distance) {
-                            minDistance = distance;
-                            nearChild = child;
-                            dropOrder = order;
-                        }
-                        order++;
-                    }
-
-                    const dataTransfer = evt.dataTransfer;
-                    const nearChildPos = nearChild.layout.pos;
-                    if (nearChildPos.y < clientY && (nearChildPos.y + nearChildPos.height) > clientY) {
-                        if (nearChildPos.x > clientX) {
-                            nearChild.classList.add('hb_border-left-move');
-                            dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
-                        } else {
-                            nearChild.classList.add('hb_border-right-move');
-                            dropOrder += 1;
-                        }
-                    } else {
-                        if (nearChildPos.y > clientY) {
-                            nearChild.classList.add('hb_border-top-move');
-                            dropOrder = ((dropOrder - 1) < 0) ? 0 : dropOrder;
-                        } else {
-                            nearChild.classList.add('hb_border-bottom-move');
-                            dropOrder += 1;
-                        }
-                    }
-
-                    dataTransfer.setTransferOrder(dropOrder);
+                    targetComponent.initChildCSS();
+                    const result = targetComponent.getNearChild(clientX, clientY);
+                    const dropOrder = targetComponent.getDropOrder(result.child, result.order, clientX, clientY);
+                    evt.dataTransfer.setTransferOrder(dropOrder);
                 }
             } else {
                 dataTransfer.setTransferOrder(-1);
@@ -158,11 +141,7 @@ class Layout {
         const dragLeave = (evt) => {
             const target = evt.target;
             target.classList.remove('hb_border-top-contain');
-            if (target.children.length !== 0) {
-                for (let child of target.children) {
-                    child.layout.initCss(); //모든 child의 css를 초기화한다.
-                }
-            }
+            target.component.initChildCSS();
         }
 
         /*
@@ -171,70 +150,49 @@ class Layout {
          */
         const drop = (evt) => {
             /*
-                block 을 drop할 시에는 다르게 작동해야 한다.
-
                 If you want to allow a drop, you must prevent the default handling 
                 by cancelling both the dragenter and dragover events - From MDN
             */
             event.preventDefault();
-            const dropTarget = evt.target;
-            if (dropTarget.layout.canHaveChild) {
+            const target = evt.target;
+            const targetComponent = evt.target.component;
+
+            if (targetComponent.canHaveChild) {
                 const draggedElement = evt.dataTransfer.getTransferElement();
                 const draggedOption = evt.dataTransfer.getTransferOption();
                 const dropOrder = evt.dataTransfer.getTransferOrder();
 
-                if(draggedElement) { //Null이 아니면 기존 Layout을 이동 시키는 것   
+                if (draggedElement) { //Null이 아니면 기존 Layout을 이동 시키는 것   
                     draggedElement.parentNode.removeChild(draggedElement);
                 } else { //Null이면 Block정보로 새로운 Layout을 생성하는 것
-                    draggedElement = (new Layout(draggedOption, this.frame, layoutObserver)).dom;
+                    draggedElement = (new Component(draggedOption, this.frame)).dom;
                 }
-
-                if (dropTarget.children.length > 0) {
-                    let order = 0,
-                        isDropped = false;
-                    for (let child of dropTarget.children) {
-                        if (order === dropOrder) {
-                            dropTarget.insertBefore(draggedElement, child);
-                            isDropped = true;
-                            break;
-                        }
-                        order++;
-                    }
-
-                    if (!isDropped) {
-                        dropTarget.appendChild(draggedElement);
-                    }
-                } else {
-                    dropTarget.appendChild(draggedElement);
-                }
+                targetComponent.insertChild(draggedElement, dropOrder);
             }
 
             //drop이 모두 잘 끝나게 되면 parent, child의 css를 init해야한다.
-            dropTarget.classList.remove('hb_border-top-contain');
-            if (dropTarget.children.length !== 0) {
-                for (let child of dropTarget.children) {
-                    child.layout.initCss(); //모든 child의 css를 초기화한다.
-                }
-            }
-
-            //selected도 변경되어야 한다.
-
+            target.classList.remove('hb_border-top-contain');
+            targetComponent.initChildCSS();
+            
+            componentObserver.notify('deSelect');
 
             evt.dataTransfer.setTransferElement(null);
             evt.dataTransfer.setTransferOption(null);
             evt.stopPropagation();
         };
 
-        this.dom.addEventListener('mouseover', mouseOver);
-        this.dom.addEventListener('mouseout', mouseOut);
-        this.dom.addEventListener('click', click);
-        this.dom.addEventListener('dragstart', dragStart);
+        if(!isFrame) {
+            this.dom.addEventListener('mouseover', mouseOver);
+            this.dom.addEventListener('mouseout', mouseOut);
+            this.dom.addEventListener('click', click);
+            this.dom.addEventListener('dragstart', dragStart);
+        }
         this.dom.addEventListener('dragover', dragOver);
         this.dom.addEventListener('dragleave', dragLeave);
         this.dom.addEventListener('drop', drop);
     }
 
-    initCss() {
+    initCSS() {
         try {
             const classList = this.dom.classList;
             classList.remove('hb_border-contain');
@@ -245,6 +203,78 @@ class Layout {
             classList.remove('hb_border-right-move');
         } catch (err) {
             console.log(err);
+        }
+    }
+
+    initChildCSS() {
+        for (let child of this.dom.children) {
+            child.component.initCSS();
+        }
+    }
+
+    getNearChild(x, y) {
+        const children = [...this.dom.children];
+        const result = {
+            child: null,
+            order: 0
+        };
+
+        let minDistance = Infinity;
+        children.forEach(function(child, idx) {
+            let distance = child.component.distance(x, y);
+            if(minDistance > distance) {
+                minDistance = distance;
+                result.child = child;
+                result.order = idx;
+            }
+        });
+
+        return result;
+    }
+
+    getDropOrder(nearChild, childOrder, x, y) {
+        let dropOrder = 0;
+        const pos = nearChild.component.pos;
+        if (pos.y < y && (pos.y + pos.height) > y) {
+            if (pos.x > x) {
+                nearChild.classList.add('hb_border-left-move');
+                dropOrder = ((childOrder - 1) < 0) ? 0 : childOrder;
+            } else {
+                nearChild.classList.add('hb_border-right-move');
+                dropOrder = childOrder + 1;
+            }
+        } else {
+            if (pos.y > y) {
+                nearChild.classList.add('hb_border-top-move');
+                dropOrder = ((childOrder - 1) < 0) ? 0 : childOrder;
+            } else {
+                nearChild.classList.add('hb_border-bottom-move');
+                dropOrder = childOrder + 1;
+            }
+        }
+
+        return dropOrder;
+    }
+
+    insertChild(insertChild, insertOrder) {
+        const dom = this.dom;
+        if (dom.children.length > 0) {
+            let order = 0,
+                isDropped = false;
+            for (let child of dom.children) {
+                if (insertOrder === order) {
+                    dom.insertBefore(insertChild, child);
+                    isDropped = true;
+                    break;
+                }
+                order++;
+            }
+
+            if (!isDropped) {
+                dom.appendChild(insertChild);
+            }
+        } else {
+            dom.appendChild(insertChild);
         }
     }
 
@@ -321,9 +351,8 @@ class Layout {
     }
 
     get property() {
-        const dom = this.dom;
-
         try {
+            const dom = this.dom;
             const property = {};
 
             property.id = (dom.id || null);
@@ -402,9 +431,8 @@ class Layout {
                 group: true
             };
 
-            var direction = ['-left', '-right', '-top', '-bottom'];
-
-            var i, len, groupName, propertyName, propertyValue;
+            let direction = ['-left', '-right', '-top', '-bottom'];
+            let i, len, groupName, propertyName, propertyValue;
             for (i = 0, len = domStyle.length; i < len; i++) {
                 propertyName = domStyle.item(i);
                 propertyValue = domStyle[propertyName];
@@ -431,7 +459,7 @@ class Layout {
                 }
             }
 
-            for (key in groupProperty) {
+            for (let key in groupProperty) {
                 if (groupProperty[key].checkSum === 4 && groupProperty[key].group) {
                     if (key.indexOf('color') != -1) {
                         property.style[key] = Utils.rgb2Hex(groupProperty[key].value);
@@ -457,8 +485,8 @@ class Layout {
 
     copy() {
         function copyRecursive(parentDom) {
-            const option = parentDom.layout.getOption();
-            const property = parentDom.layout.property;
+            const option = parentDom.component.getOption();
+            const property = parentDom.component.property;
             option.attrs = option.attrs || {};
             property.id && (option.attrs.id = property.id);
             property.name && (option.attrs.name = property.name);
@@ -470,18 +498,18 @@ class Layout {
             option.attrs.class = property.class.length !== 0 ? property.class : [];
             option.attrs.style = parentDom.style.cssText;
 
-            const frame = parentDom.layout.getFrame();
+            const frame = parentDom.component.getFrame();
 
-            const copiedLayout = new Layout(option, frame);
+            const copiedComponent = new Component(option, frame);
             for (let child of parentDom.children) {
-                copiedLayout.dom.appendChild(copyRecursive(child));
+                copiedComponent.dom.appendChild(copyRecursive(child));
             }
 
-            return copiedLayout.dom;
+            return copiedComponent.dom;
         }
 
-        const copiedLayoutDom = copyRecursive(this.dom);
-        return copiedLayoutDom;
+        const copiedDom = copyRecursive(this.dom);
+        return copiedDom;
     };
 
     delete() {
@@ -495,7 +523,12 @@ class Layout {
                 deleteRecursive(child);
             }
 
-            parentDom.layout = null;
+            const handlers = componentObserver.getHandlers('deSelect', parentDom.layout);
+            for(let handler of handlers) {
+                componentObserver.unRegister('deSelect', handler.handler, handler.context);
+            }
+
+            parentDom.component = null;
         }
 
         const dom = this.dom;
@@ -504,3 +537,5 @@ class Layout {
         parent.removeChild(this.dom);
     }
 }
+
+export default Component;

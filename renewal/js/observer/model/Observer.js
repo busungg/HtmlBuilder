@@ -20,7 +20,29 @@ class Observer {
         }
     }
 
-    unregister(eventName, handler, context) {
+    getHandlers(eventName, context) {
+        try {
+            let handlers = this.handlers[eventName];
+
+            if (!handlers) {
+                return [];
+            } else {
+                let contextHandlers = [];
+                for (let currentHandler of handlers) {
+                    if (currentHandler.context === context) {
+                        contextHandlers.push(currentHandler);
+                    }
+                }
+
+                return contextHandlers;
+            }
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+
+    unRegister(eventName, handler, context) {
         try {
             const handlers = this.handlers[eventName];
 

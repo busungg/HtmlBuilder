@@ -1,9 +1,9 @@
 const Utils = {
     builder: function (option) {
         try {
-            var parent = document.createElement(option.element);
+            let parent = document.createElement(option.element);
 
-            for (key in option.attrs) {
+            for (let key in option.attrs) {
                 if (option.attrs[key] != null && option.attrs[key] != undefined) {
 
                     if (Array.isArray(option.attrs[key])) {
@@ -14,7 +14,7 @@ const Utils = {
 
                         parent.setAttribute(key, values);
                     } else {
-                        parent.setAttribute(key, option.attr[key]);
+                        parent.setAttribute(key, option.attrs[key]);
                     }
                 }
             }

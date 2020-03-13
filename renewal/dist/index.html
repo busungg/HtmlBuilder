@@ -595,8 +595,9 @@
 <script src="./htmlbuilder.js"></script>
 <script>
   (function () {
+    const hb =  Htmlbuilder.default;
 
-    Htmlbuilder.initFrameLayout(
+    hb.initFrameComponent(
     {
       element: 'div',
       attrs: {
@@ -605,44 +606,6 @@
     }
     ,document.body
     );
-
-    const LayoutDiv1 = new Layout({
-      element: 'div',
-      attrs: {
-        style: 'width:300px; height:300px; padding:5px; margin:10px; border: 2px solid #000'
-      }
-    }, Htmlbuilder.frameLayout.dom);
-
-    const LayoutDiv2 = new Layout({
-      element: 'div',
-      attrs: {
-        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
-      }
-    }, Htmlbuilder.frameLayout.dom);
-
-    const LayoutDiv3 = new Layout({
-      element: 'div',
-      attrs: {
-        style: 'width:100px; height:100px; padding:5px; margin:10px; border: 2px solid #000'
-      }
-    }, Htmlbuilder.frameLayout.dom);
-
-    const LayoutSpan = new Layout({
-      element: 'span',
-      text: 'text'
-    }, Htmlbuilder.frameLayout.dom);
-
-    Htmlbuilder.frameLayout.dom.appendChild(LayoutDiv1.dom);
-    LayoutDiv1.dom.appendChild(LayoutDiv2.dom);
-    LayoutDiv1.dom.appendChild(LayoutDiv3.dom);
-    LayoutDiv2.dom.appendChild(LayoutSpan.dom);
-
-    const LayoutCopyDiv1 = LayoutDiv1.copy();
-    document.body.appendChild(LayoutCopyDiv1);
-
-    setTimeout(function () {
-      LayoutCopyDiv1.layout.delete();
-    }, 5000);
   })();
 </script>
 
