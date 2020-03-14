@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './js/component/componentManager.js',
+  entry: './js/mainManager.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'htmlbuilder.js',

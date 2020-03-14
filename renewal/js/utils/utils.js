@@ -7,9 +7,9 @@ const Utils = {
                 if (option.attrs[key] != null && option.attrs[key] != undefined) {
 
                     if (Array.isArray(option.attrs[key])) {
-                        var values = '';
-                        for (keyArray in option.attrs[key]) {
-                            values += (option.attrs[key][keyArray] + ' ');
+                        let values = '';
+                        for(let item of option.attrs[key]) {
+                            values += (item + ' ');
                         }
 
                         parent.setAttribute(key, values);
@@ -35,7 +35,7 @@ const Utils = {
 
             if (option.child) {
                 for (var i = 0, len = option.child.length; i < len; i++) {
-                    parent.appendChild(utils.builder(option.child[i]));
+                    parent.appendChild(Utils.builder(option.child[i]));
                 }
             }
 

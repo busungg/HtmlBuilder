@@ -22,7 +22,7 @@ class Component {
 
         this.dom = Utils.builder(option);
         this.dom.component = this;
-        this.canHaveChild = true; //option.canHaveChild; 임시
+        this.canHaveChild = option.canHaveChild;
         this.selected = false;
 
         /*
@@ -131,7 +131,7 @@ class Component {
                     evt.dataTransfer.setTransferOrder(dropOrder);
                 }
             } else {
-                dataTransfer.setTransferOrder(-1);
+                evt.dataTransfer.setTransferOrder(-1);
             }
         };
 
@@ -158,14 +158,14 @@ class Component {
             const targetComponent = evt.target.component;
 
             if (targetComponent.canHaveChild) {
-                const draggedElement = evt.dataTransfer.getTransferElement();
+                let draggedElement = evt.dataTransfer.getTransferElement();
                 const draggedOption = evt.dataTransfer.getTransferOption();
                 const dropOrder = evt.dataTransfer.getTransferOrder();
 
                 if (draggedElement) { //Null이 아니면 기존 Layout을 이동 시키는 것   
                     draggedElement.parentNode.removeChild(draggedElement);
                 } else { //Null이면 Block정보로 새로운 Layout을 생성하는 것
-                    draggedElement = (new Component(draggedOption, this.frame)).dom;
+                    draggedElement = (new Component(draggedOption, this.getFrame())).dom;
                 }
                 targetComponent.insertChild(draggedElement, dropOrder);
             }

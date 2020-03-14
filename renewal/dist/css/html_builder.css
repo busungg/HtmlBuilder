@@ -1,0 +1,701 @@
+/*
+1. CSS Naming Rule
+	- Block: The sole root of the component.
+	- Element: A component part of the Block.
+	- Modifier: A variant or extension of the Block.
+
+2. CSS structure
+	- menu
+	- navigator
+	- 
+*/
+
+html, 
+body
+{
+	width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 5px;
+    overflow-y: hidden;
+}
+
+.hb_sub-menu,
+.hb_main-menu
+.hb_content
+{
+	display: block;
+}
+
+/*--------------- COMMON -------------- */
+.hb_cursor-move {
+	cursor: move;
+}
+
+.hb_full {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.hb_half {
+	width: 50%;
+	height: 50%;
+	box-sizing: border-box;	
+}
+
+.hb_width-75 {
+	position: relative;
+	width: 75%;
+	height: 25px;
+	box-sizing: border-box;
+
+	display: inline-block;
+    font-weight: 400;
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    font-size: 12px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+	background-color: #6c757d;
+	border-color: #545b60;
+}
+
+/*
+.hb_margin-5px {
+	margin: 2px;
+}
+
+.hb_margin-10px {
+	margin: 10px;
+}
+
+.hb_padding-5px {
+	padding: 5px;
+}
+
+.hb_padding-10px {
+	padding: 10px;
+}
+*/
+
+.hb_outline-solid
+{
+	outline: 1px solid #000000;
+}
+
+.hb_outline-dashed
+{
+	outline: 2px dashed #248f24;
+}
+
+.hb_border-basic
+{
+	border: 1px solid #000000;
+}
+
+.hb_border-dashed
+{
+	border: 1px dashed #000000;
+}
+
+.hb_border-contain
+{
+	border: 2px dashed #248f24 !important;
+}
+
+.hb_border-top-contain
+{
+	border-top: 7px solid #f4aa42 !important;
+}
+
+.hb_border-top-move
+{
+	box-shadow: 0px -3px 0px #f4aa42 !important;
+}
+
+.hb_border-bottom-move
+{
+	box-shadow: 0px 3px 0px #f4aa42 !important; 
+}
+
+.hb_border-left-move
+{
+	box-shadow: -3px 0px 0px #f4aa42 !important;
+}
+
+.hb_border-right-move
+{
+	box-shadow: 3px 0px 0px #f4aa42 !important;
+}
+
+/*--------------- CONTENT --------------*/
+.hb_selectable {
+	outline: 3px dashed #1da57a !important;
+}
+
+.hb_selected {
+	outline: 3px solid #1da57a !important;
+}
+
+/*--------------- NAV --------------*/
+.hb_nav
+{
+	width: 100%;
+	height: 25px;
+}
+
+.hb_btn-nav
+{
+	display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+    color: #fff;
+	background-color: #6c757d;
+	border-color: #545b60;
+
+	outline: none;
+	float: left;
+	width:33%;
+	height:100%;
+}
+
+.hb_btn-nav:hover 
+{
+	background-color: #858f98;
+	border-color: #545b60;
+}
+
+.hb_btn-nav-attr
+{
+	background-image: url("../icon/nav/nav-attr.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+}
+
+.hb_btn-nav-block
+{
+	background-image: url("../icon/nav/nav-blocks.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+
+}
+
+.hb_btn-nav-setting
+{
+	background-image: url("../icon/nav/nav-setting.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+}
+
+.hb_nav_content
+{
+	width: 100%;
+	height: 95%;
+	margin-top: 5px;
+	overflow-y: scroll;
+}
+
+.hb_nav_content-blocks
+{
+	width: 95%;
+	text-align: center;
+}
+
+.hb_nav_content-prop
+{
+	width: 100%;
+	text-align: center;
+}
+
+/*--------------- BLOCK -------------- */
+.hb_btn-block
+{
+	display: inline-block;
+	width: 40%;
+	height: 120px;
+	padding: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	border: 1px solid #495267;
+}
+
+.hb_btn-block:hover {
+	border:1px solid #a0a0a0;
+}
+
+.hb_btn-block .hb_lbl
+{
+	display: inline-block;
+	width: 100%;
+	white-space: normal;
+	text-align: center;
+	text-overflow: ellipsis;
+	font-size:12px; 
+	font-weight:bold;
+}
+
+.hb_btn-block .hb_img
+{
+	display: block;
+	width: 80%;
+	height: 65%;
+	margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    pointer-events : none;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.hb_btn-div 
+{
+	background-image: url("../icon/block/div.svg");
+}
+
+.hb_btn-h
+{
+	background-image: url("../icon/block/h.svg");
+}
+
+.hb_btn-p 
+{
+	background-image: url("../icon/block/p.svg");
+}
+
+.hb_btn-input 
+{
+	background-image: url("../icon/block/input.svg");
+}
+
+.hb_btn-text-area 
+{
+	background-image: url("../icon/block/text-area.svg");
+}
+
+.hb_btn-link
+{
+	background-image: url("../icon/block/link.svg");
+}
+
+.hb_btn-img 
+{
+	background-image: url("../icon/block/img.svg");
+}
+
+.hb_btn-select
+{
+	background-image: url("../icon/block/select-box.svg");
+}
+
+.hb_btn-button
+{
+	background-image: url("../icon/block/button.svg");
+}
+
+.hb_btn-label
+{
+	background-image: url("../icon/block/label.svg");
+}
+
+.hb_btn-check-box 
+{
+	background-image: url("../icon/block/check-box.svg");
+}
+
+.hb_btn-radio 
+{
+	background-image: url("../icon/block/radio.svg");
+}
+
+/*--------------- PROPERTY --------------*/
+.hb_prop_body
+{
+	width: 100%;
+	text-align: center;
+}
+
+.hb_sub_category_toggle_body_div
+{
+	width: 100%;
+	background-color: #9fa8b7;
+	font-size:12px; 
+	cursor:pointer;
+}
+
+.hb_category_body_div, .hb_prop_body_div
+{
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+	text-align: center;
+}
+
+.hb_category_body_title_div
+{
+	width: 100%;
+	min-height: 25px;
+	background-color: #9fa8b7;
+	font-size:13px;
+	font-weight: bold; 
+	cursor:pointer;
+}
+
+.hb_prop_body_title_div
+{
+	width: 100%;
+	min-height: 25px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_category_body_title_label, .hb_prop_body_title_label
+{
+	float: left;
+	width: 90%;
+	height: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 11px;
+	font-weight: bold;
+	overflow-wrap: break-word;
+}
+
+.hb_prop_body_set_div {
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_prop_body_set_text
+{
+	width: 90%;
+	height: 20px;
+	font-size: 12px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_prop_body_set_btn
+{
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+
+	width: 90%;
+	height: 20px;
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_prop_body_set_btn:hover
+{
+	color: #fff;
+  	background-color: #5a6268;
+  	border-color: #545b62;
+}
+
+.hb_prop_body_set_select
+{
+	width: 90%;
+	height: 20px;
+	font-size: 12px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_prop_body_set_multi_select
+{
+	width: 90%;
+	height: 100px;
+	font-size: 12px;
+	overflow: auto;
+}
+
+.hb_prop_body_set_color
+{
+	width: 90%;
+	height: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*--------------- FUNCTION BLOCK --------------*/
+.hb_func-menu 
+{
+	width: 50px;
+	height: 20px;
+}
+
+.hb_btn-func {
+	display: inline-block;
+	width:50%;
+	height:100%;
+	outline: none;
+
+	border: 1px solid #4f555a;
+	background-color: #9da8b2;
+}
+
+.hb_btn-func:hover {
+	background-color: #b5c1cc;
+}
+
+.hb_btn-delete
+{
+	background-image: url("../icon/func/btn-delete.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 90% 90%;
+}
+
+.hb_btn-copy
+{
+	background-image: url("../icon/func/btn-copy.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 90% 90%;
+}
+
+/*--------------- SETTING --------------*/
+.hb_setting_div {
+	width: 90%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: auto;
+  	margin-right: auto;
+	border: 2px solid #495267;
+}
+
+.hb_setting_title_div {
+	width: 100%;
+	min-height: 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_setting_content_div {
+	width: 100%;
+	min-height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hb_setting_title_label {
+	width: 100%;
+	font-weight: bold;
+}
+
+.hb_setting-btn {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+
+	width: 90%;
+	height: 20px;
+	margin-top: 3px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hb_setting-btn:hover 
+{
+	background-color: #858f98;
+	border-color: #545b60;
+}
+
+.hb_setting-btn-phone
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/setting/btn-resolution-phone.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+
+	user-select: none;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+	border-color: #76818b;
+}
+
+.hb_setting-btn-tablet
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/setting/btn-resolution-tablet.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+
+	user-select: none;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+	border-color: #76818b;
+}
+
+.hb_setting-btn-browser
+{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	background-image: url("../icon/setting/btn-resolution-computer.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% 70%;
+
+	user-select: none;
+	border: 1px solid transparent;
+	font-size: 12px;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+	border-color: #76818b;
+}
+
+/*--------------- SETTING POPUP --------------*/
+.hb_setting-popup
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 70%;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+	border: 2px solid #495267;
+	background-color: #3b4251;
+}
+
+.hb_setting-popup div {
+	box-sizing: border-box;
+	border-bottom: 1px solid #66728d;
+}
+
+.hb_setting-popup-titlediv
+{
+	width: 100%;
+	height: 10%;
+	color: #c3cee2;
+	font: 15px;
+	font-weight: bold;
+	padding-left: 10px;
+}
+
+.hb_setting-popup-textdiv
+{
+	width: 100%;
+	height: 80%;
+	padding: 10px;
+}
+
+.hb_setting-popup-textarea
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.hb_setting-popup-applybutton
+{
+	margin: 10px;
+
+	user-select: none;
+	font-weight: bold;
+	font-size: 13px;
+	color: #2d2d2d;
+	border: 1px solid #76818b;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+}
+
+.hb_setting-popup-applybutton:hover
+{
+	background-color: #b5c1cc;
+}
+
+.hb_setting-popup-clossbutton
+{
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin: 10px;
+	background-image: url("../icon/setting/btn-cancel.svg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80% 80%;
+    user-select: none;
+    border: 1px solid #76818b;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	background-color: #9da8b2;
+}
+
+.hb_setting-popup-clossbutton:hover
+{
+	background-color: #b5c1cc;
+}
