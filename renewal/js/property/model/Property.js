@@ -7,7 +7,7 @@ class Proeprty {
     this.title = _config.title;
     this.category = _config.category;
     this.prop = _config.prop;
-    this.selectedComponent;
+    this.targetComponent;
   };
 
   render(option) {

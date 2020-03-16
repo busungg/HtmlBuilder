@@ -3,6 +3,8 @@ import blockManager from './block/blockManager';
 import componentManager from './component/componentManager';
 import PropertyClass from './property/model/PropertyClass';
 
+import {propObserver} from './observer/observerManager';
+
 /**
  * Polyfill
  */
@@ -118,7 +120,10 @@ const mainManager = {
                 attr_type: 'attr'
             }
         });
-        document.body.appendChild(propertyClass.render());
+        const body = document.getElementById('#body');
+        body.appendChild(propertyClass.render());
+
+        propObserver.register('update', propertyClass.update, propertyClass);
 
         console.log(propertyClass);
     },

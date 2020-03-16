@@ -3,62 +3,55 @@ import Property from './Property';
 
 class PropertyClass extends Property {
   addEvent() {
-    const event = (evt) => {
+    const event = () => {
+      const targetComponent = this.targetComponent;
+      
+      if(targetComponent) {
+        const inputDom = this.dom.querySelector('[set-type=input]');
+        const valueDom = this.dom.querySelector('[set-type=value]');
 
-      console.log(this);
-      //this 사용 가능
+        if (inputDom.value !== '') {
+          var option = document.createElement('option');
+          option.setAttribute('value', inputDom.value);
+          option.appendChild(document.createTextNode(inputDom.value));
+          valueDom.appendChild(option);
+  
+          targetComponent.classList.add(inputDom.value);
+        }
+      }
     };
 
     return event;
-
-    if (this.selected) {
-      var selected = this.selected.dom;
-      var nameDom = this.dom.querySelector('[hb_set_type=name]');
-      var valueDom = this.dom.querySelector('[hb_set_type=value]');
-
-      if (nameDom.value != '') {
-        var option = document.createElement('option');
-        option.setAttribute('value', nameDom.value);
-        option.appendChild(document.createTextNode(nameDom.value));
-        valueDom.appendChild(option);
-
-        selected.classList.add(nameDom.value);
-      }
-
-      if (this.callback && typeof this.callback === 'function') {
-        this.callback();
-      }
-    }
   };
 
   removeEvent() {
-    const event = (evt) => {
-      console.log(this);
+    const event = () => {
+      const targetComponent = this.targetComponent;
+
+      if(targetComponent) {
+        const valueDom = this.dom.querySelector('[set-type=value]');
+
+        for (let i = 0; i < valueDom.options.length; i++) {
+          if (valueDom.options[i].selected == true) {
+            targetComponent.classList.remove(valueDom.options[i].value);
+            valueDom.removeChild(valueDom.options[i]);
+            i--;
+          }
+        }
+      }
     };
 
     return event;
-
-    if (this.selected) {
-      var selected = this.selected.dom;
-      var valueDom = this.dom.querySelector('[hb_set_type=value]');
-
-      for (var i = 0; i < valueDom.options.length; i++) {
-        if (valueDom.options[i].selected == true) {
-          selected.classList.remove(valueDom.options[i].value);
-          valueDom.removeChild(valueDom.options[i]);
-          i--;
-        }
-      }
-
-      if (this.callback && typeof this.callback === 'function') {
-        this.callback();
-      }
-    }
   };
 
-  update(prop) {
-    valueDom = this.dom.querySelector('[hb_set_type=value]');
+  update(target, prop) {
+    this.targetComponent = target;
 
+    if(!target) {
+      return;
+    }
+
+    const valueDom = this.dom.querySelector('[set-type=value]');
     if (prop.class.length == 0) {
       while (valueDom.options.length != 0) {
         valueDom.options[0].remove();
@@ -70,7 +63,7 @@ class PropertyClass extends Property {
 
       var option;
       for (var i = 0, len = prop.class.length; i < len; i++) {
-        if (prop.class[i].indexOf('hb_selectable') == -1 && prop.class[i].indexOf('hb_selected') == -1) {
+        if (prop.class[i].indexOf('hb_selectable') === -1 && prop.class[i].indexOf('hb_selected') === -1) {
           option = document.createElement('option');
           option.setAttribute('value', prop.class[i]);
           option.appendChild(document.createTextNode(prop.class[i]));
@@ -83,7 +76,6 @@ class PropertyClass extends Property {
 
   render() {
     const prop = this.prop;
-    const _this = this;
 
     return super.render({
       element: 'div',
@@ -111,19 +103,17 @@ class PropertyClass extends Property {
         },
         child: [{
           element: 'input',
-          attr: {
+          attrs: {
             type: 'text',
             class: CSS.prop_body_set_text,
-            hb_set_type: 'name'
+            'set-type': 'input'
           }
         },
         {
           element: 'button',
-          attr: {
+          attrs: {
             class: CSS.prop_body_set_btn,
             title: 'Add class',
-            hb_set_prop_name: prop.name,
-            hb_set_event_type: 'add'
           },
           text: 'Add class',
           event: [{
@@ -133,11 +123,9 @@ class PropertyClass extends Property {
         },
         {
           element: 'button',
-          attr: {
+          attrs: {
             class: CSS.prop_body_set_btn,
             title: 'Delete class',
-            hb_set_prop_name: prop.name,
-            hb_set_event_type: 'delete'
           },
           text: 'Delete class',
           event: [{
@@ -147,10 +135,10 @@ class PropertyClass extends Property {
         },
         {
           element: 'select',
-          attr: {
+          attrs: {
             class: CSS.prop_body_set_multi_select,
             multiple: true,
-            hb_set_type: 'value'
+            'set-type': 'value'
           }
         }
         ]
