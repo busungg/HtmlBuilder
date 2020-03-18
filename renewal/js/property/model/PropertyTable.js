@@ -1,6 +1,7 @@
 const CSS = require('../config/css');
 const Property = require('./property');
 
+//추후에 정리 필요
 class PropertyTable extends Property {
     event(e) {
         var selected = this.selected.dom;

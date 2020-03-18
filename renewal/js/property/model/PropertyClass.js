@@ -75,30 +75,28 @@ class PropertyClass extends Property {
   };
 
   render() {
-    const prop = this.prop;
-
     return super.render({
       element: 'div',
-      attr: {
+      attrs: {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_title_div
         },
         child: [{
           element: 'label',
-          attr: {
+          attrs: {
             class: CSS.prop_body_title_label
           },
-          text: prop.title
+          text: this.title
         }]
       },
 
       { //div for property set
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_set_div
         },
         child: [{

@@ -1,83 +1,88 @@
-const CSS = require('../config/css');
-const Property = require('./property');
-const utils = require('../../utils/utils');
+import CSS from '../config/css';
+import Property from './Property';
+const Utils = require('../../utils/utils');
 
+//추후에 적용 필요 - Utils도 정리 필요
 class PropertyStyle2Save extends Property {
   event(e) {
-    if (this.selected) {
-      var selected = this.selected;
-      var eventDom = e.target.previousSibling;
+    const event = (evt) => {
+      const targetComponent = this.targetComponent;
 
-      if (eventDom.value != '') {
-        if (utils.style2Css(eventDom.value, selected.prop.style)) {
-          selected.dom.removeAttribute('style');
-          var classText = selected.dom.getAttribute('class');
-          selected.dom.setAttribute('class', classText + ' ' + eventDom.value);
-          eventDom.value = '';
+      if(targetComponent) {
+        const eventDom = evt.target;
+
+        if (eventDom.value != '') {
+          if (utils.style2Css(eventDom.value, selected.prop.style)) {
+            targetComponent.removeAttribute('style');
+            var classText = targetComponent.getAttribute('class');
+            targetComponent.setAttribute('class', classText + ' ' + eventDom.value);
+            eventDom.value = '';
+          }
         }
       }
 
-      if (this.callback && typeof this.callback === 'function') {
-        this.callback();
-      }
+    };
+
+    return event;
+  };
+
+  update(target, prop) { 
+    this.targetComponent = target;
+
+    if (!target) {
+      return;
     }
   };
 
-  update(prop) { }; //no update
-
   render() {
-    var prop = this.property;
-    var eventDetect = super.eventDetect;
-
-    return {
+    return super.render({
       element: 'div',
-      attr: {
+      attrs: {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_title_div
         },
         child: [{
           element: 'label',
-          attr: {
+          attrs: {
             class: CSS.prop_body_title_label
           },
-          text: prop.title
+          text: this.title
         }]
       },
 
       { //div for property set
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_set_div
         },
         child: [{
           element: 'input',
-          attr: {
+          attrs: {
             type: 'text',
             class: CSS.prop_body_set_text,
-            hb_set_type: 'value'
+            ['set-type']: 'value'
           }
         },
         {
           element: 'button',
-          attr: {
-            class: CSS.prop_body_set_btn,
-            hb_set_prop_name: prop.name
+          attrs: {
+            class: CSS.prop_body_set_btn
           },
           text: 'Save',
           event: [{
             type: 'click',
-            func: eventDetect
+            func: this.event()
           }]
         }
         ]
       }
       ]
-    };
+    });
   };
 };
 
-module.exports = PropertyStyle2Save;
+export default PropertyStyle2Save;

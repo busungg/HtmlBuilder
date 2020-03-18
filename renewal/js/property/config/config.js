@@ -97,7 +97,7 @@ const configs = [
   {
     title: 'Text',
     category: 'common',
-    class: 'PropertyTextAppend',
+    class: 'PropertyTextNode',
     prop: {
       name: 'text',
       attr_type: 'attr'
@@ -134,6 +134,7 @@ const configs = [
     }    
   },
 
+  /*
   {
     title: 'Table',
     category: 'table',
@@ -143,6 +144,7 @@ const configs = [
       attr_type: 'attr'      
     }    
   },
+  */
 
   {
     title: 'Class',
@@ -164,6 +166,7 @@ const configs = [
     }
   },
 
+  /*
   {
     title: 'Style to CSS',
     category: 'style2css',
@@ -173,6 +176,7 @@ const configs = [
       attr_type: 'style2css'
     }
   },
+  */
 
   // For styles
   //Display
@@ -262,8 +266,7 @@ const configs = [
     prop: {
       name: 'width',
       attr_type: 'style',
-      units: ['%', 'px', 'auto', 'cm', 'mm', 'in'],
-      
+      units: ['%', 'px', 'auto', 'cm', 'mm', 'in']
     }
   },
 
@@ -524,7 +527,6 @@ const configs = [
       attr_type: 'style',
       options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
     },
-    
     child: [{
       title: 'Border left style',  
       class: 'PropertySelect',
@@ -623,7 +625,4 @@ const configs = [
   }
 ];
 
-module.exports = {
-  category: category,
-  configs: configs
-};
+export {category, configs};

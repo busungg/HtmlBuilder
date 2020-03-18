@@ -1,33 +1,42 @@
-const CSS = require('../config/css');
-const Property = require('./property');
+import CSS from '../config/css';
+import Property from './Property';
 
 class PropertyColor extends Property {
-  event(e) {
-    if (this.selected) {
-      var selected = this.selected.dom;
-      var eventDom = e.target;
+  event() {
+    const event = (evt) => {
+      const targetComponent = this.targetComponent;
 
-      if (eventDom.value) {
-        selected.style[this.property.name] = eventDom.value;
-      } else {
-        selected.style[this.property.name] = null;
+      if (targetComponent) {
+        const eventDom = evt.target;
+
+        if (eventDom.value) {
+          targetComponent.style[this.prop.name] = eventDom.value;
+        } else {
+          targetComponent.style[this.prop.name] = null;
+        }
+
       }
 
-      if (this.callback && typeof this.callback === 'function') {
-        this.callback();
-      }
     }
+
+    return event;
   };
 
-  update(prop) {
-    var propContent;
+  update(target, prop) {
+    this.targetComponent = target;
+
+    if (!target) {
+      return;
+    }
+
+    let propContent;
     if (this.prop.attr_type === 'style') {
       propContent = prop.style[this.prop.name];
     } else {
       propContent = prop[this.prop.name];
     }
 
-    valueDom = this.dom.querySelector('[hb_set_type=value]');
+    const valueDom = this.dom.querySelector('[set-type=value]');
 
     if (!propContent) { //init property view
       valueDom.value = '#000000';
@@ -35,52 +44,48 @@ class PropertyColor extends Property {
       valueDom.value = propContent;
     }
   };
-  
-  render() {
-    var prop = this.property;
-    var eventDetect = super.eventDetect;
 
-    return {
+  render() {
+    return super.render({
       element: 'div',
-      attr: {
+      attrs: {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_title_div
         },
         child: [{
           element: 'label',
-          attr: {
+          attrs: {
             class: CSS.prop_body_title_label
           },
-          text: prop.title
+          text: this.title
         }]
       },
 
       { //div for property set
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_set_div
         },
         child: [{
           element: 'input',
-          attr: {
+          attrs: {
             type: 'color',
             class: CSS.prop_body_set_color,
-            hb_set_type: 'value',
-            hb_set_prop_name: prop.name
+            ['set-type']: 'value'
           },
           event: [{
             type: 'change',
-            func: eventDetect
+            func: this.event()
           }]
         }]
       }
       ]
-    };
+    });
   };
 };
 
-module.exports = PropertyColor;
+export default PropertyColor;

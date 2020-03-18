@@ -1,65 +1,69 @@
-const CSS = require('../config/css');
-const Property = require('./property');
+import CSS from '../config/css';
+import Property from './Property';
 
 class PropertyTextUnit extends Property {
-  set property(prop) {
-    this.prop = {};
+  event() {
+    const event = (evt) => {
+      const targetComponent = this.targetComponent;
 
-    this.prop.name = prop.name;
-    this.prop.title = prop.title;
-    this.prop.attr_type = prop.attr_type;
-    this.prop.category = prop.category;
-    this.prop.units = prop.units;
-  };
-
-  get property() {
-    return this.prop;
-  };
-
-  event(e) {
-    if (this.selected) {
-      var eventDom = e.target;
-      var valueDom, unitDom;
-      if (eventDom.getAttribute('hb_set_type') === 'value') {
-        valueDom = eventDom;
-        unitDom = eventDom.nextSibling;
-      } else {
-        valueDom = eventDom.previousSibling;
-        unitDom = eventDom;
-      }
-
-      var value, selected = this.selected.dom;
-      if (unitDom.value != 'auto') {
-        if (valueDom.value != null && valueDom.value != '') {
-          value = valueDom.value + unitDom.value;
-          selected.style[this.property.name] = value;
+      if (targetComponent) {
+        const eventDom = evt.target;
+        let valueDom, unitDom;
+        if (eventDom.getAttribute('set-type') === 'value') {
+          valueDom = eventDom;
+          unitDom = eventDom.nextSibling;
         } else {
-          selected.style[this.property.name] = null;
+          valueDom = eventDom.previousSibling;
+          unitDom = eventDom;
         }
-      } else {
-        /*
-          width, height auto style exception
-        */
-        
-       selected.style[this.property.name] = unitDom.value;
-      }
 
-      if (this.callback && typeof this.callback === 'function') {
-        this.callback();
+        if (unitDom.value != 'auto') {
+          if (valueDom.value !== null && valueDom.value !== '') {
+            let value = valueDom.value + unitDom.value;
+            if (this.prop.attr_type === 'style') {
+              targetComponent.style[this.prop.name] = value;
+            } else {
+              targetComponent.setAttribute(this.prop.name, value);
+            }
+          } else {
+            if (this.prop.attr_type === 'style') {
+              targetComponent.style[this.prop.name] = null;
+            } else {
+              targetComponent.removeAttribute(this.prop.name);
+            }
+          }
+        } else {
+          /*
+            width, height auto style exception
+          */
+          if (this.prop.attr_type === 'style') {
+            targetComponent.style[this.prop.name] = unitDom.value;
+          } else {
+            targetComponent.setAttribute(this.prop.name, unitDom.value);
+          }
+        }
       }
-    }
+    };
+
+    return event;
   };
 
-  update(prop) {
-    var propContent;
+  update(target, prop) {
+    this.targetComponent = target;
+
+    if (!target) {
+      return;
+    }
+
+    let propContent;
     if (this.prop.attr_type === 'style') {
       propContent = prop.style[this.prop.name];
     } else {
       propContent = prop[this.prop.name];
     }
 
-    valueDom = this.dom.querySelector('[hb_set_type=value]');
-    unitDom = this.dom.querySelector('[hb_set_type=unit]');
+    const valueDom = this.dom.querySelector('[set-type=value]');
+    const unitDom = this.dom.querySelector('[set-type=unit]');
 
     if (!propContent) { //init property view
       valueDom.value = '';
@@ -79,57 +83,52 @@ class PropertyTextUnit extends Property {
   };
 
   render() {
-    var prop = this.property;
-    var eventDetect = super.eventDetect;
-
     var _render = {
       element: 'div',
-      attr: {
+      attrs: {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_title_div
         },
         child: [{
           element: 'label',
-          attr: {
+          attrs: {
             class: CSS.prop_body_title_label
           },
-          text: prop.title
+          text: this.title
         }]
       },
 
       { //div for property set
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_set_div
         },
         child: [{
           element: 'input',
-          attr: {
+          attrs: {
             type: 'text',
             class: CSS.prop_body_set_text,
-            hb_set_type: 'value',
-            hb_set_prop_name: prop.name
+            ['set-type']: 'value',
           },
           event: [{
             type: 'change',
-            func: eventDetect
+            func: this.event()
           }]
         },
         {
           element: 'select',
-          attr: {
+          attrs: {
             class: CSS.prop_body_set_select,
-            hb_set_type: 'unit',
-            hb_set_prop_name: prop.name
+            ['set-type']: 'unit',
           },
           child: [],
           event: [{
             type: 'change',
-            func: eventDetect
+            func: this.event()
           }]
         }
         ]
@@ -137,19 +136,19 @@ class PropertyTextUnit extends Property {
       ]
     };
 
-    var _select = _render.child[1].child[1];
-    for (var i = 0, len = prop.units.length; i < len; i++) {
+    const _select = _render.child[1].child[1];
+    for (let unit of this.prop.units) {
       _select.child.push({
         element: 'option',
-        attr: {
-          value: prop.units[i]
+        attrs: {
+          value: unit
         },
-        text: prop.units[i]
+        text: unit
       });
     }
 
-    return _render;
+    return super.render(_render);
   };
 };
 
-module.exports = PropertyTextUnit;
+export default PropertyTextUnit;

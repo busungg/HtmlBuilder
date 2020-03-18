@@ -1,48 +1,40 @@
-const CSS = require('../config/css');
-const Property = require('./property');
+import CSS from '../config/css';
+import Property from './Property';
 
 class PropertySelect extends Property {
-  set property(prop) {
-    this.prop = {};
+  event() {
+    const event = (evt) => {
+      const targetComponent = this.targetComponent;
 
-    this.prop.name = prop.name;
-    this.prop.title = prop.title;
-    this.prop.attr_type = prop.attr_type;
-    this.prop.category = prop.category;
-    this.prop.options = prop.options;
+      if (targetComponent) {
+        const eventDom = evt.target;
+
+        if (eventDom.value) {
+          targetComponent.style[this.prop.name] = eventDom.value;
+        } else {
+          targetComponent.style[this.prop.name] = null;
+        }
+      }
+    };
+
+    return event;
   };
 
-  get property() {
-    return this.prop;
-  };
+  update(target, prop) {
+    this.targetComponent = target;
 
-  event(e) {
-    if (this.selected) {
-      var selected = this.selected.dom;
-      var eventDom = e.target;
-
-      if (eventDom.value) {
-        selected.style[this.property.name] = eventDom.value;
-      } else {
-        selected.style[this.property.name] = null;
-      }
-
-      if (this.callback && typeof this.callback === 'function') {
-        this.callback();
-      }
+    if (!target) {
+      return;
     }
-  };
 
-  update(prop) {
-    var propContent;
+    let propContent;
     if (this.prop.attr_type === 'style') {
       propContent = prop.style[this.prop.name];
     } else {
       propContent = prop[this.prop.name];
     }
 
-    valueDom = this.dom.querySelector('[hb_set_type=value]');
-
+    const valueDom = this.dom.querySelector('[set-type=value]');
     if (!propContent) { //init property view
       valueDom.value = valueDom.children[0].value;
     } else {
@@ -51,63 +43,60 @@ class PropertySelect extends Property {
   };
 
   render() {
-    var prop = this.property;
-    var eventDetect = super.eventDetect;
-
-    var _render = {
+    const _render = {
       element: 'div',
-      attr: {
+      attrs: {
         class: CSS.prop_body_div
       },
       child: [{ //div for title
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_title_div
         },
         child: [{
           element: 'label',
-          attr: {
+          attrs: {
             class: CSS.prop_body_title_label
           },
-          text: prop.title
+          text: this.title
         }]
       },
 
       { //div for property set
         element: 'div',
-        attr: {
+        attrs: {
           class: CSS.prop_body_set_div
         },
         child: [{
           element: 'select',
-          attr: {
+          attrs: {
             class: CSS.prop_body_set_select,
-            hb_set_type: 'value',
-            hb_set_prop_name: prop.name
+            ['set-type']: 'value',
           },
           child: [],
           event: [{
             type: 'change',
-            func: eventDetect
+            func: this.event()
           }]
         }]
       }
       ]
     };
 
-    _select = _render.child[1].child[0];
-    for (var i = 0, len = prop.options.length; i < len; i++) {
+    const prop = this.prop;
+    const _select = _render.child[1].child[0];
+    for (let option of prop.options) {
       _select.child.push({
         element: 'option',
-        attr: {
-          value: prop.options[i]
+        attrs: {
+          value: option
         },
-        text: prop.options[i]
+        text: option
       });
     }
 
-    return _render;
+    return super.render(_render);
   };
 };
 
-module.exports = PropertySelect;
+export default PropertySelect;

@@ -1,9 +1,7 @@
 import Utils from './utils/utils';
 import blockManager from './block/blockManager';
 import componentManager from './component/componentManager';
-import PropertyClass from './property/model/PropertyClass';
-
-import {propObserver} from './observer/observerManager';
+import propertyManager from './property/propertyManager';
 
 /**
  * Polyfill
@@ -109,23 +107,6 @@ const mainManager = {
         };
 
         componentManager.initFrameComponent(frameOption, container);
-
-        //Test
-        const propertyClass = new PropertyClass({
-            title: 'Class',
-            category: 'common',
-            class: 'PropertyClass',
-            prop: {
-                name: 'class',
-                attr_type: 'attr'
-            }
-        });
-        const body = document.getElementById('#body');
-        body.appendChild(propertyClass.render());
-
-        propObserver.register('update', propertyClass.update, propertyClass);
-
-        console.log(propertyClass);
     },
 
     initMenu: function (container) {
@@ -234,14 +215,14 @@ const mainManager = {
                     element: 'div',
                     attrs: {
                         class: 'hb_nav_content-prop',
-                        style: 'display:none;'
+                        style: 'display:block;'
                     }
                 },
                 {
                     element: 'div',
                     attrs: {
                         class: 'hb_nav_content-prop',
-                        style: 'display:block;'
+                        style: 'display:none;'
                     },
                     text: 'There is no selected Block\nPlease select at least 1 block'
                 }
@@ -271,11 +252,10 @@ const mainManager = {
         blockManager.render(mainManager.nav.block);
 
         //Prop
-        /*
         propertyManager.init();
         propertyManager.render(mainManager.nav.prop.children[0]);
-        mainManager.initPropertyEvents();
 
+        /*
         //Setting
         settingManager.init();
         settingManager.render(mainManager.nav.setting);

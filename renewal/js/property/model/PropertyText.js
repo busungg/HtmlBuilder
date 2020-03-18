@@ -1,25 +1,40 @@
-const CSS = require('../config/css');
-const Property = require('./property');
+import CSS from '../config/css';
+import Property from './Property';
 
 class PropertyText extends Property {
-  event(e) {
-    if (this.selected) {
-      var selected = this.selected.dom;
-      var eventDom = e.target;
+  event() {
+    const event = (evt) => {
+      const targetComponent = this.targetComponent;
 
-      if (eventDom.value) {
-        selected.setAttribute(this.property.name, eventDom.value);
-      } else {
-        selected.removeAttribute(this.property.name);
-      }
+      if (targetComponent) {
+        const eventDom = evt.target;
 
-      if (this.callback && typeof this.callback === 'function') {
-        this.callback();
+        if (eventDom.value) {
+          if (this.prop.attr_type === 'style') {
+            targetComponent.style[this.prop.name] = eventDom.value;
+          } else {
+            targetComponent.setAttribute(this.prop.name, eventDom.value);
+          }
+        } else {
+          if (this.prop.attr_type === 'style') {
+            targetComponent.style[this.prop.name] = null;
+          } else {
+            targetComponent.removeAttribute(this.prop.name);
+          }
+        }
       }
-    }
+    };
+
+    return event;
   };
 
-  update(prop) {
+  update(target, prop) {
+    this.targetComponent = target;
+
+    if (!target) {
+      return;
+    }
+
     var propContent;
     if (this.prop.attr_type === 'style') {
       propContent = prop.style[this.prop.name];
@@ -27,7 +42,7 @@ class PropertyText extends Property {
       propContent = prop[this.prop.name];
     }
 
-    valueDom = this.dom.querySelector('[hb_set_type=value]');
+    const valueDom = this.dom.querySelector('[set-type=value]');
 
     if (!propContent) { //init property view
       valueDom.value = '';
@@ -37,50 +52,47 @@ class PropertyText extends Property {
   };
 
   render() {
-    var prop = this.property;
-    var eventDetect = super.eventDetect;
-
-    return {
+    return super.render({
       element: 'div',
-      attr: {
+      attrs: {
         class: CSS.prop_body_div
       },
-      child: [{ //div for title
-        element: 'div',
-        attr: {
-          class: CSS.prop_body_title_div
-        },
-        child: [{
-          element: 'label',
-          attr: {
-            class: CSS.prop_body_title_label
+      child: [
+        { //div for title
+          element: 'div',
+          attrs: {
+            class: CSS.prop_body_title_div
           },
-          text: prop.title
-        }]
-      },
-
-      { //div for property set
-        element: 'div',
-        attr: {
-          class: CSS.prop_body_set_div
-        },
-        child: [{
-          element: 'input',
-          attr: {
-            type: 'text',
-            class: CSS.prop_body_set_text,
-            hb_set_type: 'value',
-            hb_set_prop_name: prop.name
-          },
-          event: [{
-            type: 'change',
-            func: eventDetect
+          child: [{
+            element: 'label',
+            attrs: {
+              class: CSS.prop_body_title_label
+            },
+            text: this.title
           }]
-        }]
-      }
+        },
+
+        { //div for property set
+          element: 'div',
+          attrs: {
+            class: CSS.prop_body_set_div
+          },
+          child: [{
+            element: 'input',
+            attrs: {
+              type: 'text',
+              class: CSS.prop_body_set_text,
+              ['set-type']: 'value',
+            },
+            event: [{
+              type: 'change',
+              func: this.event()
+            }]
+          }]
+        }
       ]
-    };
+    });
   };
 }
 
-module.exports = PropertyText;
+export default PropertyText;

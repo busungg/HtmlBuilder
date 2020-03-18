@@ -1,191 +1,173 @@
-const CSS = require('../config/css');
-const Property = require('./property');
+import CSS from '../config/css';
+import Property from './Property';
 
 class PropertyOption extends Property {
-    event(e) {
-        var eventType = e.target.getAttribute('hb_set_event_type');
-
-        if (eventType === 'add') {
-            this.addEvent(e);
-        } else {
-            this.removeEvent(e);
-        }
-    };
-
     addEvent(e) {
-        if (this.selected) {
-            var selected = this.selected.dom;
-            var valueDom = this.dom.querySelector('[hb_set_type=value]');
-            var textDom = this.dom.querySelector('[hb_set_type=text]');
-            var optionDom = this.dom.querySelector('[hb_set_type=option]');
+        const event = () => {
+            const targetComponent = this.targetComponent;
 
-            if (textDom.value != '') {
-                //for option list of property 
-                var option = document.createElement('option');
-                if (valueDom.value) {
-                    option.setAttribute('value', valueDom.value);
+            if (targetComponent) {
+                const valueDom = this.dom.querySelector('[set-type=value]');
+                const textDom = this.dom.querySelector('[set-type=text]');
+                const selectDom = this.dom.querySelector('[set-type=option]');
+
+                if (textDom.value !== '') {
+                    //for option list of property 
+                    let optionDom = document.createElement('option');
+                    if (valueDom.value) {
+                        optionDom.setAttribute('value', valueDom.value);
+                    }
+                    optionDom.appendChild(document.createTextNode(textDom.value));
+                    selectDom.appendChild(optionDom);
+                    targetComponent.appendChild(optionDom.cloneNode(true));
                 }
-                option.appendChild(document.createTextNode(textDom.value));
-                optionDom.appendChild(option);
-
-                //for option list of selected
-                option = document.createElement('option');
-                if (valueDom.value) {
-                    option.setAttribute('value', valueDom.value);
-                }
-                option.appendChild(document.createTextNode(textDom.value));
-                selected.appendChild(option);
             }
+        };
 
-            if (this.callback && typeof this.callback === 'function') {
-                this.callback();
-            }
-        }
+        return event;
     };
 
     removeEvent(e) {
-        if (this.selected) {
-            var selected = this.selected.dom;
-            var optionDom = this.dom.querySelector('[hb_set_type=option]');
+        const event = () => {
+            const targetComponent = this.targetComponent;
 
-            for (var i = 0; i < optionDom.options.length; i++) {
-                if (optionDom.options[i].selected == true) {
-                    selected.removeChild(selected.options[i]);
-                    optionDom.removeChild(optionDom.options[i]);
-                    i--;
+            if (targetComponent) {
+                const selectDom = this.dom.querySelector('[set-type=option]');
+
+                for (var i = 0; i < selectDom.options.length; i++) {
+                    if (selectDom.options[i].selected === true) {
+                        targetComponent.removeChild(selectDom.options[i]);
+                        selectDom.removeChild(selectDom.options[i]);
+                        i--;
+                    }
                 }
             }
+        };
 
-            if (this.callback && typeof this.callback === 'function') {
-                this.callback();
-            }
-        }
+        return event;
     };
 
-    update(prop) {
-        optionDom = this.dom.querySelector('[hb_set_type=option]');
+    update(target, prop) {
+        this.targetComponent = target;
 
+        if (!target) {
+            return;
+        }
+
+        const selectDom = this.dom.querySelector('[set-type=option]');
         if (prop.option.length == 0) {
-            while (optionDom.options.length != 0) {
-                optionDom.options[0].remove();
+            while (selectDom.options.length != 0) {
+                selectDom.options[0].remove();
             }
         } else {
-            while (optionDom.options.length != 0) {
-                optionDom.options[0].remove();
+            while (selectDom.options.length != 0) {
+                selectDom.options[0].remove();
             }
 
-            var option;
-            for (var i = 0, len = prop.option.length; i < len; i++) {
-                option = document.createElement('option');
-                if (prop.option[i].value) {
-                    option.setAttribute('value', prop.option[i].value);
+            let optionDom;
+            for (let option of prop.option) {
+                optionDom = document.createElement('option');
+                if (option.value) {
+                    optionDom.setAttribute('value', option.value);
                 }
-                option.appendChild(document.createTextNode(prop.option[i].text));
-
-                optionDom.appendChild(option);
+                optionDom.appendChild(document.createTextNode(option.text));
+                selectDom.appendChild(optionDom);
             }
         }
     };
 
     render() {
-        var prop = this.property;
-        var eventDetect = super.eventDetect;
-
-        return {
+        return super.render({
             element: 'div',
-            attr: {
+            attrs: {
                 class: CSS.prop_body_div
             },
             child: [{ //div for title
-                    element: 'div',
-                    attr: {
-                        class: CSS.prop_body_title_div
+                element: 'div',
+                attrs: {
+                    class: CSS.prop_body_title_div
+                },
+                child: [{
+                    element: 'label',
+                    attrs: {
+                        class: CSS.prop_body_title_label
                     },
-                    child: [{
-                        element: 'label',
-                        attr: {
-                            class: CSS.prop_body_title_label
-                        },
-                        text: prop.title
+                    text: this.title
+                }]
+            },
+
+            { //div for property set
+                element: 'div',
+                attrs: {
+                    class: CSS.prop_body_set_div
+                },
+                child: [{
+                    element: 'label',
+                    attrs: {
+                        class: CSS.prop_body_set_text
+                    },
+                    text: 'Value'
+                },
+                {
+                    element: 'input',
+                    attrs: {
+                        type: 'text',
+                        class: CSS.prop_body_set_text,
+                        ['set-type']: 'value'
+                    }
+                },
+                {
+                    element: 'label',
+                    attrs: {
+                        class: CSS.prop_body_set_text
+                    },
+                    text: 'Text'
+                },
+                {
+                    element: 'input',
+                    attrs: {
+                        type: 'text',
+                        class: CSS.prop_body_set_text,
+                        ['set-type']: 'text'
+                    }
+                },
+                {
+                    element: 'button',
+                    attrs: {
+                        class: CSS.prop_body_set_btn,
+                        title: 'Add option',
+                    },
+                    text: 'Add option',
+                    event: [{
+                        type: 'click',
+                        func: this.addEvent()
                     }]
                 },
-
-                { //div for property set
-                    element: 'div',
-                    attr: {
-                        class: CSS.prop_body_set_div
+                {
+                    element: 'button',
+                    attrs: {
+                        class: CSS.prop_body_set_btn,
+                        title: 'Delete option',
                     },
-                    child: [{
-                            element: 'label',
-                            attr: {
-                                class: CSS.prop_body_set_text
-                            },
-                            text: 'Value'
-                        },
-                        {
-                            element: 'input',
-                            attr: {
-                                type: 'text',
-                                class: CSS.prop_body_set_text,
-                                hb_set_type: 'value'
-                            }
-                        },
-                        {
-                            element: 'label',
-                            attr: {
-                                class: CSS.prop_body_set_text
-                            },
-                            text: 'Text'
-                        },
-                        {
-                            element: 'input',
-                            attr: {
-                                type: 'text',
-                                class: CSS.prop_body_set_text,
-                                hb_set_type: 'text'
-                            }
-                        },
-                        {
-                            element: 'button',
-                            attr: {
-                                class: CSS.prop_body_set_btn,
-                                title: 'Add option',
-                                hb_set_prop_name: prop.name,
-                                hb_set_event_type: 'add'
-                            },
-                            text: 'Add option',
-                            event: [{
-                                type: 'click',
-                                func: eventDetect
-                            }]
-                        },
-                        {
-                            element: 'button',
-                            attr: {
-                                class: CSS.prop_body_set_btn,
-                                title: 'Delete option',
-                                hb_set_prop_name: prop.name,
-                                hb_set_event_type: 'delete'
-                            },
-                            text: 'Delete option',
-                            event: [{
-                                type: 'click',
-                                func: eventDetect
-                            }]
-                        },
-                        {
-                            element: 'select',
-                            attr: {
-                                class: CSS.prop_body_set_multi_select,
-                                multiple: true,
-                                hb_set_type: 'option'
-                            }
-                        }
-                    ]
+                    text: 'Delete option',
+                    event: [{
+                        type: 'click',
+                        func: this.removeEvent()
+                    }]
+                },
+                {
+                    element: 'select',
+                    attrs: {
+                        class: CSS.prop_body_set_multi_select,
+                        multiple: true,
+                        ['set-type']: 'option'
+                    }
                 }
+                ]
+            }
             ]
-        };
+        });
     };
 };
 
-module.exports = PropertyOption;
+export default PropertyOption;
