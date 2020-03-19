@@ -5,8 +5,8 @@ class PropertyClass extends Property {
   addEvent() {
     const event = () => {
       const targetComponent = this.targetComponent;
-      
-      if(targetComponent) {
+
+      if (targetComponent) {
         const inputDom = this.dom.querySelector('[set-type=input]');
         const valueDom = this.dom.querySelector('[set-type=value]');
 
@@ -15,7 +15,7 @@ class PropertyClass extends Property {
           option.setAttribute('value', inputDom.value);
           option.appendChild(document.createTextNode(inputDom.value));
           valueDom.appendChild(option);
-  
+
           targetComponent.classList.add(inputDom.value);
         }
       }
@@ -28,7 +28,7 @@ class PropertyClass extends Property {
     const event = () => {
       const targetComponent = this.targetComponent;
 
-      if(targetComponent) {
+      if (targetComponent) {
         const valueDom = this.dom.querySelector('[set-type=value]');
 
         for (let i = 0; i < valueDom.options.length; i++) {
@@ -47,7 +47,7 @@ class PropertyClass extends Property {
   update(target, prop) {
     this.targetComponent = target;
 
-    if(!target) {
+    if (!target) {
       return;
     }
 

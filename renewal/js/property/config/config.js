@@ -2,54 +2,54 @@
  * Default Attr configs
  */
 const category = [{
-    name: 'common',
-    title: 'Common'
-  },
+  name: 'common',
+  title: 'Common'
+},
 
-  {
-    name: 'src',
-    title: 'Src'
-  },
+{
+  name: 'src',
+  title: 'Src'
+},
 
-  {
-    name: 'href',
-    title: 'Href'
-  },
+{
+  name: 'href',
+  title: 'Href'
+},
 
-  {
-    name: 'table',
-    title: 'Table'
-  },
+{
+  name: 'table',
+  title: 'Table'
+},
 
-  {
-    name: 'style2css',
-    title: 'Style to CSS'
-  },
+{
+  name: 'style2css',
+  title: 'Style to CSS'
+},
 
-  {
-    name: 'position',
-    title: 'Position'
-  },
+{
+  name: 'position',
+  title: 'Position'
+},
 
-  {
-    name: 'size',
-    title: 'Size'
-  },
+{
+  name: 'size',
+  title: 'Size'
+},
 
-  {
-    name: 'font',
-    title: 'Font'
-  },
+{
+  name: 'font',
+  title: 'Font'
+},
 
-  {
-    name: 'border',
-    title: 'Border'
-  },
+{
+  name: 'border',
+  title: 'Border'
+},
 
-  {
-    name: 'background',
-    title: 'Background'
-  }
+{
+  name: 'background',
+  title: 'Background'
+}
 ];
 
 /**
@@ -131,7 +131,7 @@ const configs = [
     prop: {
       name: 'href',
       attr_type: 'attr'
-    }    
+    }
   },
 
   /*
@@ -141,8 +141,8 @@ const configs = [
     class: 'PropertyTable',
     prop: {
       name: 'table',
-      attr_type: 'attr'      
-    }    
+      attr_type: 'attr'
+    }
   },
   */
 
@@ -254,7 +254,7 @@ const configs = [
     class: 'PropertyText',
     prop: {
       name: 'float',
-      attr_type: 'style'      
+      attr_type: 'style'
     }
   },
 
@@ -290,46 +290,46 @@ const configs = [
       name: 'margin',
       attr_type: 'style',
       units: ['px', 'cm', 'mm', 'in'],
-    },    
+    },
     child: [{
       title: 'Margin Top',
       class: 'PropertyTextUnit',
       prop: {
-          name: 'margin-top',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Margin bottom',
-        class: 'PropertyTextUnit',  
-        prop: {
-          name: 'margin-bottom',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Margin Left',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'margin-left',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Margin Right',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'margin-right',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
+        name: 'margin-top',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
       }
+    },
+
+    {
+      title: 'Margin bottom',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'margin-bottom',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    },
+
+    {
+      title: 'Margin Left',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'margin-left',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    },
+
+    {
+      title: 'Margin Right',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'margin-right',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    }
     ]
   },
 
@@ -343,46 +343,46 @@ const configs = [
       attr_type: 'style',
       units: ['px', 'cm', 'mm', 'in']
     },
-    
+
     child: [{
       title: 'Padding Top',
-      class: 'PropertyTextUnit',  
+      class: 'PropertyTextUnit',
       prop: {
-          name: 'padding-top',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Padding Bottom',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'padding-bottom',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Padding Left',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'padding-left',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Padding Right',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'padding-right',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
+        name: 'padding-top',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
       }
+    },
+
+    {
+      title: 'Padding Bottom',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'padding-bottom',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    },
+
+    {
+      title: 'Padding Left',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'padding-left',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    },
+
+    {
+      title: 'Padding Right',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'padding-right',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    }
     ]
   },
 
@@ -430,44 +430,44 @@ const configs = [
       units: ['px', 'cm', 'mm', 'in']
     },
     child: [{
-      title: 'Border left width',  
+      title: 'Border left width',
       class: 'PropertyTextUnit',
       prop: {
-          name: 'border-left-width',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Border right width',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'border-right-width',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Border top width',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'border-top-width',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
-      },
-
-      {
-        title: 'Border bottom width',
-        class: 'PropertyTextUnit',
-        prop: {
-          name: 'border-bottom-width',
-          attr_type: 'style',
-          units: ['px', 'cm', 'mm', 'in']
-        }
+        name: 'border-left-width',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
       }
+    },
+
+    {
+      title: 'Border right width',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'border-right-width',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    },
+
+    {
+      title: 'Border top width',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'border-top-width',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    },
+
+    {
+      title: 'Border bottom width',
+      class: 'PropertyTextUnit',
+      prop: {
+        name: 'border-bottom-width',
+        attr_type: 'style',
+        units: ['px', 'cm', 'mm', 'in']
+      }
+    }
     ]
   },
 
@@ -479,42 +479,42 @@ const configs = [
       name: 'border-color',
       attr_type: 'style'
     },
-    
+
     child: [{
       title: 'Border left color',
       class: 'PropertyColor',
-        prop: {
-          name: 'border-left-color',
-                    attr_type: 'style'
-        }
-      },
-
-      {
-        title: 'Border right color',
-        class: 'PropertyColor',
-        prop: {
-          name: 'border-right-color',
-          attr_type: 'style'
-        }
-      },
-
-      {
-        title: 'Border top color',
-        class: 'PropertyColor',
-        prop: {
-          name: 'border-top-color',
-          attr_type: 'style'
-        }
-      },
-
-      {
-        title: 'Border bottom color',
-        class: 'PropertyColor',
-        prop: {
-          name: 'border-bottom-color',
-          attr_type: 'style'
-        }
+      prop: {
+        name: 'border-left-color',
+        attr_type: 'style'
       }
+    },
+
+    {
+      title: 'Border right color',
+      class: 'PropertyColor',
+      prop: {
+        name: 'border-right-color',
+        attr_type: 'style'
+      }
+    },
+
+    {
+      title: 'Border top color',
+      class: 'PropertyColor',
+      prop: {
+        name: 'border-top-color',
+        attr_type: 'style'
+      }
+    },
+
+    {
+      title: 'Border bottom color',
+      class: 'PropertyColor',
+      prop: {
+        name: 'border-bottom-color',
+        attr_type: 'style'
+      }
+    }
     ]
   },
 
@@ -528,44 +528,44 @@ const configs = [
       options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
     },
     child: [{
-      title: 'Border left style',  
+      title: 'Border left style',
       class: 'PropertySelect',
       prop: {
-          name: 'border-left-style',
-          attr_type: 'style',
-          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-        }
-      },
-
-      {
-        title: 'Border right style',
-        class: 'PropertySelect',
-        prop: {
-          name: 'border-right-style',
-          attr_type: 'style',
-          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-        }
-      },
-
-      {
-        title: 'Border top style',
-        class: 'PropertySelect',
-        prop: {
-          name: 'border-top-style',
-          attr_type: 'style',
-          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-        }
-      },
-
-      {
-        title: 'Border bottom style',
-        class: 'PropertySelect',
-        prop: {
-          name: 'border-bottom-style',
-          attr_type: 'style',
-          options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
-        }
+        name: 'border-left-style',
+        attr_type: 'style',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
       }
+    },
+
+    {
+      title: 'Border right style',
+      class: 'PropertySelect',
+      prop: {
+        name: 'border-right-style',
+        attr_type: 'style',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+      }
+    },
+
+    {
+      title: 'Border top style',
+      class: 'PropertySelect',
+      prop: {
+        name: 'border-top-style',
+        attr_type: 'style',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+      }
+    },
+
+    {
+      title: 'Border bottom style',
+      class: 'PropertySelect',
+      prop: {
+        name: 'border-bottom-style',
+        attr_type: 'style',
+        options: ['', 'none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset', 'initial', 'inherit']
+      }
+    }
     ]
   },
 
@@ -608,9 +608,9 @@ const configs = [
     prop: {
       name: 'background-repeat',
       attr_type: 'style',
-      options: ['', 'repeat', 'repeat-x', 'repeat-y', 'no-repeat']      
+      options: ['', 'repeat', 'repeat-x', 'repeat-y', 'no-repeat']
     }
-    
+
   },
 
   {
@@ -625,4 +625,4 @@ const configs = [
   }
 ];
 
-export {category, configs};
+export { category, configs };

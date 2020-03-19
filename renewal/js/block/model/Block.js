@@ -1,59 +1,59 @@
 import {
-    componentObserver
+  componentObserver
 } from '../../observer/observerManager';
 
 class Block {
-    constructor(config) {
-        this.title = config.title;
-        this.icon = config.icon;
-        this.component = config.component; //복사 필요
-        this.category = config.category;
+  constructor(config) {
+    this.title = config.title;
+    this.icon = config.icon;
+    this.component = config.component; //복사 필요
+    this.category = config.category;
+  };
+
+  set dom(dom) {
+    this._dom = dom;
+
+    const mouseDown = (evt) => {
+      componentObserver.notify('deSelect');
     };
 
-    set dom(dom) {
-        this._dom = dom;
+    const dragStart = (evt) => {
+      evt.dataTransfer.setTransferOption(this.component);
+    };
 
-        const mouseDown = (evt) => {
-            componentObserver.notify('deSelect');
-        };
+    this._dom.addEventListener('mousedown', mouseDown);
+    this._dom.addEventListener('dragstart', dragStart);
+  }
 
-        const dragStart = (evt) => {
-            evt.dataTransfer.setTransferOption(this.component);
-        };
+  get dom() {
+    return this._dom;
+  }
 
-        this._dom.addEventListener('mousedown', mouseDown);
-        this._dom.addEventListener('dragstart', dragStart);
-    }
-
-    get dom() {
-        return this._dom;
-    }
-
-    render() {
-        const _render = {
-            element: 'div',
-            attrs: {
-                class: 'hb_btn-block hb_cursor-move',
-                draggable: true
-            },
-            child: [{
-                    element: 'div',
-                    attrs: {
-                        class: 'hb_img ' + this.icon
-                    }
-                },
-                {
-                    element: 'div',
-                    attrs: {
-                        class: 'hb_lbl'
-                    },
-                    text: this.title
-                }
-            ]
+  render() {
+    const _render = {
+      element: 'div',
+      attrs: {
+        class: 'hb_btn-block hb_cursor-move',
+        draggable: true
+      },
+      child: [{
+        element: 'div',
+        attrs: {
+          class: 'hb_img ' + this.icon
         }
+      },
+      {
+        element: 'div',
+        attrs: {
+          class: 'hb_lbl'
+        },
+        text: this.title
+      }
+      ]
+    }
 
-        return _render;
-    };
+    return _render;
+  };
 
 };
 

@@ -8,7 +8,7 @@ class PropertyStyle2Save extends Property {
     const event = (evt) => {
       const targetComponent = this.targetComponent;
 
-      if(targetComponent) {
+      if (targetComponent) {
         const eventDom = evt.target;
 
         if (eventDom.value != '') {
@@ -26,7 +26,7 @@ class PropertyStyle2Save extends Property {
     return event;
   };
 
-  update(target, prop) { 
+  update(target, prop) {
     this.targetComponent = target;
 
     if (!target) {

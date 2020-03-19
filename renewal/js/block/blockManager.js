@@ -19,7 +19,7 @@ const blockManager = {
 
   /**
    * category, sub category toggle event
-   * @param {event} e 
+   * @param {event} e
    */
   eventToggle: function (e) {
     var target;
@@ -51,7 +51,7 @@ const blockManager = {
 
   /**
    * set category element
-   * @param {Element} parent 
+   * @param {Element} parent
    */
   renderCategory: function (parent) {
     let _category, dom;
@@ -86,19 +86,19 @@ const blockManager = {
 
       dom = Utils.builder(_category);
       blockManager.renderCategoryContent(category[i].name, dom);
-      
+
       parent.appendChild(dom);
     }
   },
 
   /**
-   * 
-   * @param {string} category 
-   * @param {Dom Element} categoryDom 
+   *
+   * @param {string} category
+   * @param {Dom Element} categoryDom
    */
   renderCategoryContent: function (category, categoryDom) {
     this.blocks.forEach(block => {
-      if(block.category === category) {
+      if (block.category === category) {
         categoryDom.appendChild(block.dom);
       }
     });
@@ -106,7 +106,7 @@ const blockManager = {
 
   /**
    * render block element
-   * @param {Element} parent 
+   * @param {Element} parent
    */
   render: function (parent) {
     blockManager.renderCategory(parent);
