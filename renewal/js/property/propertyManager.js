@@ -26,36 +26,36 @@ const PropertyType = {
     Attributes View Manager
 **/
 const propertyManager = {
-  propsInfos: [],
+  propInfos: [],
 
   init: function () {
-    for(let config of configs) {
-      let propInfo = {prop: null, child: null};
+    for (let config of configs) {
+      let propInfo = { prop: null, child: null };
       let prop = new PropertyType[config.class](config);
       propObserver.register('update', prop.update, prop);
       propInfo.prop = prop;
 
-      if(config.child) {
+      if (config.child) {
         propInfo.child = [];
 
-        for(let childConfig of config.child) {
+        for (let childConfig of config.child) {
           let childProp = new PropertyType[childConfig.class](childConfig);
           propObserver.register('update', childProp.update, childProp);
           propInfo.child.push(childProp);
         }
       }
-      
-      this.propsInfos.push(propInfo);
+
+      this.propInfos.push(propInfo);
     }
   },
 
-  
+
   /**
    * category, sub category toggle event
-   * @param {event} e 
+   * @param {event} e
    */
   eventToggle: function (e) {
-    var target;
+    let target;
 
     if (e.target.nodeName == 'LABEL') {
       target = e.target.parentNode;
@@ -69,8 +69,8 @@ const propertyManager = {
       target.innerHTML = target.innerHTML.replace('\u25BC', '\u25B2');
     }
 
-    var sibling = target.nextSibling;
-    var prop_hidden = sibling.getAttribute('prop-hidden');
+    let sibling = target.nextSibling;
+    let prop_hidden = sibling.getAttribute('prop-hidden');
 
     while (sibling) {
       if (sibling.style.display == 'none' && !prop_hidden) {
@@ -80,7 +80,7 @@ const propertyManager = {
       }
 
       sibling = sibling.nextSibling;
-      if(sibling) {
+      if (sibling) {
         prop_hidden = sibling.getAttribute('prop-hidden');
       }
     }
@@ -88,7 +88,7 @@ const propertyManager = {
 
   /**
    * set category element
-   * @param {Element} parent 
+   * @param {Element} parent
    */
   renderCategory: function (parent) {
     var _category, dom;
@@ -136,18 +136,18 @@ const propertyManager = {
   },
 
   /**
-   * 
-   * @param {string} category 
+   *
+   * @param {string} category
    * @param {Dom Element} categoryDom
    */
   renderCategoryContent: function (category, categoryDom) {
-    for(let propInfo of this.propsInfos) {
-      if(propInfo.prop.category === category) {
+    for (let propInfo of this.propInfos) {
+      if (propInfo.prop.category === category) {
         let propDom = propInfo.prop.render();
         categoryDom.appendChild(propDom);
 
         //추후 다른 디자인으로 변경한다.
-        if(propInfo.child) {
+        if (propInfo.child) {
           let childCategoryDom = Utils.builder(
             {
               element: 'div',
@@ -170,85 +170,75 @@ const propertyManager = {
           );
           propDom.appendChild(childCategoryDom);
 
-          for(let childProp of propInfo.child) {
+          for (let childProp of propInfo.child) {
             childCategoryDom.appendChild(childProp.render());
           }
         }
       }
 
-      
+
     }
   },
 
-  /*
-  updateProp: function (prop) {
-    if (propertyManager.selected.element) {
-      var domType = propertyManager.selected.element.dom.nodeName;
-      var configs = propertyManager.config.configs;
-      var _config = null, _configChild;
-      for (var i = 0, len = configs.length; i < len; i++) {
-        _config = configs[i];
+  //개선 필요
+  updateProp(target) {
+    if (target) {
+      let tagName = target.tagName;
 
-        if(_config.model.prop.name == 'src') {
-          if(domType == 'IMG') {
-            _config.model.dom.parentElement.style['display'] = 'block';
-            _config.model.dom.parentElement.removeAttribute('prop-hidden');
+      for (let propInfo of this.propInfos) {
+        let prop = propInfo.prop;
+        if (prop.prop.name === 'src') {
+          if (tagName === 'IMG') {
+            prop.dom.parentElement.style['display'] = 'block';
+            prop.dom.parentElement.removeAttribute('prop-hidden');
           } else {
-            _config.model.dom.parentElement.style['display'] = 'none';
-            _config.model.dom.parentElement.setAttribute('prop-hidden', 'true');
+            prop.dom.parentElement.style['display'] = 'none';
+            prop.dom.parentElement.setAttribute('prop-hidden', true);
           }
         }
 
-        if(_config.model.prop.name == 'href') {
-          if(domType == 'A') {
-            _config.model.dom.parentElement.style['display'] = 'block';
-            _config.model.dom.parentElement.removeAttribute('prop-hidden');
+        if (prop.prop.name === 'href') {
+          if (tagName === 'A') {
+            prop.dom.parentElement.style['display'] = 'block';
+            prop.dom.parentElement.removeAttribute('prop-hidden');
           } else {
-            _config.model.dom.parentElement.style['display'] = 'none';
-            _config.model.dom.parentElement.setAttribute('prop-hidden', 'true');
+            prop.dom.parentElement.style['display'] = 'none';
+            prop.dom.parentElement.setAttribute('prop-hidden', true);
           }
         }
 
-        if(_config.model.prop.name == 'option') {
-          if(domType == 'SELECT') {
-            _config.model.dom.style['display'] = 'block';
-            _config.model.dom.removeAttribute('prop-hidden');
+        if (prop.prop.name === 'option') {
+          if (tagName === 'SELECT') {
+            prop.dom.style['display'] = 'block';
+            prop.dom.removeAttribute('prop-hidden');
           } else {
-            _config.model.dom.style['display'] = 'none';
-            _config.model.dom.setAttribute('prop-hidden', 'true');
+            prop.dom.style['display'] = 'none';
+            prop.dom.setAttribute('prop-hidden', true);
           }
         }
 
-        if(_config.model.prop.name == 'table') {
-          if(domType == 'TABLE') {
-            _config.model.dom.parentElement.style['display'] = 'block';
-            _config.model.dom.parentElement.removeAttribute('prop-hidden');
+        if (prop.prop.name === 'table') {
+          if (tagName === 'TABLE') {
+            prop.dom.parentElement.style['display'] = 'block';
+            prop.dom.parentElement.removeAttribute('prop-hidden');
           } else {
-            _config.model.dom.parentElement.style['display'] = 'none';
-            _config.model.dom.parentElement.setAttribute('prop-hidden', 'true');
-          }
-        }
-
-        _config.model.update(prop);
-
-        if (_config.child) {
-          for (var c = 0, lenC = _config.child.length; c < lenC; c++) {
-            _configChild = _config.child[c];
-            _configChild.model.update(prop);
+            prop.dom.parentElement.style['display'] = 'none';
+            prop.dom.parentElement.setAttribute('prop-hidden', true);
           }
         }
       }
     }
   },
-  */
 
   /**
    * init attribute view
-   * @param {Element} parent 
+   * @param {Element} parent
    */
   render: function (parent) {
     propertyManager.renderCategory(parent);
   }
 };
+
+propObserver.register('update', propertyManager.updateProp, propertyManager);
 
 export default propertyManager;
