@@ -107,6 +107,46 @@ const mainManager = {
     };
 
     componentManager.initFrameComponent(frameOption, container);
+
+
+    const iframe = document.getElementById('test');
+    let doc = (iframe.contentWindow || iframe.contentDocument);
+    if (doc.document)doc = doc.document;
+    console.log(doc);
+    console.log(doc.body);
+    componentManager.initFrameComponent(frameOption, doc.body);
+
+    /*
+    iframe.contentWindow.DataTransfer.prototype.transferElement = undefined;
+    iframe.contentWindow.DataTransfer.prototype.setTransferElement = function (element) {
+      element
+
+      iframe.contentWindow.DataTransfer.prototype.transferElement = element;
+    };
+
+    iframe.contentWindow.DataTransfer.prototype.getTransferElement = function () {
+      return iframe.contentWindow.DataTransfer.prototype.transferElement;
+    };
+
+    iframe.contentWindow.DataTransfer.prototype.transferOrder = undefined;
+    iframe.contentWindow.DataTransfer.prototype.setTransferOrder = function (element) {
+      iframe.contentWindow.DataTransfer.prototype.transferOrder = element;
+    };
+
+    iframe.contentWindow.DataTransfer.prototype.getTransferOrder = function () {
+      return iframe.contentWindow.DataTransfer.prototype.transferOrder;
+    };
+
+    iframe.contentWindow.DataTransfer.prototype.transferOption = undefined;
+    iframe.contentWindow.DataTransfer.prototype.setTransferOption = function (option) {
+      iframe.contentWindow.DataTransfer.prototype.transferOption = option;
+    };
+
+    iframe.contentWindow.DataTransfer.prototype.getTransferOption = function () {
+      return iframe.contentWindow.DataTransfer.prototype.transferOption;
+    };
+    */
+
   },
 
   initMenu: function (container) {
