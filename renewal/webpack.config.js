@@ -16,8 +16,7 @@ module.exports = {
     port: 9000
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.m?js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
@@ -30,6 +29,12 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader',
+        ]
       }
     ]
   }

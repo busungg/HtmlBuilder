@@ -1,3 +1,85 @@
-.block_test_css {
-    width: 100%;
+/*--------------- BLOCK -------------- */
+.hb_btn-block {
+  display: inline-block;
+  width: 40%;
+  height: 120px;
+  padding: 5px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #495267;
+}
+
+.hb_btn-block:hover {
+  border: 1px solid #a0a0a0;
+}
+
+.hb_btn-block .hb_lbl {
+  display: inline-block;
+  width: 100%;
+  white-space: normal;
+  text-align: center;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.hb_btn-block .hb_img {
+  display: block;
+  width: 80%;
+  height: 65%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5px;
+  pointer-events: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.hb_btn-div {
+  background-image: url("./img/div.svg");
+}
+
+.hb_btn-h {
+  background-image: url("./img/h.svg");
+}
+
+.hb_btn-p {
+  background-image: url("./img/p.svg");
+}
+
+.hb_btn-input {
+  background-image: url("./img/input.svg");
+}
+
+.hb_btn-text-area {
+  background-image: url("./img/text-area.svg");
+}
+
+.hb_btn-link {
+  background-image: url("./img/link.svg");
+}
+
+.hb_btn-img {
+  background-image: url("./img/img.svg");
+}
+
+.hb_btn-select {
+  background-image: url("./img/select-box.svg");
+}
+
+.hb_btn-button {
+  background-image: url("./img/button.svg");
+}
+
+.hb_btn-label {
+  background-image: url("./img/label.svg");
+}
+
+.hb_btn-check-box {
+  background-image: url("./img/check-box.svg");
+}
+
+.hb_btn-radio {
+  background-image: url("./img/radio.svg");
 }

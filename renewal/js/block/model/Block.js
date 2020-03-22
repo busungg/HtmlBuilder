@@ -1,10 +1,10 @@
+import css from '../css/block.css';
+
 import Utils from '../../utils/utils';
 import {
   blockObserver,
   componentObserver
 } from '../../observer/observerManager';
-
-import blockCss from '../css/block.css';
 
 class Block {
   constructor(config) {
