@@ -4,6 +4,8 @@ import {
   componentObserver
 } from '../../observer/observerManager';
 
+import blockCss from '../css/block.css';
+
 class Block {
   constructor(config) {
     this.title = config.title;
