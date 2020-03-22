@@ -96,57 +96,22 @@ const mainManager = {
   },
 
   initFrame: function (container) {
-    const frameOption = {
-      element: 'div',
+    //iframe을 설정한다.
+    //iframe의 body를 가 frame이 된다.
+
+    const config = mainManager.config;
+    const iframeOption = {
+      element: 'iframe',
       attrs: {
-        id: mainManager.config.ids[0],
-        style: ('width:' + mainManager.config.width[0] + ';height:' + mainManager.config.height[0] + '; float:left; overflow: auto;'),
-        class: 'hb_content hb_border-basic'
-      },
-      canHaveChild: true
+        id: config.ids[0],
+        style: ('width:' + config.width[0] + ';height:' + config.height[
+          0] + '; float:left;'),
+        class: 'hb_content hb_border-basic',
+        allowfullscreen: true
+      }
     };
 
-    componentManager.initFrameComponent(frameOption, container);
-
-
-    const iframe = document.getElementById('test');
-    let doc = (iframe.contentWindow || iframe.contentDocument);
-    if (doc.document)doc = doc.document;
-    console.log(doc);
-    console.log(doc.body);
-    componentManager.initFrameComponent(frameOption, doc.body);
-
-    /*
-    iframe.contentWindow.DataTransfer.prototype.transferElement = undefined;
-    iframe.contentWindow.DataTransfer.prototype.setTransferElement = function (element) {
-      element
-
-      iframe.contentWindow.DataTransfer.prototype.transferElement = element;
-    };
-
-    iframe.contentWindow.DataTransfer.prototype.getTransferElement = function () {
-      return iframe.contentWindow.DataTransfer.prototype.transferElement;
-    };
-
-    iframe.contentWindow.DataTransfer.prototype.transferOrder = undefined;
-    iframe.contentWindow.DataTransfer.prototype.setTransferOrder = function (element) {
-      iframe.contentWindow.DataTransfer.prototype.transferOrder = element;
-    };
-
-    iframe.contentWindow.DataTransfer.prototype.getTransferOrder = function () {
-      return iframe.contentWindow.DataTransfer.prototype.transferOrder;
-    };
-
-    iframe.contentWindow.DataTransfer.prototype.transferOption = undefined;
-    iframe.contentWindow.DataTransfer.prototype.setTransferOption = function (option) {
-      iframe.contentWindow.DataTransfer.prototype.transferOption = option;
-    };
-
-    iframe.contentWindow.DataTransfer.prototype.getTransferOption = function () {
-      return iframe.contentWindow.DataTransfer.prototype.transferOption;
-    };
-    */
-
+    componentManager.init(iframeOption, container);
   },
 
   initMenu: function (container) {
@@ -154,7 +119,9 @@ const mainManager = {
       element: 'div',
       attrs: {
         id: mainManager.config.ids[1],
-        style: ('width:' + mainManager.config.width[1] + ';height:' + mainManager.config.height[1] + '; float:right; margin-right:15px;'),
+        style: ('width:' + mainManager.config.width[1] + ';height:' +
+          mainManager.config.height[1] +
+          '; float:right; margin-right:15px;'),
         class: 'hb_main-menu hb_border-basic'
       }
     });
@@ -185,41 +152,41 @@ const mainManager = {
           id: '#main-nav'
         },
         child: [{
-          element: 'button',
-          attrs: {
-            class: 'hb_btn-nav hb_btn-nav-block',
-            name: '#main-nav',
-            value: 'block'
+            element: 'button',
+            attrs: {
+              class: 'hb_btn-nav hb_btn-nav-block',
+              name: '#main-nav',
+              value: 'block'
+            },
+            event: [{
+              type: 'click',
+              func: click
+            }]
           },
-          event: [{
-            type: 'click',
-            func: click
-          }]
-        },
-        {
-          element: 'button',
-          attrs: {
-            class: 'hb_btn-nav hb_btn-nav-attr',
-            name: '#main-nav',
-            value: 'prop'
+          {
+            element: 'button',
+            attrs: {
+              class: 'hb_btn-nav hb_btn-nav-attr',
+              name: '#main-nav',
+              value: 'prop'
+            },
+            event: [{
+              type: 'click',
+              func: click
+            }]
           },
-          event: [{
-            type: 'click',
-            func: click
-          }]
-        },
-        {
-          element: 'button',
-          attrs: {
-            class: 'hb_btn-nav hb_btn-nav-setting',
-            name: '#main-nav',
-            value: 'setting'
-          },
-          event: [{
-            type: 'click',
-            func: click
-          }]
-        }
+          {
+            element: 'button',
+            attrs: {
+              class: 'hb_btn-nav hb_btn-nav-setting',
+              name: '#main-nav',
+              value: 'setting'
+            },
+            event: [{
+              type: 'click',
+              func: click
+            }]
+          }
         ]
       };
 
@@ -252,20 +219,20 @@ const mainManager = {
           style: 'display:none;'
         },
         child: [{
-          element: 'div',
-          attrs: {
-            class: 'hb_nav_content-prop',
-            style: 'display:block;'
-          }
-        },
-        {
-          element: 'div',
-          attrs: {
-            class: 'hb_nav_content-prop',
-            style: 'display:none;'
+            element: 'div',
+            attrs: {
+              class: 'hb_nav_content-prop',
+              style: 'display:block;'
+            }
           },
-          text: 'There is no selected Block\nPlease select at least 1 block'
-        }
+          {
+            element: 'div',
+            attrs: {
+              class: 'hb_nav_content-prop',
+              style: 'display:none;'
+            },
+            text: 'There is no selected Block\nPlease select at least 1 block'
+          }
         ]
       };
       mainManager.nav.prop = Utils.builder(_prop);

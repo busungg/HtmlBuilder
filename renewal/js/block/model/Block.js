@@ -1,4 +1,6 @@
+import Utils from '../../utils/utils';
 import {
+  blockObserver,
   componentObserver
 } from '../../observer/observerManager';
 
@@ -8,26 +10,8 @@ class Block {
     this.icon = config.icon;
     this.component = config.component; //복사 필요
     this.category = config.category;
+    this.dom = null;
   };
-
-  set dom(dom) {
-    this._dom = dom;
-
-    const mouseDown = (evt) => {
-      componentObserver.notify('deSelect');
-    };
-
-    const dragStart = (evt) => {
-      evt.dataTransfer.setTransferOption(this.component);
-    };
-
-    this._dom.addEventListener('mousedown', mouseDown);
-    this._dom.addEventListener('dragstart', dragStart);
-  }
-
-  get dom() {
-    return this._dom;
-  }
 
   render() {
     const _render = {
@@ -37,22 +21,34 @@ class Block {
         draggable: true
       },
       child: [{
-        element: 'div',
-        attrs: {
-          class: 'hb_img ' + this.icon
-        }
-      },
-      {
-        element: 'div',
-        attrs: {
-          class: 'hb_lbl'
+          element: 'div',
+          attrs: {
+            class: 'hb_img ' + this.icon
+          }
         },
-        text: this.title
-      }
+        {
+          element: 'div',
+          attrs: {
+            class: 'hb_lbl'
+          },
+          text: this.title
+        }
       ]
     }
 
-    return _render;
+    this.dom = Utils.builder(_render);
+    const mouseDown = (evt) => {
+      componentObserver.notify('deSelect');
+    };
+
+    const dragStart = (evt) => {
+      blockObserver.notify('setTransferOption', this.component);
+      //evt.dataTransfer.setTransferOption(this.component);
+    };
+    this.dom.addEventListener('mousedown', mouseDown);
+    this.dom.addEventListener('dragstart', dragStart);
+
+    return this.dom;
   };
 
 };

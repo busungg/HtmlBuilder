@@ -1,5 +1,8 @@
 import Utils from '../../utils/utils';
-import { componentObserver, propObserver } from '../../observer/observerManager';
+import {
+  componentObserver,
+  propObserver
+} from '../../observer/observerManager';
 //Observer를 import하여 사용하자
 
 
@@ -17,6 +20,7 @@ class Component {
 
     //Dom Class
     this.getFrame = () => {
+      if (!frame) return this.dom;
       return frame;
     }
 
@@ -117,7 +121,8 @@ class Component {
           dataTransfer의 element와 target이 같을 시 return
           null propagation operatior = ?. if null -> return undefined //Babel에서 안됨
       */
-      const transferComponent = evt.dataTransfer.getTransferElement() ? evt.dataTransfer.getTransferElement().component : undefined;
+      const transferComponent = evt.dataTransfer.getTransferElement() ? evt
+        .dataTransfer.getTransferElement().component : undefined;
       if (transferComponent) { //if not undefined
         if (transferComponent.isContain(clientX, clientY)) {
           return;
@@ -131,7 +136,8 @@ class Component {
         if (target.children.length !== 0) {
           targetComponent.initChildCSS();
           const result = targetComponent.getNearChild(clientX, clientY);
-          const dropOrder = targetComponent.getDropOrder(result.child, result.order, clientX, clientY);
+          const dropOrder = targetComponent.getDropOrder(result.child,
+            result.order, clientX, clientY);
           evt.dataTransfer.setTransferOrder(dropOrder);
         }
       } else {
@@ -169,7 +175,8 @@ class Component {
         if (draggedElement) { //Null이 아니면 기존 Layout을 이동 시키는 것
           draggedElement.parentNode.removeChild(draggedElement);
         } else { //Null이면 Block정보로 새로운 Layout을 생성하는 것
-          draggedElement = (new Component(draggedOption, this.getFrame())).dom;
+          draggedElement = (new Component(draggedOption, this.getFrame()))
+            .dom;
         }
         targetComponent.insertChild(draggedElement, dropOrder);
       }
@@ -319,7 +326,8 @@ class Component {
       */
       const pos = {};
       const dom = this.dom
-      const rect = dom.getBoundingClientRect() //render된 후의 top, left, width, height을 제공;
+      const rect = dom
+      .getBoundingClientRect() //render된 후의 top, left, width, height을 제공;
 
       //Offset의 기준이 되는 Parent Element
       const offsetParent = dom.offsetParent;
@@ -331,8 +339,10 @@ class Component {
               - 30px * 30px element가 존재할 시 padding이 20px이면 width = 30 + 20 * 2, height = 30 + 20 * 2; 이다.
       */
       if (offsetParent) {
-        pos.x = dom.offsetLeft + (offsetParent.layout ? offsetParent.layout.pos.x : offsetParent.offsetLeft);
-        pos.y = dom.offsetTop + (offsetParent.layout ? offsetParent.layout.pos.y : offsetParent.offsetTop);
+        pos.x = dom.offsetLeft + (offsetParent.layout ? offsetParent.layout
+          .pos.x : offsetParent.offsetLeft);
+        pos.y = dom.offsetTop + (offsetParent.layout ? offsetParent.layout.pos
+          .y : offsetParent.offsetTop);
       } else {
         pos.x = dom.offsetLeft;
         pos.y = dom.offsetTop;
@@ -389,7 +399,8 @@ class Component {
 
       property.class = [];
       for (let i = 0, len = dom.classList.length; i < len; i++) {
-        if (dom.classList[i].indexOf('hb_selectable') === -1 && dom.classList[i].indexOf('hb_selected') === -1) {
+        if (dom.classList[i].indexOf('hb_selectable') === -1 && dom.classList[
+            i].indexOf('hb_selected') === -1) {
           property.class.push(dom.classList[i]);
         }
       }
@@ -527,9 +538,11 @@ class Component {
         deleteRecursive(child);
       }
 
-      const handlers = componentObserver.getHandlers('deSelect', parentDom.layout);
+      const handlers = componentObserver.getHandlers('deSelect', parentDom
+        .layout);
       for (let handler of handlers) {
-        componentObserver.unRegister('deSelect', handler.handler, handler.context);
+        componentObserver.unRegister('deSelect', handler.handler, handler
+          .context);
       }
 
       parentDom.component = null;

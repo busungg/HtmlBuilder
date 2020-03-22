@@ -12,7 +12,7 @@ const blockManager = {
     const blocks = this.blocks = [];
     configs.forEach(config => {
       let block = new Block(config);
-      block.dom = Utils.builder(block.render());
+      block.render();
       blocks.push(block);
     });
   },
