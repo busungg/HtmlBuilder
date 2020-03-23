@@ -1,4 +1,4 @@
-import CSS from '../config/css';
+import CSS from '../css/css';
 import Property from './Property';
 
 class PropertyTextNode extends Property {
@@ -43,43 +43,36 @@ class PropertyTextNode extends Property {
 
   render() {
     return super.render({
-      element: 'div',
+      element: 'fieldset',
       attrs: {
-        class: CSS.prop_body_div
+        class: 'prop-sub-category__body'
       },
-      child: [
-        { //div for title
-          element: 'div',
-          attrs: {
-            class: CSS.prop_body_title_div
-          },
-          child: [{
-            element: 'label',
-            attrs: {
-              class: CSS.prop_body_title_label
-            },
-            text: this.title
-          }]
+      child: [{ //div for title
+        element: 'legend',
+        attrs: {
+          class: 'prop-sub-category__title'
         },
+        text: this.title
+      },
 
-        { //div for property set
-          element: 'div',
+      { //div for property set
+        element: 'div',
+        attrs: {
+          class: CSS.prop_body_set_div
+        },
+        child: [{
+          element: 'input',
           attrs: {
-            class: CSS.prop_body_set_div
+            type: 'text',
+            class: CSS.prop_body_set_text,
+            ['set-type']: 'value'
           },
-          child: [{
-            element: 'input',
-            attrs: {
-              type: 'text',
-              class: CSS.prop_body_set_text,
-              ['set-type']: 'value'
-            },
-            event: [{
-              type: 'change',
-              func: this.event()
-            }]
+          event: [{
+            type: 'change',
+            func: this.event()
           }]
-        }
+        }]
+      }
       ]
     });
   };

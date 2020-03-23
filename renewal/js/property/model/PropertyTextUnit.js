@@ -1,4 +1,4 @@
-import CSS from '../config/css';
+import CSS from '../css/css';
 import Property from './Property';
 
 class PropertyTextUnit extends Property {
@@ -84,22 +84,16 @@ class PropertyTextUnit extends Property {
 
   render() {
     var _render = {
-      element: 'div',
+      element: 'fieldset',
       attrs: {
-        class: CSS.prop_body_div
+        class: 'prop-sub-category__body'
       },
       child: [{ //div for title
-        element: 'div',
+        element: 'legend',
         attrs: {
-          class: CSS.prop_body_title_div
+          class: 'prop-sub-category__title'
         },
-        child: [{
-          element: 'label',
-          attrs: {
-            class: CSS.prop_body_title_label
-          },
-          text: this.title
-        }]
+        text: this.title
       },
 
       { //div for property set

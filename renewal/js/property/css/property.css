@@ -1,0 +1,165 @@
+/*--------------- PROPERTY --------------*/
+
+/*
+https://blog.sonim1.com/221 -- BEM
+
+E는 Elements
+.stick-man__head { } .stick-man__arms { } .stick-man__feet { }'
+
+M은 Modifiers
+.stick-man--blue { } .stick-man--red { }
+*/
+
+.prop-category__title {
+  width: 60%;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 3px;
+  border: 1px solid #cecfcf;
+  background-color: #313232;
+}
+
+.prop-category__body {
+  width: 92%;
+  margin: 10px auto;
+  padding: 0px;
+  border: 1px solid #cecfcf;
+  background-color: #313232;
+}
+
+.prop-sub-category__title {
+  width: 40%;
+  text-align: left;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px;
+  border: 1px solid #cecfcf;
+  background-color: #313232;
+}
+
+.prop-sub-category__body {
+  width: 92%;
+  margin: 10px auto;
+  padding: 0px;
+  border: 2px solid #cecfcf;
+  background-color: #313232;
+}
+
+
+
+
+.hb_prop_body {
+  width: 100%;
+  text-align: center;
+}
+
+.hb_sub_category_toggle_body_div {
+  width: 100%;
+  background-color: #9fa8b7;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.hb_category_body_div,
+.hb_prop_body_div {
+  width: 90%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #495267;
+  text-align: center;
+}
+
+.hb_category_body_title_div {
+  width: 100%;
+  min-height: 25px;
+  background-color: #9fa8b7;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hb_prop_body_title_div {
+  width: 100%;
+  min-height: 25px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.hb_category_body_title_label,
+.hb_prop_body_title_label {
+  float: left;
+  width: 90%;
+  height: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 11px;
+  font-weight: bold;
+  overflow-wrap: break-word;
+}
+
+.hb_prop_body_set_div {
+  width: 100%;
+  min-height: 30px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.hb_prop_body_set_text {
+  width: 90%;
+  height: 20px;
+  font-size: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hb_prop_body_set_btn {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  font-size: 12px;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+
+  width: 90%;
+  height: 20px;
+  margin-top: 3px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hb_prop_body_set_btn:hover {
+  color: #fff;
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.hb_prop_body_set_select {
+  width: 90%;
+  height: 20px;
+  font-size: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hb_prop_body_set_multi_select {
+  width: 90%;
+  height: 100px;
+  font-size: 12px;
+  overflow: auto;
+}
+
+.hb_prop_body_set_color {
+  width: 90%;
+  height: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -1,5 +1,6 @@
 import Utils from '../utils/utils';
-import CSS from './config/css';
+import CSS from './css/css';
+import propertyCss from './css/property.css';
 
 import { category, configs } from './config/config';
 
@@ -94,12 +95,20 @@ const propertyManager = {
     var _category, dom;
     for (let i = 0, leni = category.length; i < leni; i++) {
       _category = {
-        element: 'div',
+        element: 'fieldset',
         attrs: {
-          class: CSS.category_body_div
+          class: 'prop-category__body'
         },
         child: [
           {
+            element: 'legend',
+            attrs: {
+              class: 'prop-category__title',
+              name: category[i].name
+            },
+            html: category[i].title
+
+            /*
             element: 'div',
             attrs: {
               class: CSS.category_body_title_div
@@ -124,7 +133,7 @@ const propertyManager = {
                   }
                 ]
               }
-            ]
+            ]*/
           }
         ]
       };
