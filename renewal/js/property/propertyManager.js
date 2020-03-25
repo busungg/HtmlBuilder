@@ -55,6 +55,7 @@ const propertyManager = {
    * category, sub category toggle event
    * @param {event} e
    */
+  /*
   eventToggle: function (e) {
     let target;
 
@@ -86,6 +87,21 @@ const propertyManager = {
       }
     }
   },
+  */
+
+  eventToggle: function(e) {
+    let target = e.target;
+    target.classList.toggle('hide');
+
+    let content = target.parentElement.nextElementSibling;
+
+    if(content.classList.contains('hide')) {
+      content.style['max-height'] = content.scrollHeight + 'px';
+    } else {
+      content.style['max-height'] = null;
+    }
+    content.classList.toggle('hide');
+  },
 
   /**
    * set category element
@@ -95,11 +111,46 @@ const propertyManager = {
     var _category, dom;
     for (let i = 0, leni = category.length; i < leni; i++) {
       _category = {
-        element: 'fieldset',
+        element: 'section',
         attrs: {
-          class: 'prop-category__body'
+          class: 'hb_prop-section'
         },
         child: [
+          {
+            element:'div',
+            attrs: {
+              class:'hb_prop-section__title'
+            },
+            child : [
+              {
+                element: 'button',
+                attrs: {
+                  class:'hb_nav-icon'
+                },
+                event: [
+                  {
+                    type: 'click',
+                    func: this.eventToggle
+                  }
+                ]
+              },
+              {
+                element: 'label',
+                attrs: {
+                  class:'hb_prop-section__title__label'
+                },
+                html: category[i].title
+              }
+            ]
+          },
+          {
+            element:'div',
+            attrs: {
+              class:'hb_prop-section__content'
+            }
+          }
+
+          /*
           {
             element: 'legend',
             attrs: {
@@ -108,7 +159,6 @@ const propertyManager = {
             },
             html: category[i].title
 
-            /*
             element: 'div',
             attrs: {
               class: CSS.category_body_title_div
@@ -133,13 +183,13 @@ const propertyManager = {
                   }
                 ]
               }
-            ]*/
-          }
+            ]
+          }*/
         ]
       };
 
       dom = Utils.builder(_category);
-      propertyManager.renderCategoryContent(category[i].name, dom);
+      propertyManager.renderCategoryContent(category[i].name, dom.children[1]);
       parent.appendChild(dom);
     }
   },
