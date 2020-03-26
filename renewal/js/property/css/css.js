@@ -3,12 +3,6 @@
  */
 
 module.exports = {
-  sub_category_toggle_body_div: 'hb_sub_category_toggle_body_div',
-
-  category_body_div: 'hb_category_body_div',
-  category_body_title_div: 'hb_category_body_title_div',
-  category_body_title_label: 'hb_category_body_title_label',
-
   prop_body_div: 'hb_prop_body_div',
   prop_body_title_div: 'hb_prop_body_title_div',
   prop_body_title_label: 'hb_prop_body_title_label',

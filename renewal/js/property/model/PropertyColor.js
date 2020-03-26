@@ -1,4 +1,3 @@
-import CSS from '../css/css';
 import Property from './Property';
 
 class PropertyColor extends Property {
@@ -47,37 +46,33 @@ class PropertyColor extends Property {
     return super.render({
       element: 'fieldset',
       attrs: {
-        class: 'prop-sub-category__body'
+        class: 'hb_prop__content'
       },
-      child: [{ //div for title
-        element: 'legend',
-        attrs: {
-          class: 'prop-sub-category__title'
+      child: [
+        { //div for title
+          element: 'legend',
+          attrs: {
+            class: 'hb_prop__title'
+          },
+          text: this.title
         },
-        text: this.title
-      },
 
-      { //div for property set
-        element: 'div',
-        attrs: {
-          class: CSS.prop_body_set_div
-        },
-        child: [{
+        {
           element: 'input',
           attrs: {
             type: 'color',
-            class: CSS.prop_body_set_color,
+            class: 'hb_prop__color',
             ['set-type']: 'value'
           },
           event: [{
             type: 'change',
             func: this.event()
-          }]
-        }]
-      }
+          }
+          ]
+        }
       ]
     });
   };
-};
+}
 
 export default PropertyColor;

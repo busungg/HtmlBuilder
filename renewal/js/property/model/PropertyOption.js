@@ -1,4 +1,3 @@
-import CSS from '../css/css';
 import Property from './Property';
 
 class PropertyOption extends Property {
@@ -80,12 +79,12 @@ class PropertyOption extends Property {
     return super.render({
       element: 'fieldset',
       attrs: {
-        class: 'prop-sub-category__body'
+        class: 'hb_prop__content'
       },
       child: [{ //div for title
         element: 'legend',
         attrs: {
-          class: 'prop-sub-category__title'
+          class: 'hb_prop__title'
         },
         text: this.title
       },
@@ -93,12 +92,12 @@ class PropertyOption extends Property {
       { //div for property set
         element: 'div',
         attrs: {
-          class: CSS.prop_body_set_div
+          class: ''
         },
         child: [{
           element: 'label',
           attrs: {
-            class: CSS.prop_body_set_text
+            class: 'hb_prop__sub_title'
           },
           text: 'Value'
         },
@@ -106,14 +105,14 @@ class PropertyOption extends Property {
           element: 'input',
           attrs: {
             type: 'text',
-            class: CSS.prop_body_set_text,
+            class: 'hb_prop__text',
             ['set-type']: 'value'
           }
         },
         {
           element: 'label',
           attrs: {
-            class: CSS.prop_body_set_text
+            class: 'hb_prop__sub_title'
           },
           text: 'Text'
         },
@@ -121,14 +120,14 @@ class PropertyOption extends Property {
           element: 'input',
           attrs: {
             type: 'text',
-            class: CSS.prop_body_set_text,
+            class: 'hb_prop__text',
             ['set-type']: 'text'
           }
         },
         {
           element: 'button',
           attrs: {
-            class: CSS.prop_body_set_btn,
+            class: 'hb_prop__button',
             title: 'Add option',
           },
           text: 'Add option',
@@ -140,7 +139,7 @@ class PropertyOption extends Property {
         {
           element: 'button',
           attrs: {
-            class: CSS.prop_body_set_btn,
+            class: 'hb_prop__button',
             title: 'Delete option',
           },
           text: 'Delete option',
@@ -152,7 +151,7 @@ class PropertyOption extends Property {
         {
           element: 'select',
           attrs: {
-            class: CSS.prop_body_set_multi_select,
+            class: 'hb_prop__multi_select',
             multiple: true,
             ['set-type']: 'option'
           }

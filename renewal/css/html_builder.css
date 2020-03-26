@@ -7,10 +7,10 @@
 2. CSS structure
 	- menu
 	- navigator
-	- 
+	-
 */
 
-html, 
+html,
 body
 {
 	width: 100%;
@@ -42,7 +42,7 @@ body
 .hb_half {
 	width: 50%;
 	height: 50%;
-	box-sizing: border-box;	
+	box-sizing: border-box;
 }
 
 .hb_width-75 {
@@ -125,7 +125,7 @@ body
 
 .hb_border-bottom-move
 {
-	box-shadow: 0px 3px 0px #f4aa42 !important; 
+	box-shadow: 0px 3px 0px #f4aa42 !important;
 }
 
 .hb_border-left-move
@@ -182,7 +182,7 @@ body
 	height:100%;
 }
 
-.hb_btn-nav:hover 
+.hb_btn-nav:hover
 {
 	background-color: #858f98;
 	border-color: #545b60;
@@ -218,7 +218,7 @@ body
 	width: 100%;
 	height: 95%;
 	margin-top: 5px;
-	overflow-y: scroll;
+	/*overflow-y: scroll;*/
 }
 
 .hb_nav_content-blocks
@@ -256,7 +256,7 @@ body
 	white-space: normal;
 	text-align: center;
 	text-overflow: ellipsis;
-	font-size:12px; 
+	font-size:12px;
 	font-weight:bold;
 }
 
@@ -274,7 +274,7 @@ body
     background-size: contain;
 }
 
-.hb_btn-div 
+.hb_btn-div
 {
 	background-image: url("../icon/block/div.svg");
 }
@@ -284,17 +284,17 @@ body
 	background-image: url("../icon/block/h.svg");
 }
 
-.hb_btn-p 
+.hb_btn-p
 {
 	background-image: url("../icon/block/p.svg");
 }
 
-.hb_btn-input 
+.hb_btn-input
 {
 	background-image: url("../icon/block/input.svg");
 }
 
-.hb_btn-text-area 
+.hb_btn-text-area
 {
 	background-image: url("../icon/block/text-area.svg");
 }
@@ -304,7 +304,7 @@ body
 	background-image: url("../icon/block/link.svg");
 }
 
-.hb_btn-img 
+.hb_btn-img
 {
 	background-image: url("../icon/block/img.svg");
 }
@@ -324,12 +324,12 @@ body
 	background-image: url("../icon/block/label.svg");
 }
 
-.hb_btn-check-box 
+.hb_btn-check-box
 {
 	background-image: url("../icon/block/check-box.svg");
 }
 
-.hb_btn-radio 
+.hb_btn-radio
 {
 	background-image: url("../icon/block/radio.svg");
 }
@@ -345,7 +345,7 @@ body
 {
 	width: 100%;
 	background-color: #9fa8b7;
-	font-size:12px; 
+	font-size:12px;
 	cursor:pointer;
 }
 
@@ -366,7 +366,7 @@ body
 	min-height: 25px;
 	background-color: #9fa8b7;
 	font-size:13px;
-	font-weight: bold; 
+	font-weight: bold;
 	cursor:pointer;
 }
 
@@ -462,7 +462,7 @@ body
 }
 
 /*--------------- FUNCTION BLOCK --------------*/
-.hb_func-menu 
+.hb_func-menu
 {
 	width: 50px;
 	height: 20px;
@@ -549,7 +549,7 @@ body
 	margin-right: auto;
 }
 
-.hb_setting-btn:hover 
+.hb_setting-btn:hover
 {
 	background-color: #858f98;
 	border-color: #545b60;

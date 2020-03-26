@@ -1,4 +1,3 @@
-import CSS from '../css/css';
 import Property from './Property';
 
 class PropertyText extends Property {
@@ -55,33 +54,27 @@ class PropertyText extends Property {
     return super.render({
       element: 'fieldset',
       attrs: {
-        class: 'prop-sub-category__body'
+        class: 'hb_prop__content'
       },
       child: [
         { //div for title
           element: 'legend',
           attrs: {
-            class: 'prop-sub-category__title'
+            class: 'hb_prop__title'
           },
           text: this.title
         },
 
-        { //div for property set
-          element: 'div',
+        {
+          element: 'input',
           attrs: {
-            class: CSS.prop_body_set_div
+            type: 'text',
+            class: 'hb_prop__text',
+            ['set-type']: 'value',
           },
-          child: [{
-            element: 'input',
-            attrs: {
-              type: 'text',
-              class: CSS.prop_body_set_text,
-              ['set-type']: 'value',
-            },
-            event: [{
-              type: 'change',
-              func: this.event()
-            }]
+          event: [{
+            type: 'change',
+            func: this.event()
           }]
         }
       ]

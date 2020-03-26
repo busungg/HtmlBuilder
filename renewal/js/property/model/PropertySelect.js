@@ -1,4 +1,3 @@
-import CSS from '../css/css';
 import Property from './Property';
 
 class PropertySelect extends Property {
@@ -46,25 +45,20 @@ class PropertySelect extends Property {
     const _render = {
       element: 'fieldset',
       attrs: {
-        class: 'prop-sub-category__body'
+        class: 'hb_prop__content'
       },
-      child: [{ //div for title
-        element: 'legend',
-        attrs: {
-          class: 'prop-sub-category__title'
+      child: [
+        { //div for title
+          element: 'legend',
+          attrs: {
+            class: 'hb_prop__title'
+          },
+          text: this.title
         },
-        text: this.title
-      },
-
-      { //div for property set
-        element: 'div',
-        attrs: {
-          class: CSS.prop_body_set_div
-        },
-        child: [{
+        {
           element: 'select',
           attrs: {
-            class: CSS.prop_body_set_select,
+            class: 'hb_prop__select',
             ['set-type']: 'value',
           },
           child: [],
@@ -72,13 +66,12 @@ class PropertySelect extends Property {
             type: 'change',
             func: this.event()
           }]
-        }]
-      }
+        }
       ]
     };
 
     const prop = this.prop;
-    const _select = _render.child[1].child[0];
+    const _select = _render.child[1];
     for (let option of prop.options) {
       _select.child.push({
         element: 'option',

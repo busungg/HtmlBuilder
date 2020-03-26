@@ -1,4 +1,3 @@
-import CSS from '../css/css';
 import Property from './Property';
 
 class PropertyTextUnit extends Property {
@@ -86,26 +85,22 @@ class PropertyTextUnit extends Property {
     var _render = {
       element: 'fieldset',
       attrs: {
-        class: 'prop-sub-category__body'
+        class: 'hb_prop__content'
       },
-      child: [{ //div for title
-        element: 'legend',
-        attrs: {
-          class: 'prop-sub-category__title'
+      child: [
+        { //div for title
+          element: 'legend',
+          attrs: {
+            class: 'hb_prop__title'
+          },
+          text: this.title
         },
-        text: this.title
-      },
 
-      { //div for property set
-        element: 'div',
-        attrs: {
-          class: CSS.prop_body_set_div
-        },
-        child: [{
+        {
           element: 'input',
           attrs: {
             type: 'text',
-            class: CSS.prop_body_set_text,
+            class: 'hb_prop__text',
             ['set-type']: 'value',
           },
           event: [{
@@ -113,10 +108,11 @@ class PropertyTextUnit extends Property {
             func: this.event()
           }]
         },
+
         {
           element: 'select',
           attrs: {
-            class: CSS.prop_body_set_select,
+            class: 'hb_prop__unit',
             ['set-type']: 'unit',
           },
           child: [],
@@ -125,12 +121,10 @@ class PropertyTextUnit extends Property {
             func: this.event()
           }]
         }
-        ]
-      }
       ]
     };
 
-    const _select = _render.child[1].child[1];
+    const _select = _render.child[2];
     for (let unit of this.prop.units) {
       _select.child.push({
         element: 'option',

@@ -1,5 +1,4 @@
 import Utils from '../utils/utils';
-import CSS from './css/css';
 import propertyCss from './css/property.css';
 
 import { category, configs } from './config/config';
@@ -89,13 +88,13 @@ const propertyManager = {
   },
   */
 
-  eventToggle: function(e) {
+  eventToggle: function (e) {
     let target = e.target;
     target.classList.toggle('hide');
 
     let content = target.parentElement.nextElementSibling;
 
-    if(content.classList.contains('hide')) {
+    if (content.classList.contains('hide')) {
       content.style['max-height'] = content.scrollHeight + 'px';
     } else {
       content.style['max-height'] = null;
@@ -117,15 +116,15 @@ const propertyManager = {
         },
         child: [
           {
-            element:'div',
+            element: 'div',
             attrs: {
-              class:'hb_prop-section__title'
+              class: 'hb_prop-section__title'
             },
-            child : [
+            child: [
               {
                 element: 'button',
                 attrs: {
-                  class:'hb_nav-icon'
+                  class: 'hb_nav-icon'
                 },
                 event: [
                   {
@@ -137,54 +136,18 @@ const propertyManager = {
               {
                 element: 'label',
                 attrs: {
-                  class:'hb_prop-section__title__label'
+                  class: 'hb_prop-section__title__label'
                 },
                 html: category[i].title
               }
             ]
           },
           {
-            element:'div',
-            attrs: {
-              class:'hb_prop-section__content'
-            }
-          }
-
-          /*
-          {
-            element: 'legend',
-            attrs: {
-              class: 'prop-category__title',
-              name: category[i].name
-            },
-            html: category[i].title
-
             element: 'div',
             attrs: {
-              class: CSS.category_body_title_div
-            },
-            event: [
-              {
-                type: 'click',
-                func: this.eventToggle
-              }
-            ],
-            child: [
-              {
-                element: 'label',
-                attrs: {
-                  name: category[i].name
-                },
-                html: category[i].title + ' \u25B2',
-                event: [
-                  {
-                    type: 'click',
-                    func: this.eventToggle
-                  }
-                ]
-              }
-            ]
-          }*/
+              class: 'hb_prop-section__content'
+            }
+          }
         ]
       };
 
@@ -211,13 +174,13 @@ const propertyManager = {
             {
               element: 'div',
               attrs: {
-                class: CSS.category_body_div
+                class: ''
               },
               child: [
                 {
                   element: 'div',
                   attrs: {
-                    class: CSS.sub_category_toggle_body_div
+                    class: ''
                   },
                   html: '\u25B2',
                   event: [{
