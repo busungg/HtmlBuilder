@@ -2,6 +2,7 @@ import Utils from './utils/utils';
 import blockManager from './block/blockManager';
 import componentManager from './component/componentManager';
 import propertyManager from './property/propertyManager';
+import { propObserver } from './observer/observerManager';
 
 /**
  * Polyfill
@@ -143,6 +144,10 @@ const mainManager = {
 
         var showDom = mainManager.nav[e.target.value];
         showDom.style.display = 'block';
+
+        if (e.target.value === 'prop') {
+          propObserver.notify('initScrollHeight');
+        }
       };
 
       var _nav = {
@@ -152,41 +157,41 @@ const mainManager = {
           id: '#main-nav'
         },
         child: [{
-            element: 'button',
-            attrs: {
-              class: 'hb_btn-nav hb_btn-nav-block',
-              name: '#main-nav',
-              value: 'block'
-            },
-            event: [{
-              type: 'click',
-              func: click
-            }]
+          element: 'button',
+          attrs: {
+            class: 'hb_btn-nav hb_btn-nav-block',
+            name: '#main-nav',
+            value: 'block'
           },
-          {
-            element: 'button',
-            attrs: {
-              class: 'hb_btn-nav hb_btn-nav-attr',
-              name: '#main-nav',
-              value: 'prop'
-            },
-            event: [{
-              type: 'click',
-              func: click
-            }]
+          event: [{
+            type: 'click',
+            func: click
+          }]
+        },
+        {
+          element: 'button',
+          attrs: {
+            class: 'hb_btn-nav hb_btn-nav-attr',
+            name: '#main-nav',
+            value: 'prop'
           },
-          {
-            element: 'button',
-            attrs: {
-              class: 'hb_btn-nav hb_btn-nav-setting',
-              name: '#main-nav',
-              value: 'setting'
-            },
-            event: [{
-              type: 'click',
-              func: click
-            }]
-          }
+          event: [{
+            type: 'click',
+            func: click
+          }]
+        },
+        {
+          element: 'button',
+          attrs: {
+            class: 'hb_btn-nav hb_btn-nav-setting',
+            name: '#main-nav',
+            value: 'setting'
+          },
+          event: [{
+            type: 'click',
+            func: click
+          }]
+        }
         ]
       };
 
@@ -219,20 +224,20 @@ const mainManager = {
           style: 'display:none;'
         },
         child: [{
-            element: 'div',
-            attrs: {
-              class: 'hb_nav_content-prop',
-              style: 'display:block;'
-            }
-          },
-          {
-            element: 'div',
-            attrs: {
-              class: 'hb_nav_content-prop',
-              style: 'display:none;'
-            },
-            text: 'There is no selected Block\nPlease select at least 1 block'
+          element: 'div',
+          attrs: {
+            class: 'hb_nav_content-prop',
+            style: 'display:block;'
           }
+        },
+        {
+          element: 'div',
+          attrs: {
+            class: 'hb_nav_content-prop',
+            style: 'display:none;'
+          },
+          text: 'There is no selected Block\nPlease select at least 1 block'
+        }
         ]
       };
       mainManager.nav.prop = Utils.builder(_prop);

@@ -26,7 +26,7 @@ M은 Modifiers
   background-repeat: no-repeat;
   background-size: cover;
   background-color: transparent;
-  transition: all .2s ease-out;
+  transition: all .4s ease-out;
   vertical-align: middle;
   outline: none;
   fill: #fff
@@ -62,7 +62,7 @@ M은 Modifiers
   width: 100%;
   height: auto;
   overflow:hidden;
-  transition: all .2s ease-out;
+  transition: all .4s ease-out;
   background-color: #59475c;
 }
 
@@ -79,7 +79,7 @@ M은 Modifiers
 }
 
 .hb_prop__title {
-  width: 60%;
+  width: 85%;
   height: 25px;
   box-sizing: border-box;
   border: 1px solid #b9a5a6;
@@ -106,6 +106,23 @@ M은 Modifiers
   margin: 10px auto;
   border: 1px solid #b9a5a6;
   border-radius: 5px;
+}
+
+.hb_prop-sub__title {
+  width: 100%;
+  border-bottom: 2px solid #211b23;
+}
+
+.hb_prop-sub__content {
+  width: 100%;
+  height: auto;
+  overflow:hidden;
+  transition: all .4s ease-out;
+  background-color: #59475c;
+}
+
+.hb_prop-sub__content.hide {
+  max-height: 0;
 }
 
 .hb_prop__text {

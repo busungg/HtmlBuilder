@@ -1,5 +1,6 @@
-import Utils from '../utils/utils';
 import propertyCss from './css/property.css';
+
+import Utils from '../utils/utils';
 
 import { category, configs } from './config/config';
 
@@ -49,45 +50,10 @@ const propertyManager = {
     }
   },
 
-
   /**
    * category, sub category toggle event
    * @param {event} e
    */
-  /*
-  eventToggle: function (e) {
-    let target;
-
-    if (e.target.nodeName == 'LABEL') {
-      target = e.target.parentNode;
-    } else {
-      target = e.target;
-    }
-
-    if (target.innerHTML.indexOf('\u25B2') != -1) {
-      target.innerHTML = target.innerHTML.replace('\u25B2', '\u25BC');
-    } else {
-      target.innerHTML = target.innerHTML.replace('\u25BC', '\u25B2');
-    }
-
-    let sibling = target.nextSibling;
-    let prop_hidden = sibling.getAttribute('prop-hidden');
-
-    while (sibling) {
-      if (sibling.style.display == 'none' && !prop_hidden) {
-        sibling.style.display = 'block';
-      } else {
-        sibling.style.display = 'none';
-      }
-
-      sibling = sibling.nextSibling;
-      if (sibling) {
-        prop_hidden = sibling.getAttribute('prop-hidden');
-      }
-    }
-  },
-  */
-
   eventToggle: function (e) {
     let target = e.target;
     target.classList.toggle('hide');
@@ -95,7 +61,7 @@ const propertyManager = {
     let content = target.parentElement.nextElementSibling;
 
     if (content.classList.contains('hide')) {
-      content.style['max-height'] = content.scrollHeight + 'px';
+      content.style['max-height'] = content.dataset.scrollHeight;
     } else {
       content.style['max-height'] = null;
     }
@@ -170,24 +136,36 @@ const propertyManager = {
 
         //추후 다른 디자인으로 변경한다.
         if (propInfo.child) {
+          let childCategoryTitleDom = Utils.builder(
+            {
+              element: 'div',
+              attrs: {
+                class: 'hb_prop-sub__title'
+              },
+              child: [
+                {
+                  element: 'button',
+                  attrs: {
+                    class: 'hb_nav-icon'
+                  },
+                  event: [
+                    {
+                      type: 'click',
+                      func: this.eventToggle
+                    }
+                  ]
+                }
+              ]
+            }
+          );
+          propDom.appendChild(childCategoryTitleDom);
+
           let childCategoryDom = Utils.builder(
             {
               element: 'div',
               attrs: {
-                class: ''
-              },
-              child: [
-                {
-                  element: 'div',
-                  attrs: {
-                    class: ''
-                  },
-                  html: '\u25B2',
-                  event: [{
-                    type: 'click',
-                    func: this.eventToggle
-                  }]
-                }]
+                class: 'hb_prop-sub__content'
+              }
             }
           );
           propDom.appendChild(childCategoryDom);
@@ -197,8 +175,6 @@ const propertyManager = {
           }
         }
       }
-
-
     }
   },
 
@@ -256,11 +232,32 @@ const propertyManager = {
    * init attribute view
    * @param {Element} parent
    */
-  render: function (parent) {
+  render(parent) {
     propertyManager.renderCategory(parent);
   }
 };
 
+initScrollHeight.init = false;
+function initScrollHeight() {
+  if (!initScrollHeight.init) {
+    let sections = document.getElementsByClassName('hb_prop-section__content');
+    let subSections = document.getElementsByClassName('hb_prop-sub__content');
+
+    for (let section of sections) {
+      section.style['max-height'] = section.scrollHeight + 'px';
+      section.setAttribute('data-scroll-height', section.scrollHeight + 'px');
+    }
+
+    for (let subSection of subSections) {
+      subSection.style['max-height'] = subSection.scrollHeight + 'px';
+      subSection.setAttribute('data-scroll-height', subSection.scrollHeight + 'px');
+    }
+
+    initScrollHeight.init = true;
+  }
+}
+
+propObserver.register('initScrollHeight', initScrollHeight, undefined);
 propObserver.register('update', propertyManager.updateProp, propertyManager);
 
 export default propertyManager;
