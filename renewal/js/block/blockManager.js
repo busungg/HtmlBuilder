@@ -22,31 +22,17 @@ const blockManager = {
    * @param {event} e
    */
   eventToggle: function (e) {
-    var target;
+    let target = e.target;
+    target.classList.toggle('hide');
 
-    if (e.target.nodeName == 'LABEL') {
-      target = e.target.parentNode;
+    let content = target.parentElement.nextElementSibling;
+
+    if (content.classList.contains('hide')) {
+      content.style['max-height'] = content.dataset.scrollHeight;
     } else {
-      target = e.target;
+      content.style['max-height'] = null;
     }
-
-    if (target.innerHTML.indexOf('\u25B2') != -1) {
-      target.innerHTML = target.innerHTML.replace('\u25B2', '\u25BC');
-    } else {
-      target.innerHTML = target.innerHTML.replace('\u25BC', '\u25B2');
-    }
-
-    var sibling = target.nextSibling;
-
-    while (sibling) {
-      if (sibling.style.display == 'none') {
-        sibling.style.display = 'inline-block';
-      } else {
-        sibling.style.display = 'none';
-      }
-
-      sibling = sibling.nextSibling;
-    }
+    content.classList.toggle('hide');
   },
 
   /**
@@ -57,37 +43,51 @@ const blockManager = {
     let _category, dom;
     for (let i = 0, len = category.length; i < len; i++) {
       _category = {
-        element: 'div',
+        element: 'section',
         attrs: {
-          class: 'hb_category_body_div'
+          class: 'hb_block-section'
         },
-        child: [{
-          element: 'div',
-          attrs: {
-            class: 'hb_category_body_title_div'
-          },
-          event: [{
-            type: 'click',
-            func: blockManager.eventToggle
-          }],
-          child: [{
-            element: 'label',
+        child: [
+          {
+            element: 'div',
             attrs: {
-              name: category[i].name
+              class: 'hb_block-section__title'
             },
-            html: category[i].title + ' \u25B2',
-            event: [{
-              type: 'click',
-              func: blockManager.eventToggle
-            }]
-          }]
-        }]
+            child: [
+              {
+                element: 'button',
+                attrs: {
+                  class: 'hb_block-nav-icon'
+                },
+                event: [
+                  {
+                    type: 'click',
+                    func: this.eventToggle
+                  }
+                ]
+              },
+              {
+                element: 'label',
+                attrs: {
+                  class: 'hb_block-section__title__label'
+                },
+                html: category[i].title
+              }]
+          },
+          {
+            element: 'div',
+            attrs: {
+              class: 'hb_block-section__content'
+            }
+          }
+        ]
       };
 
       dom = Utils.builder(_category);
-      blockManager.renderCategoryContent(category[i].name, dom);
-
       parent.appendChild(dom);
+      blockManager.renderCategoryContent(category[i].name, dom.children[1]);
+      dom.children[1].setAttribute('data-scroll-height', dom.children[1].scrollHeight + 'px');
+      dom.children[1].style['max-height'] = dom.children[1].scrollHeight + 'px';
     }
   },
 

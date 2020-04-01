@@ -1,7 +1,12 @@
+import normalizeCss from 'normalize.css';
+import mainCss from './css/main.css';
+
 import Utils from './utils/utils';
+
 import blockManager from './block/blockManager';
 import componentManager from './component/componentManager';
 import propertyManager from './property/propertyManager';
+
 import { propObserver } from './observer/observerManager';
 
 /**
@@ -140,10 +145,17 @@ const mainManager = {
 
         for (var i = 0; i < children.length; i++) {
           children[i].style.display = 'none';
+          children[i].classList.remove('hb_main-nav__btn--active');
         }
 
         var showDom = mainManager.nav[e.target.value];
         showDom.style.display = 'block';
+
+        const navContent = document.getElementById('#main-nav');
+        for(let nav of navContent.children) {
+          nav.classList.remove('hb_main-nav__btn--active');
+        }
+        e.target.classList.add('hb_main-nav__btn--active');
 
         if (e.target.value === 'prop') {
           propObserver.notify('initScrollHeight');
@@ -153,13 +165,13 @@ const mainManager = {
       var _nav = {
         element: 'div',
         attrs: {
-          class: 'hb_nav',
+          class: 'hb_main-nav',
           id: '#main-nav'
         },
         child: [{
           element: 'button',
           attrs: {
-            class: 'hb_btn-nav hb_btn-nav-block',
+            class: 'hb_main-nav__btn hb_main-nav__btn--block',
             name: '#main-nav',
             value: 'block'
           },
@@ -171,7 +183,7 @@ const mainManager = {
         {
           element: 'button',
           attrs: {
-            class: 'hb_btn-nav hb_btn-nav-attr',
+            class: 'hb_main-nav__btn hb_main-nav__btn--attr',
             name: '#main-nav',
             value: 'prop'
           },
@@ -183,7 +195,7 @@ const mainManager = {
         {
           element: 'button',
           attrs: {
-            class: 'hb_btn-nav hb_btn-nav-setting',
+            class: 'hb_main-nav__btn hb_main-nav__btn--setting',
             name: '#main-nav',
             value: 'setting'
           },
@@ -201,7 +213,7 @@ const mainManager = {
         element: 'div',
         attrs: {
           id: '#main-content',
-          class: 'hb_nav_content'
+          class: 'hb_main-nav__content'
         },
         child: []
       };
@@ -211,7 +223,7 @@ const mainManager = {
       var _block = {
         element: 'div',
         attrs: {
-          class: 'hb_nav_content-blocks'
+          class: 'hb_main-nav_content--blocks'
         }
       };
       mainManager.nav.block = Utils.builder(_block);
@@ -220,20 +232,20 @@ const mainManager = {
       var _prop = {
         element: 'div',
         attrs: {
-          class: 'hb_nav_content-prop',
+          class: 'hb_main-nav_content--prop',
           style: 'display:none;'
         },
         child: [{
           element: 'div',
           attrs: {
-            class: 'hb_nav_content-prop',
+            class: 'hb_main-nav_content--prop',
             style: 'display:block;'
           }
         },
         {
           element: 'div',
           attrs: {
-            class: 'hb_nav_content-prop',
+            class: 'hb_main-nav_content--prop',
             style: 'display:none;'
           },
           text: 'There is no selected Block\nPlease select at least 1 block'
