@@ -494,7 +494,7 @@ class Component {
 
       return property;
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   }
 

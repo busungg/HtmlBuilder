@@ -49,7 +49,7 @@ const mainManager = {
       //menu
       this.initMenu(container);
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     } finally {
       return;
     }
@@ -218,7 +218,7 @@ const mainManager = {
       navContent.appendChild(this.navContent.setting);
 
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   },
 

@@ -1,0 +1,7 @@
+class Setting {
+
+    constructor() {
+        
+    }
+
+}

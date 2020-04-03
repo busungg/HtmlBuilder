@@ -41,7 +41,7 @@ const Utils = {
 
       return parent;
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   },
 
@@ -53,7 +53,7 @@ const Utils = {
         option[arguments[i]] = arguments[i + 1];
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
 
     return option;
@@ -132,7 +132,7 @@ const Utils = {
         }
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   },
 
@@ -148,7 +148,7 @@ const Utils = {
         content.style.height = height;
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   },
 
@@ -172,7 +172,7 @@ const Utils = {
 
       return html.result;
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   },
 
@@ -183,7 +183,7 @@ const Utils = {
 
       return css;
     } catch (err) {
-      console.log(err.message)
+      console.log(err)
     }
   },
 
@@ -200,7 +200,7 @@ const Utils = {
 
       return cssText;
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   },
 
@@ -228,7 +228,7 @@ const Utils = {
       cssElement.appendChild(document.createTextNode(utils.obj2Css(cssObj) + '\n\n'));
       return true;
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
       return false;
     }
   }

@@ -45,7 +45,6 @@ class Block {
 
     const dragStart = (evt) => {
       blockObserver.notify('setTransferOption', this.component);
-      //evt.dataTransfer.setTransferOption(this.component);
     };
     this.dom.addEventListener('mousedown', mouseDown);
     this.dom.addEventListener('dragstart', dragStart);
