@@ -7,66 +7,20 @@ import blockManager from './block/blockManager';
 import componentManager from './component/componentManager';
 import propertyManager from './property/propertyManager';
 
-import { propObserver } from './observer/observerManager';
-
-/**
- * Polyfill
- */
-(
-  function (global) {
-    const g = global || this;
-
-    //DataTransfer Polyfill for HtmlBuilder
-
-    //이동할 Element
-    g.DataTransfer.prototype.transferElement = undefined;
-    g.DataTransfer.prototype.setTransferElement = function (element) {
-      element
-
-      g.DataTransfer.prototype.transferElement = element;
-    };
-
-    g.DataTransfer.prototype.getTransferElement = function () {
-      return g.DataTransfer.prototype.transferElement;
-    };
-
-    //위치하는 순서
-    g.DataTransfer.prototype.transferOrder = undefined;
-    g.DataTransfer.prototype.setTransferOrder = function (element) {
-      g.DataTransfer.prototype.transferOrder = element;
-    };
-
-    g.DataTransfer.prototype.getTransferOrder = function () {
-      return g.DataTransfer.prototype.transferOrder;
-    };
-
-    //새로 생성될 Layout의 Option
-    g.DataTransfer.prototype.transferOption = undefined;
-    g.DataTransfer.prototype.setTransferOption = function (option) {
-      g.DataTransfer.prototype.transferOption = option;
-    };
-
-    g.DataTransfer.prototype.getTransferOption = function () {
-      return g.DataTransfer.prototype.transferOption;
-    };
-
-  }
-)(global);
-
+import {
+  propObserver
+} from './observer/observerManager';
 
 /**
  * set main view and manages all manager
  */
 const mainManager = {
   config: null,
-  nav: {
-    block: null,
-    prop: null,
-    setting: null
-  },
+  navBtn: null,
+  navContent: null,
 
   init: function (config) {
-    var defaults = {
+    const defaults = {
       container: '#hb_container', //전체 화면
       ids: ['!content', '!menu'],
       width: ['80%', '18%'],
@@ -76,24 +30,24 @@ const mainManager = {
       css_path_prefix: './'
     };
 
-    var c = config || {};
-    for (var name in defaults) {
+    let c = config || {};
+    for (let name in defaults) {
       if (!(name in c)) {
         c[name] = defaults[name];
       }
     }
 
-    mainManager.config = c;
+    this.config = c;
 
     try {
       //container
-      var container = document.getElementById(c.container);
+      const container = document.getElementById(c.container);
 
       //content
-      mainManager.initFrame(container);
+      this.initFrame(container);
 
       //menu
-      mainManager.initMenu(container);
+      this.initMenu(container);
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -102,16 +56,17 @@ const mainManager = {
   },
 
   initFrame: function (container) {
-    //iframe을 설정한다.
-    //iframe의 body를 가 frame이 된다.
-
+    //iframe을 설정하여 Component만을 위한 Viewport를 확보 한다.
     const config = mainManager.config;
     const iframeOption = {
       element: 'iframe',
       attrs: {
         id: config.ids[0],
-        style: ('width:' + config.width[0] + ';height:' + config.height[
-          0] + '; float:left;'),
+        style: (
+          'width:' + config.width[0] +
+          ';height:' + config.height[0] +
+          '; float:left;'
+        ),
         class: 'hb_content hb_border-basic',
         allowfullscreen: true
       }
@@ -125,8 +80,8 @@ const mainManager = {
       element: 'div',
       attrs: {
         id: mainManager.config.ids[1],
-        style: ('width:' + mainManager.config.width[1] + ';height:' +
-          mainManager.config.height[1] +
+        style: ('width:' + mainManager.config.width[1] +
+          ';height:' + mainManager.config.height[1] +
           '; float:right; margin-right:15px;'),
         class: 'hb_main-menu hb_border-basic'
       }
@@ -139,77 +94,86 @@ const mainManager = {
 
   initMenuNav: function (container) {
     try {
-      var click = function (e) {
-        var content = document.getElementById('#main-content');
-        var children = content.children;
+      const click = (e) => {
+        const content = document.getElementById('#main-content');
+        const children = content.children;
 
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
           children[i].style.display = 'none';
           children[i].classList.remove('hb_main-nav__btn--active');
         }
 
-        var showDom = mainManager.nav[e.target.value];
+        const showDom = this.navContent[e.target.value];
         showDom.style.display = 'block';
 
         const navContent = document.getElementById('#main-nav');
-        for(let nav of navContent.children) {
+        for (let nav of navContent.children) {
           nav.classList.remove('hb_main-nav__btn--active');
         }
         e.target.classList.add('hb_main-nav__btn--active');
-
-        if (e.target.value === 'prop') {
-          propObserver.notify('initScrollHeight');
-        }
       };
 
-      var _nav = {
+      const _navBtn = {
         element: 'div',
         attrs: {
           class: 'hb_main-nav',
           id: '#main-nav'
         },
         child: [{
-          element: 'button',
-          attrs: {
-            class: 'hb_main-nav__btn hb_main-nav__btn--block',
-            name: '#main-nav',
-            value: 'block'
+            element: 'button',
+            attrs: {
+              class: 'hb_main-nav__btn hb_main-nav__btn--block',
+              name: '#main-nav',
+              value: 'block'
+            },
+            event: [{
+              type: 'click',
+              func: click
+            }]
           },
-          event: [{
-            type: 'click',
-            func: click
-          }]
-        },
-        {
-          element: 'button',
-          attrs: {
-            class: 'hb_main-nav__btn hb_main-nav__btn--attr',
-            name: '#main-nav',
-            value: 'prop'
+          {
+            element: 'button',
+            attrs: {
+              class: 'hb_main-nav__btn hb_main-nav__btn--attr',
+              name: '#main-nav',
+              value: 'prop'
+            },
+            event: [{
+              type: 'click',
+              func: click
+            }]
           },
-          event: [{
-            type: 'click',
-            func: click
-          }]
-        },
-        {
-          element: 'button',
-          attrs: {
-            class: 'hb_main-nav__btn hb_main-nav__btn--setting',
-            name: '#main-nav',
-            value: 'setting'
-          },
-          event: [{
-            type: 'click',
-            func: click
-          }]
-        }
+          {
+            element: 'button',
+            attrs: {
+              class: 'hb_main-nav__btn hb_main-nav__btn--setting',
+              name: '#main-nav',
+              value: 'setting'
+            },
+            event: [{
+              type: 'click',
+              func: click
+            }]
+          }
         ]
       };
 
-      container.appendChild(Utils.builder(_nav));
+      const navBtn = Utils.builder(_navBtn);
+      let {
+        0: block,
+        1: prop,
+        2: setting
+      } = {
+        ...navBtn.children
+      };
+      this.navBtn = {
+        block,
+        prop,
+        setting
+      };
+      container.appendChild(navBtn);
 
-      var _content = {
+      const _navContent = {
         element: 'div',
         attrs: {
           id: '#main-content',
@@ -217,53 +181,41 @@ const mainManager = {
         },
         child: []
       };
-      var content = Utils.builder(_content);
-      container.appendChild(content);
+      const navContent = Utils.builder(_navContent);
+      container.appendChild(navContent);
 
-      var _block = {
+      this.navContent = {
+        block,
+        prop,
+        setting
+      };
+
+      const _navContentBlock = {
         element: 'div',
         attrs: {
           class: 'hb_main-nav_content--blocks'
         }
       };
-      mainManager.nav.block = Utils.builder(_block);
-      content.appendChild(mainManager.nav.block);
+      this.navContent.block = Utils.builder(_navContentBlock);
+      navContent.appendChild(this.navContent.block);
 
-      var _prop = {
+      const _navContentProp = {
         element: 'div',
         attrs: {
-          class: 'hb_main-nav_content--prop',
-          style: 'display:none;'
-        },
-        child: [{
-          element: 'div',
-          attrs: {
-            class: 'hb_main-nav_content--prop',
-            style: 'display:block;'
-          }
-        },
-        {
-          element: 'div',
-          attrs: {
-            class: 'hb_main-nav_content--prop',
-            style: 'display:none;'
-          },
-          text: 'There is no selected Block\nPlease select at least 1 block'
+          class: 'hb_main-nav_content--prop'
         }
-        ]
       };
-      mainManager.nav.prop = Utils.builder(_prop);
-      content.appendChild(mainManager.nav.prop);
+      this.navContent.prop = Utils.builder(_navContentProp);
+      navContent.appendChild(this.navContent.prop);
 
-      var _setting = {
+      const _navContentSetting = {
         element: 'div',
         attrs: {
-          class: 'hb_nav_content-prop',
-          style: 'display:none;'
+          class: 'hb_nav_content-prop'
         }
       };
-      mainManager.nav.setting = Utils.builder(_setting);
-      content.appendChild(mainManager.nav.setting);
+      this.navContent.setting = Utils.builder(_navContentSetting);
+      navContent.appendChild(this.navContent.setting);
 
     } catch (err) {
       console.log(err.message);
@@ -273,11 +225,12 @@ const mainManager = {
   initMenuNavContent: function () {
     //Block
     blockManager.init();
-    blockManager.render(mainManager.nav.block);
+    blockManager.render(this.navContent.block);
 
     //Prop
     propertyManager.init();
-    propertyManager.render(mainManager.nav.prop.children[0]);
+    propertyManager.render(this.navContent.prop);
+    propObserver.notify('update', null);
 
     /*
     //Setting
@@ -285,7 +238,18 @@ const mainManager = {
     settingManager.render(mainManager.nav.setting);
     mainManager.initSettingEvents();
     */
+
+    //Navigation 중 Block 화면을 보여주기 위한 Event 호출
+    this.navBtn.block.click();
   }
 };
+
+propObserver.register('update', function (target) {
+  if (target) {
+    this.navBtn.prop.click();
+  } else {
+    this.navBtn.block.click();
+  }
+}, mainManager);
 
 export default mainManager;

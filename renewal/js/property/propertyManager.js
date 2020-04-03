@@ -2,9 +2,14 @@ import propertyCss from './css/property.css';
 
 import Utils from '../utils/utils';
 
-import { category, configs } from './config/config';
+import {
+  category,
+  configs
+} from './config/config';
 
-import { propObserver } from '../observer/observerManager';
+import {
+  propObserver
+} from '../observer/observerManager';
 import PropertyClass from './model/PropertyClass';
 import PropertyColor from './model/PropertyColor';
 import PropertyOption from './model/PropertyOption';
@@ -31,7 +36,10 @@ const propertyManager = {
 
   init: function () {
     for (let config of configs) {
-      let propInfo = { prop: null, child: null };
+      let propInfo = {
+        prop: null,
+        child: null
+      };
       let prop = new PropertyType[config.class](config);
       propObserver.register('update', prop.update, prop);
       propInfo.prop = prop;
@@ -78,26 +86,23 @@ const propertyManager = {
       _category = {
         element: 'section',
         attrs: {
-          class: 'hb_prop-section'
+          class: 'hb_prop-section',
+          'data-type': 'prop-content'
         },
-        child: [
-          {
+        child: [{
             element: 'div',
             attrs: {
               class: 'hb_prop-section__title'
             },
-            child: [
-              {
+            child: [{
                 element: 'button',
                 attrs: {
                   class: 'hb_nav-icon'
                 },
-                event: [
-                  {
-                    type: 'click',
-                    func: this.eventToggle
-                  }
-                ]
+                event: [{
+                  type: 'click',
+                  func: this.eventToggle
+                }]
               },
               {
                 element: 'label',
@@ -120,6 +125,9 @@ const propertyManager = {
       dom = Utils.builder(_category);
       propertyManager.renderCategoryContent(category[i].name, dom.children[1]);
       parent.appendChild(dom);
+
+      dom.children[1].style['max-height'] = dom.children[1].scrollHeight + 'px';
+      dom.children[1].setAttribute('data-scroll-height', dom.children[1].scrollHeight + 'px');
     }
   },
 
@@ -134,52 +142,66 @@ const propertyManager = {
         let propDom = propInfo.prop.render();
         categoryDom.appendChild(propDom);
 
-        //추후 다른 디자인으로 변경한다.
         if (propInfo.child) {
-          let childCategoryTitleDom = Utils.builder(
-            {
-              element: 'div',
+          let childCategoryTitleDom = Utils.builder({
+            element: 'div',
+            attrs: {
+              class: 'hb_prop-sub__title'
+            },
+            child: [{
+              element: 'button',
               attrs: {
-                class: 'hb_prop-sub__title'
+                class: 'hb_nav-icon'
               },
-              child: [
-                {
-                  element: 'button',
-                  attrs: {
-                    class: 'hb_nav-icon'
-                  },
-                  event: [
-                    {
-                      type: 'click',
-                      func: this.eventToggle
-                    }
-                  ]
-                }
-              ]
-            }
-          );
+              event: [{
+                type: 'click',
+                func: this.eventToggle
+              }]
+            }]
+          });
           propDom.appendChild(childCategoryTitleDom);
 
-          let childCategoryDom = Utils.builder(
-            {
-              element: 'div',
-              attrs: {
-                class: 'hb_prop-sub__content'
-              }
+          let childCategoryDom = Utils.builder({
+            element: 'div',
+            attrs: {
+              class: 'hb_prop-sub__content'
             }
-          );
+          });
           propDom.appendChild(childCategoryDom);
 
           for (let childProp of propInfo.child) {
             childCategoryDom.appendChild(childProp.render());
           }
+
+          childCategoryDom.style['max-height'] = childCategoryDom.scrollHeight + 'px';
+          childCategoryDom.setAttribute('data-scroll-height', childCategoryDom.scrollHeight + 'px');
         }
       }
     }
   },
 
+  updateVisible(isVisible) {
+    const contents = document.querySelectorAll('[data-type=prop-content]');
+    const empty = document.querySelector('[data-type=prop-empty]');
+
+    if (isVisible) {
+      for (let content of contents) {
+        content.style.display = 'block';
+      }
+      empty.style.display = 'none';
+    } else {
+      for (let content of contents) {
+        content.style.display = 'none';
+      }
+      empty.style.display = 'block';
+    }
+  },
+
   //개선 필요
   updateProp(target) {
+    this.updateVisible(target);
+    //initScrollHeight(target);
+    
     if (target) {
       let tagName = target.tagName;
 
@@ -233,31 +255,22 @@ const propertyManager = {
    * @param {Element} parent
    */
   render(parent) {
+    parent.appendChild(
+      Utils.builder({
+        element: 'div',
+        attrs: {
+          class: 'hb_main-nav_content--prop',
+          style: `width:100%; box-sizing:border-box; text-align: center; background-color: #211b23; 
+                  font-size: 14px; font-weight: bold; color: #b9a5a6; padding: 5px`,
+          'data-type': 'prop-empty'
+        },
+        html: 'There is no selected Block</br></br>Please select at least 1 block'
+      })
+    );
     propertyManager.renderCategory(parent);
-  }
+  },
 };
 
-initScrollHeight.init = false;
-function initScrollHeight() {
-  if (!initScrollHeight.init) {
-    let sections = document.getElementsByClassName('hb_prop-section__content');
-    let subSections = document.getElementsByClassName('hb_prop-sub__content');
-
-    for (let section of sections) {
-      section.style['max-height'] = section.scrollHeight + 'px';
-      section.setAttribute('data-scroll-height', section.scrollHeight + 'px');
-    }
-
-    for (let subSection of subSections) {
-      subSection.style['max-height'] = subSection.scrollHeight + 'px';
-      subSection.setAttribute('data-scroll-height', subSection.scrollHeight + 'px');
-    }
-
-    initScrollHeight.init = true;
-  }
-}
-
-propObserver.register('initScrollHeight', initScrollHeight, undefined);
 propObserver.register('update', propertyManager.updateProp, propertyManager);
 
 export default propertyManager;
