@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import normalizeCss from 'normalize.css';
 import mainCss from './css/main.css';
 
@@ -19,9 +20,9 @@ const mainManager = {
   navBtn: null,
   navContent: null,
 
-  init: function (config) {
+  init(config) {
     const defaults = {
-      container: '#hb_container', //전체 화면
+      container: '#hb_container', // 전체 화면
       ids: ['!content', '!menu'],
       width: ['80%', '18%'],
       height: ['100%', '100%'],
@@ -30,8 +31,9 @@ const mainManager = {
       css_path_prefix: './'
     };
 
-    let c = config || {};
-    for (let name in defaults) {
+    const c = config || {};
+    // eslint-disable-next-line no-restricted-syntax
+    for (const name in defaults) {
       if (!(name in c)) {
         c[name] = defaults[name];
       }
@@ -40,33 +42,30 @@ const mainManager = {
     this.config = c;
 
     try {
-      //container
+      // container
       const container = document.getElementById(c.container);
 
-      //content
+      // content
       this.initFrame(container);
 
-      //menu
+      // menu
       this.initMenu(container);
     } catch (err) {
       console.log(err);
     } finally {
+      // eslint-disable-next-line no-unsafe-finally
       return;
     }
   },
 
-  initFrame: function (container) {
-    //iframe을 설정하여 Component만을 위한 Viewport를 확보 한다.
-    const config = mainManager.config;
+  initFrame(container) {
+    // iframe을 설정하여 Component만을 위한 Viewport를 확보 한다.
+    const { config } = mainManager;
     const iframeOption = {
       element: 'iframe',
       attrs: {
         id: config.ids[0],
-        style: (
-          'width:' + config.width[0] +
-          ';height:' + config.height[0] +
-          '; float:left;'
-        ),
+        style: `width:${config.width[0]}; height:${config.height[0]}; float:left;`,
         class: 'hb_content hb_border-basic',
         allowfullscreen: true
       }
@@ -75,14 +74,12 @@ const mainManager = {
     componentManager.init(iframeOption, container);
   },
 
-  initMenu: function (container) {
+  initMenu(container) {
     const menu = Utils.builder({
       element: 'div',
       attrs: {
         id: mainManager.config.ids[1],
-        style: ('width:' + mainManager.config.width[1] +
-          ';height:' + mainManager.config.height[1] +
-          '; float:right; margin-right:15px;'),
+        style: `width:${mainManager.config.width[1]}; height:${mainManager.config.height[1]}; float:right; margin-right:15px;`,
         class: 'hb_main-menu hb_border-basic'
       }
     });
@@ -92,11 +89,11 @@ const mainManager = {
     mainManager.initMenuNavContent();
   },
 
-  initMenuNav: function (container) {
+  initMenuNav(container) {
     try {
       const click = (e) => {
         const content = document.getElementById('#main-content');
-        const children = content.children;
+        const { children } = content;
 
         for (let i = 0; i < children.length; i++) {
           children[i].style.display = 'none';
@@ -107,7 +104,8 @@ const mainManager = {
         showDom.style.display = 'block';
 
         const navContent = document.getElementById('#main-nav');
-        for (let nav of navContent.children) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const nav of navContent.children) {
           nav.classList.remove('hb_main-nav__btn--active');
         }
         e.target.classList.add('hb_main-nav__btn--active');
@@ -119,7 +117,8 @@ const mainManager = {
           class: 'hb_main-nav',
           id: '#main-nav'
         },
-        child: [{
+        child: [
+          {
             element: 'button',
             attrs: {
               class: 'hb_main-nav__btn hb_main-nav__btn--block',
@@ -159,7 +158,7 @@ const mainManager = {
       };
 
       const navBtn = Utils.builder(_navBtn);
-      let {
+      const {
         0: block,
         1: prop,
         2: setting
@@ -216,18 +215,17 @@ const mainManager = {
       };
       this.navContent.setting = Utils.builder(_navContentSetting);
       navContent.appendChild(this.navContent.setting);
-
     } catch (err) {
       console.log(err);
     }
   },
 
-  initMenuNavContent: function () {
-    //Block
+  initMenuNavContent() {
+    // Block
     blockManager.init();
     blockManager.render(this.navContent.block);
 
-    //Prop
+    // Prop
     propertyManager.init();
     propertyManager.render(this.navContent.prop);
     propObserver.notify('update', null);
@@ -239,7 +237,7 @@ const mainManager = {
     mainManager.initSettingEvents();
     */
 
-    //Navigation 중 Block 화면을 보여주기 위한 Event 호출
+    // Navigation 중 Block 화면을 보여주기 위한 Event 호출
     this.navBtn.block.click();
   }
 };

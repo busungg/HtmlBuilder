@@ -1,20 +1,26 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-param-reassign */
+/* eslint-disable prefer-const */
+/* eslint-disable no-restricted-syntax */
 const Utils = {
-  builder: function (option) {
+  // eslint-disable-next-line consistent-return
+  builder(option) {
     try {
-      let parent = document.createElement(option.element);
+      const parent = document.createElement(option.element);
 
-      for (let key in option.attrs) {
-        if (option.attrs[key] != null && option.attrs[key] != undefined) {
+      if (option.attrs) {
+        for (const key of Object.keys(option.attrs)) {
+          if (option.attrs[key] !== null && option.attrs[key] !== undefined) {
+            if (Array.isArray(option.attrs[key])) {
+              let values = '';
+              for (const item of option.attrs[key]) {
+                values += `${item} `;
+              }
 
-          if (Array.isArray(option.attrs[key])) {
-            let values = '';
-            for (let item of option.attrs[key]) {
-              values += (item + ' ');
+              parent.setAttribute(key, values);
+            } else {
+              parent.setAttribute(key, option.attrs[key]);
             }
-
-            parent.setAttribute(key, values);
-          } else {
-            parent.setAttribute(key, option.attrs[key]);
           }
         }
       }
@@ -28,13 +34,13 @@ const Utils = {
       }
 
       if (option.event) {
-        for (var i = 0, len = option.event.length; i < len; i++) {
+        for (let i = 0, len = option.event.length; i < len; i++) {
           parent.addEventListener(option.event[i].type, option.event[i].func);
         }
       }
 
       if (option.child) {
-        for (var i = 0, len = option.child.length; i < len; i++) {
+        for (let i = 0, len = option.child.length; i < len; i++) {
           parent.appendChild(Utils.builder(option.child[i]));
         }
       }
@@ -45,40 +51,8 @@ const Utils = {
     }
   },
 
-  getQueryOption: function () {
-    var option = {};
-
-    try {
-      for (var i = 0, len = arguments.length; i < len; i += 2) {
-        option[arguments[i]] = arguments[i + 1];
-      }
-    } catch (err) {
-      console.log(err);
-    }
-
-    return option;
-  },
-
-  getElementByAttribute: function (options) {
-    var query = '';
-    for (var key in options) {
-      query += ('[' + key + '="' + options[key] + '"]');
-    }
-
-    return document.querySelector(query);
-  },
-
-  getElementsByAttribute: function (options) {
-    var query = '';
-    for (var key in options) {
-      query += ('[' + key + '="' + options[key] + '"]');
-    }
-
-    return document.querySelectorAll(query);
-  },
-
-  getJustTextContent: function (element) {
-    var copyElement = element.cloneNode(true);
+  getJustTextContent(element) {
+    const copyElement = element.cloneNode(true);
 
     while (copyElement.firstElementChild) {
       copyElement.removeChild(copyElement.firstElementChild);
@@ -87,48 +61,51 @@ const Utils = {
     return copyElement.textContent;
   },
 
-  rgb2Hex: function (rgbStr) {
-    var rgb = rgbStr.split('(')[1].split(')')[0].split(',');
+  rgb2Hex(rgbStr) {
+    const rgb = rgbStr.split('(')[1].split(')')[0].split(',');
 
-    var r, g, b;
-    r = parseInt(rgb[0]).toString(16);
-    g = parseInt(rgb[1]).toString(16);
-    b = parseInt(rgb[2]).toString(16);
+    let r; let g; let b;
+    r = parseInt(rgb[0], 10).toString(16);
+    g = parseInt(rgb[1], 10).toString(16);
+    b = parseInt(rgb[2], 10).toString(16);
 
-    var hex = '#' + ((r.length == 2) ? r : ('0' + r)) + ((g.length == 2) ? g : ('0' + g)) + ((b.length == 2) ? b : ('0' + b));
+    // eslint-disable-next-line prefer-template
+    const hex = '#' + ((r.length === 2) ? r : ('0' + r)) + ((g.length === 2) ? g : ('0' + g)) + ((b.length === 2) ? b : ('0' + b));
     return hex;
   },
 
-  beautifyHtml: function (parent, tab, tabIdx, html) {
+  beautifyHtml(parent, tab, tabIdx, html) {
     try {
-      if (tabIdx == -1 && parent.children.length == 0) {
+      if (tabIdx === -1 && parent.children.length === 0) {
         return;
       }
 
-      if (tabIdx != -1) {
-        var clone = parent.cloneNode(true);
+      let tags;
+      if (tabIdx !== -1) {
+        const clone = parent.cloneNode(true);
         while (clone.firstElementChild) {
           clone.removeChild(clone.firstElementChild);
         }
 
-        var tags = clone.outerHTML.replace(/\n/g, '').split('</');
-        html.result += ('\n' + tab.repeat(tabIdx) + tags[0]);
+        tags = clone.outerHTML.replace(/\n/g, '').split('</');
+        // eslint-disable-next-line no-param-reassign
+        html.result += (`\n ${tab.repeat(tabIdx)}${tags[0]}`);
       }
 
-      if (parent.children.length == 0) {
-        if (tags.length == 2) {
-          html.result += ('\n' + tab.repeat(tabIdx) + '</' + tags[1]);
+      if (parent.children.length === 0) {
+        if (tags.length === 2) {
+          html.result += (`\n${tab.repeat(tabIdx)}</${tags[1]}>`);
         }
         return;
-      } else {
-        for (var i = 0, len = parent.children.length; i < len; i++) {
-          utils.beautifyHtml(parent.children[i], tab, tabIdx + 1, html);
-        }
+      }
 
-        if (tabIdx != -1) {
-          if (tags.length == 2) {
-            html.result += ('\n' + tab.repeat(tabIdx) + '</' + tags[1]);
-          }
+      for (let i = 0, len = parent.children.length; i < len; i++) {
+        Utils.beautifyHtml(parent.children[i], tab, tabIdx + 1, html);
+      }
+
+      if (tabIdx !== -1) {
+        if (tags.length === 2) {
+          html.result += (`\n${tab.repeat(tabIdx)}</${tags[1]}>`);
         }
       }
     } catch (err) {
@@ -136,9 +113,9 @@ const Utils = {
     }
   },
 
-  changeResolution: function (id, width, height) {
+  changeResolution(id, width, height) {
     try {
-      var content = document.getElementById(id);
+      const content = document.getElementById(id);
 
       if (width) {
         content.style.width = width;
@@ -152,18 +129,19 @@ const Utils = {
     }
   },
 
-  exportHtml: function (id) {
+  // eslint-disable-next-line consistent-return
+  exportHtml(id) {
     try {
-      var html = {
+      let html = {
         result: ''
       };
-      var content = document.getElementById(id);
-      var tempContent = document.createElement('div');
+      let content = document.getElementById(id);
+      let tempContent = document.createElement('div');
       tempContent.setAttribute('style', 'position: absolute; x:0; y:-1000;');
       tempContent.innerHTML = content.innerHTML;
 
       document.body.appendChild(tempContent);
-      utils.beautifyHtml(tempContent, ' '.repeat(4), -1, html);
+      Utils.beautifyHtml(tempContent, ' '.repeat(4), -1, html);
       document.body.removeChild(tempContent);
 
       if (html.result === '') {
@@ -176,23 +154,24 @@ const Utils = {
     }
   },
 
-  exportCss: function (id) {
+  exportCss(id) {
     try {
-      var cssElement = document.getElementById(id);
-      var css = cssElement.textContent;
+      const cssElement = document.getElementById(id);
+      const css = cssElement.textContent;
 
       return css;
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   },
 
-  obj2Css: function (css) {
+  /*
+  obj2Css(css) {
     try {
-      var cssText = '';
-      var tab = ' '.repeat(4);
+      let cssText = '';
+      const tab = ' '.repeat(4);
 
-      cssText += (css.title + ' {\n');
+      cssText += `${css.title} {\n`;
       for (attr in css.content) {
         cssText += (tab + attr + ': ' + css.content[attr] + ';\n');
       }
@@ -203,17 +182,19 @@ const Utils = {
       console.log(err);
     }
   },
+  */
 
-  cssId: null,
+  cssId: null
 
   /**
    * change style to css object
    * @param {string} name is css Name
    * @param {object} style is for css content
    */
-  style2Css: function (name, style) {
+  /*
+  style2Css(name, style) {
     try {
-      var cssElement = document.getElementById(utils.cssId);
+      const cssElement = document.getElementById(utils.cssId);
 
       var cssObj = {
         title: '.' + name,
@@ -225,13 +206,14 @@ const Utils = {
         }
       }
 
-      cssElement.appendChild(document.createTextNode(utils.obj2Css(cssObj) + '\n\n'));
+      cssElement.appendChild(document.createTextNode(Utils.obj2Css(cssObj) + '\n\n'));
       return true;
     } catch (err) {
       console.log(err);
       return false;
     }
   }
-}
+  */
+};
 
 export default Utils;

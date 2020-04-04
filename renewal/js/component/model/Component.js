@@ -1,12 +1,14 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-restricted-syntax */
 import Utils from '../../utils/utils';
 import {
   componentObserver,
   propObserver
 } from '../../observer/observerManager';
-//Observer를 import하여 사용하자
+// Observer를 import하여 사용하자
 
 
-//단일 Dom처럼 사용하기 위해 생성한 Class
+// 단일 Dom처럼 사용하기 위해 생성한 Class
 class Component {
   constructor(option, frame, isFrame = false) {
     /*
@@ -14,15 +16,13 @@ class Component {
         2. Object.assign 메소드 사용 시 내부 객체는 shallow copy가 되므로 JSON 객체를 사용한다.
     */
     const _option = JSON.parse(JSON.stringify(option));
-    this.getOption = () => {
-      return _option;
-    };
+    this.getOption = () => _option;
 
-    //Dom Class
+    // Dom Class
     this.getFrame = () => {
       if (!frame) return this.dom;
       return frame;
-    }
+    };
 
     this.dom = Utils.builder(option);
     this.dom.component = this;
@@ -86,7 +86,6 @@ class Component {
       if (this.selected) {
         componentObserver.notify('deSelect');
         propObserver.notify('update', null);
-
       } else {
         componentObserver.notify('deSelect');
         this.dom.setAttribute('draggable', 'true');
@@ -123,13 +122,13 @@ class Component {
       */
       const transferComponent = evt.dataTransfer.getTransferElement() ? evt
         .dataTransfer.getTransferElement().component : undefined;
-      if (transferComponent) { //if not undefined
+      if (transferComponent) { // if not undefined
         if (transferComponent.isContain(clientX, clientY)) {
           return;
         }
       }
 
-      const target = evt.target;
+      const { target } = evt;
       const targetComponent = evt.target.component;
       if (targetComponent.canHaveChild) {
         target.classList.add('hb_border-top-contain');
@@ -149,10 +148,10 @@ class Component {
         1. for drag leave
     */
     const dragLeave = (evt) => {
-      const target = evt.target;
+      const { target } = evt;
       target.classList.remove('hb_border-top-contain');
       target.component.initChildCSS();
-    }
+    };
 
     /*
          1. for drop
@@ -163,8 +162,8 @@ class Component {
           If you want to allow a drop, you must prevent the default handling
           by cancelling both the dragenter and dragover events - From MDN
       */
-      event.preventDefault();
-      const target = evt.target;
+      evt.preventDefault();
+      const { target } = evt;
       const targetComponent = evt.target.component;
 
       if (targetComponent.canHaveChild) {
@@ -172,16 +171,16 @@ class Component {
         const draggedOption = evt.dataTransfer.getTransferOption();
         const dropOrder = evt.dataTransfer.getTransferOrder();
 
-        if (draggedElement) { //Null이 아니면 기존 Layout을 이동 시키는 것
+        if (draggedElement) { // Null이 아니면 기존 Layout을 이동 시키는 것
           draggedElement.parentNode.removeChild(draggedElement);
-        } else { //Null이면 Block정보로 새로운 Layout을 생성하는 것
+        } else { // Null이면 Block정보로 새로운 Layout을 생성하는 것
           draggedElement = (new Component(draggedOption, this.getFrame()))
             .dom;
         }
         targetComponent.insertChild(draggedElement, dropOrder);
       }
 
-      //drop이 모두 잘 끝나게 되면 parent, child의 css를 init해야한다.
+      // drop이 모두 잘 끝나게 되면 parent, child의 css를 init해야한다.
       target.classList.remove('hb_border-top-contain');
       targetComponent.initChildCSS();
 
@@ -205,7 +204,7 @@ class Component {
 
   initCSS() {
     try {
-      const classList = this.dom.classList;
+      const { classList } = this.dom;
       classList.remove('hb_border-contain');
       classList.remove('hb_border-top-contain');
       classList.remove('hb_border-top-move');
@@ -218,7 +217,8 @@ class Component {
   }
 
   initChildCSS() {
-    for (let child of this.dom.children) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const child of this.dom.children) {
       child.component.initCSS();
     }
   }
@@ -231,8 +231,8 @@ class Component {
     };
 
     let minDistance = Infinity;
-    children.forEach(function (child, idx) {
-      let distance = child.component.distance(x, y);
+    children.forEach((child, idx) => {
+      const distance = child.component.distance(x, y);
       if (minDistance > distance) {
         minDistance = distance;
         result.child = child;
@@ -245,7 +245,7 @@ class Component {
 
   getDropOrder(nearChild, childOrder, x, y) {
     let dropOrder = 0;
-    const pos = nearChild.component.pos;
+    const { pos } = nearChild.component;
     if (pos.y < y && (pos.y + pos.height) > y) {
       if (pos.x > x) {
         nearChild.classList.add('hb_border-left-move');
@@ -254,25 +254,23 @@ class Component {
         nearChild.classList.add('hb_border-right-move');
         dropOrder = childOrder + 1;
       }
+    } else if (pos.y > y) {
+      nearChild.classList.add('hb_border-top-move');
+      dropOrder = ((childOrder - 1) < 0) ? 0 : childOrder;
     } else {
-      if (pos.y > y) {
-        nearChild.classList.add('hb_border-top-move');
-        dropOrder = ((childOrder - 1) < 0) ? 0 : childOrder;
-      } else {
-        nearChild.classList.add('hb_border-bottom-move');
-        dropOrder = childOrder + 1;
-      }
+      nearChild.classList.add('hb_border-bottom-move');
+      dropOrder = childOrder + 1;
     }
 
     return dropOrder;
   }
 
   insertChild(insertChild, insertOrder) {
-    const dom = this.dom;
+    const { dom } = this;
     if (dom.children.length > 0) {
-      let order = 0,
-        isDropped = false;
-      for (let child of dom.children) {
+      let order = 0;
+      let isDropped = false;
+      for (const child of dom.children) {
         if (insertOrder === order) {
           dom.insertBefore(insertChild, child);
           isDropped = true;
@@ -295,20 +293,20 @@ class Component {
         return false;
       }
 
-      const pos = this.pos;
+      const { pos } = this;
       if (pos.x <= x && x <= (pos.x + pos.width) &&
         pos.y <= y && y <= (pos.y + pos.height)) {
         return true;
-      } else {
-        return false;
       }
+
+      return false;
     } catch (err) {
       console.log(err);
     }
   }
 
   distance(x, y) {
-    const pos = this.pos;
+    const { pos } = this;
     const distance = Math.sqrt(
       Math.pow(x - (pos.x + pos.width * 0.5), 2) +
       Math.pow(y - (pos.y + pos.height * 0.5), 2)
@@ -325,18 +323,18 @@ class Component {
               - 변경이 있을 시 마다 pos가 update되어야 하기 때문인다.
       */
       const pos = {};
-      const dom = this.dom
-      const rect = dom
-      .getBoundingClientRect() //render된 후의 top, left, width, height을 제공;
+      const { dom } = this;
+      const rect = dom.getBoundingClientRect(); // render된 후의 top, left, width, height을 제공;
 
-      //Offset의 기준이 되는 Parent Element
-      const offsetParent = dom.offsetParent;
+      // Offset의 기준이 되는 Parent Element
+      const { offsetParent } = dom;
 
       /*
           1. 주의 사항
               - OffsetLeft 등을 통해 offsetParent에서 얼마나 떨어져 있는지 알 수 있다.
               - padding이란 element 요소 안에 지정해둔 사이즈만큼 추가하는 것이다.
-              - 30px * 30px element가 존재할 시 padding이 20px이면 width = 30 + 20 * 2, height = 30 + 20 * 2; 이다.
+              - 30px * 30px element가 존재할 시 padding이 20px이면 width = 30 + 20 * 2,
+                height = 30 + 20 * 2; 이다.
       */
       if (offsetParent) {
         pos.x = dom.offsetLeft + (offsetParent.layout ? offsetParent.layout
@@ -366,7 +364,7 @@ class Component {
 
   get property() {
     try {
-      const dom = this.dom;
+      const { dom } = this;
       const property = {};
 
       property.id = (dom.id || null);
@@ -399,8 +397,7 @@ class Component {
 
       property.class = [];
       for (let i = 0, len = dom.classList.length; i < len; i++) {
-        if (dom.classList[i].indexOf('hb_selectable') === -1 && dom.classList[
-            i].indexOf('hb_selected') === -1) {
+        if (dom.classList[i].indexOf('hb_selectable') === -1 && dom.classList[i].indexOf('hb_selected') === -1) {
           property.class.push(dom.classList[i]);
         }
       }
@@ -418,14 +415,14 @@ class Component {
       property.style = {};
       const domStyle = dom.style;
 
-      //Group Property padding, margin, border-width, border-color, border-style
+      // Group Property padding, margin, border-width, border-color, border-style
       const groupProperty = {};
-      groupProperty['padding'] = {
+      groupProperty.padding = {
         checkSum: 0,
         value: null,
         group: true
       };
-      groupProperty['margin'] = {
+      groupProperty.margin = {
         checkSum: 0,
         value: null,
         group: true
@@ -446,8 +443,9 @@ class Component {
         group: true
       };
 
-      let direction = ['-left', '-right', '-top', '-bottom'];
-      let i, len, groupName, propertyName, propertyValue;
+      // eslint-disable-next-line no-unused-vars
+      const direction = ['-left', '-right', '-top', '-bottom'];
+      let i; let len; let groupName; let propertyName; let propertyValue;
       for (i = 0, len = domStyle.length; i < len; i++) {
         propertyName = domStyle.item(i);
         propertyValue = domStyle[propertyName];
@@ -458,34 +456,33 @@ class Component {
         if (groupProperty[groupName]) {
           if (groupProperty[groupName].checkSum === 0) {
             groupProperty[groupName].value = propertyValue;
-          } else {
-            if (groupProperty[groupName].value !== propertyValue) {
-              groupProperty[groupName].group = false;
-            }
+          } else if (groupProperty[groupName].value !== propertyValue) {
+            groupProperty[groupName].group = false;
           }
 
           groupProperty[groupName].checkSum++;
         }
 
-        if (propertyName.indexOf('color') != -1) {
+        if (propertyName.indexOf('color') !== -1) {
           property.style[propertyName] = Utils.rgb2Hex(propertyValue);
         } else {
           property.style[propertyName] = propertyValue;
         }
       }
 
-      for (let key in groupProperty) {
+      for (const key in groupProperty) {
         if (groupProperty[key].checkSum === 4 && groupProperty[key].group) {
-          if (key.indexOf('color') != -1) {
+          if (key.indexOf('color') !== -1) {
             property.style[key] = Utils.rgb2Hex(groupProperty[key].value);
           } else {
             property.style[key] = groupProperty[key].value;
           }
 
-          /*group화 할 시 사용
+          /* group화 할 시 사용
           groupName = key.split('-');
           for (i = 0, len = direction.length; i < len; i++) {
-              propertyName = ((groupName.length > 1) ? (groupName[0] + direction[i] + '-' + groupName[1]) : (groupName[0] + direction[i]));
+              propertyName = ((groupName.length > 1) ?
+              (groupName[0] + direction[i] + '-' + groupName[1]) : (groupName[0] + direction[i]));
               property.style[propertyName] = null;
           }
           */
@@ -501,7 +498,7 @@ class Component {
   copy() {
     function copyRecursive(parentDom) {
       const option = parentDom.component.getOption();
-      const property = parentDom.component.property;
+      const { property } = parentDom.component;
       option.attrs = option.attrs || {};
       property.id && (option.attrs.id = property.id);
       property.name && (option.attrs.name = property.name);
@@ -516,7 +513,7 @@ class Component {
       const frame = parentDom.component.getFrame();
 
       const copiedComponent = new Component(option, frame);
-      for (let child of parentDom.children) {
+      for (const child of parentDom.children) {
         copiedComponent.dom.appendChild(copyRecursive(child));
       }
 
@@ -525,7 +522,7 @@ class Component {
 
     const copiedDom = copyRecursive(this.dom);
     return copiedDom;
-  };
+  }
 
   delete() {
     function deleteRecursive(parentDom) {
@@ -534,21 +531,20 @@ class Component {
            -  순환참조로 인하여 dom이 삭제되도 layout에서 참조되어 메모리에서
               삭제되지 않을까봐 layout부터 null로 처리한다.
       */
-      for (let child of parentDom.children) {
+      for (const child of parentDom.children) {
         deleteRecursive(child);
       }
 
-      const handlers = componentObserver.getHandlers('deSelect', parentDom
-        .layout);
-      for (let handler of handlers) {
-        componentObserver.unRegister('deSelect', handler.handler, handler
-          .context);
+      const handlers = componentObserver.getHandlers('deSelect', parentDom.layout);
+      for (const handler of handlers) {
+        componentObserver.unRegister('deSelect', handler.handler, handler.context);
       }
 
+      // eslint-disable-next-line no-param-reassign
       parentDom.component = null;
     }
 
-    const dom = this.dom;
+    const { dom } = this;
     const parent = this.dom.parentNode;
     deleteRecursive(dom);
     parent.removeChild(this.dom);

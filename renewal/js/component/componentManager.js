@@ -1,14 +1,14 @@
-import Component from "./model/Component";
-import Utils from "../utils/utils";
+import Component from './model/Component';
+import Utils from '../utils/utils';
 import {
   blockObserver
-} from "../observer/observerManager";
+} from '../observer/observerManager';
 /**
  * Component Manager(Component을 관리한다)
  */
 const componentManager = {
-  frame: null, //Iframe
-  frameComponent: null, //Layout이 위치할 body dom
+  frame: null, // Iframe
+  frameComponent: null, // Layout이 위치할 body dom
 
   init(option, body) {
     this.frame = Utils.builder(option);
@@ -59,7 +59,7 @@ const componentManager = {
     blockObserver.register('setTransferOption', transferProto
       .setTransferOption, this.iframe);
 
-    //<link rel="stylesheet" type="text/css" href="./css/html_builder.css">
+    // <link rel="stylesheet" type="text/css" href="./css/html_builder.css">
     /**
      * css 추후 수정
      */
@@ -78,7 +78,7 @@ const componentManager = {
       canHaveChild: true
     };
 
-    //자기 자신이 frame 이다.
+    // 자기 자신이 frame 이다.
     this.frameComponent = new Component(option, null, true);
     htmlElement.appendChild(this.frameComponent.dom);
 

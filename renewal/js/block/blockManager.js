@@ -4,16 +4,16 @@ import Block from './model/Block';
 
 /**
     Attributes View Manager
-**/
+*/
 const blockManager = {
   blocks: null,
 
   init() {
-    const blocks = this.blocks = [];
-    configs.forEach(config => {
-      let block = new Block(config);
+    this.blocks = [];
+    configs.forEach((config) => {
+      const block = new Block(config);
       block.render();
-      blocks.push(block);
+      this.blocks.push(block);
     });
   },
 
@@ -21,11 +21,11 @@ const blockManager = {
    * category, sub category toggle event
    * @param {event} e
    */
-  eventToggle: function (e) {
-    let target = e.target;
+  eventToggle(e) {
+    const { target } = e;
     target.classList.toggle('hide');
 
-    let content = target.parentElement.nextElementSibling;
+    const content = target.parentElement.nextElementSibling;
 
     if (content.classList.contains('hide')) {
       content.style['max-height'] = content.dataset.scrollHeight;
@@ -39,8 +39,8 @@ const blockManager = {
    * set category element
    * @param {Element} parent
    */
-  renderCategory: function (parent) {
-    let _category, dom;
+  renderCategory(parent) {
+    let _category; let dom;
     for (let i = 0, len = category.length; i < len; i++) {
       _category = {
         element: 'section',
@@ -86,8 +86,8 @@ const blockManager = {
       dom = Utils.builder(_category);
       parent.appendChild(dom);
       blockManager.renderCategoryContent(category[i].name, dom.children[1]);
-      dom.children[1].setAttribute('data-scroll-height', dom.children[1].scrollHeight + 'px');
-      dom.children[1].style['max-height'] = dom.children[1].scrollHeight + 'px';
+      dom.children[1].setAttribute('data-scroll-height', `${dom.children[1].scrollHeight}px`);
+      dom.children[1].style['max-height'] = `${dom.children[1].scrollHeight}px`;
     }
   },
 
@@ -96,9 +96,9 @@ const blockManager = {
    * @param {string} category
    * @param {Dom Element} categoryDom
    */
-  renderCategoryContent: function (category, categoryDom) {
-    this.blocks.forEach(block => {
-      if (block.category === category) {
+  renderCategoryContent(categoryName, categoryDom) {
+    this.blocks.forEach((block) => {
+      if (block.category === categoryName) {
         categoryDom.appendChild(block.dom);
       }
     });
@@ -108,7 +108,7 @@ const blockManager = {
    * render block element
    * @param {Element} parent
    */
-  render: function (parent) {
+  render(parent) {
     blockManager.renderCategory(parent);
   }
 };

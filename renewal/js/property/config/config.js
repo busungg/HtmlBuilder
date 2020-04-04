@@ -63,7 +63,7 @@ const category = [{
  */
 
 const configs = [
-  //For attributes
+  // For attributes
   {
     title: 'Id',
     category: 'common',
@@ -179,7 +179,7 @@ const configs = [
   */
 
   // For styles
-  //Display
+  // Display
   {
     title: 'Display',
     category: 'position',
@@ -191,7 +191,7 @@ const configs = [
     }
   },
 
-  //Position
+  // Position
   {
     title: 'Position',
     category: 'position',
@@ -247,7 +247,7 @@ const configs = [
     }
   },
 
-  //Float
+  // Float
   {
     title: 'Float',
     category: 'position',
@@ -258,7 +258,7 @@ const configs = [
     }
   },
 
-  //Width, Height
+  // Width, Height
   {
     title: 'Width',
     category: 'size',
@@ -281,7 +281,7 @@ const configs = [
     }
   },
 
-  //Margin
+  // Margin
   {
     title: 'Margin',
     category: 'size',
@@ -289,7 +289,7 @@ const configs = [
     prop: {
       name: 'margin',
       attr_type: 'style',
-      units: ['px', 'cm', 'mm', 'in'],
+      units: ['px', 'cm', 'mm', 'in']
     },
     child: [{
       title: 'Margin Top',
@@ -333,7 +333,7 @@ const configs = [
     ]
   },
 
-  //Padding
+  // Padding
   {
     title: 'Padding',
     category: 'size',
@@ -386,7 +386,7 @@ const configs = [
     ]
   },
 
-  //Font
+  // Font
   {
     title: 'Font size',
     category: 'font',
@@ -419,7 +419,7 @@ const configs = [
     }
   },
 
-  //Border
+  // Border
   {
     title: 'Border width',
     category: 'border',
@@ -569,7 +569,7 @@ const configs = [
     ]
   },
 
-  //Background
+  // Background
   {
     title: 'Background',
     category: 'background',
@@ -590,7 +590,7 @@ const configs = [
     }
   },
 
-  //Background Image
+  // Background Image
   {
     title: 'Background image',
     category: 'background',
