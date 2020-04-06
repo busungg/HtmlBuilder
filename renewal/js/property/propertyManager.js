@@ -1,4 +1,4 @@
-import propertyCss from './css/property.css';
+import './css/property.css';
 
 import Utils from '../utils/utils';
 
@@ -30,7 +30,7 @@ const PropertyType = {
 
 /**
     Attributes View Manager
-**/
+*/
 const propertyManager = {
   propInfos: [],
 
@@ -90,35 +90,35 @@ const propertyManager = {
           'data-type': 'prop-content'
         },
         child: [{
-            element: 'div',
+          element: 'div',
+          attrs: {
+            class: 'hb_prop-section__title'
+          },
+          child: [{
+            element: 'button',
             attrs: {
-              class: 'hb_prop-section__title'
+              class: 'hb_nav-icon'
             },
-            child: [{
-                element: 'button',
-                attrs: {
-                  class: 'hb_nav-icon'
-                },
-                event: [{
-                  type: 'click',
-                  func: this.eventToggle
-                }]
-              },
-              {
-                element: 'label',
-                attrs: {
-                  class: 'hb_prop-section__title__label'
-                },
-                html: category[i].title
-              }
-            ]
+            event: [{
+              type: 'click',
+              func: this.eventToggle
+            }]
           },
           {
-            element: 'div',
+            element: 'label',
             attrs: {
-              class: 'hb_prop-section__content'
-            }
+              class: 'hb_prop-section__title__label'
+            },
+            html: category[i].title
           }
+          ]
+        },
+        {
+          element: 'div',
+          attrs: {
+            class: 'hb_prop-section__content'
+          }
+        }
         ]
       };
 
@@ -197,11 +197,11 @@ const propertyManager = {
     }
   },
 
-  //개선 필요
+  // 개선 필요
   updateProp(target) {
     this.updateVisible(target);
-    //initScrollHeight(target);
-    
+    // initScrollHeight(target);
+
     if (target) {
       let tagName = target.tagName;
 
@@ -260,7 +260,7 @@ const propertyManager = {
         element: 'div',
         attrs: {
           class: 'hb_main-nav_content--prop',
-          style: `width:100%; box-sizing:border-box; text-align: center; background-color: #211b23; 
+          style: `width:100%; box-sizing:border-box; text-align: center; background-color: #211b23;
                   font-size: 14px; font-weight: bold; color: #b9a5a6; padding: 5px`,
           'data-type': 'prop-empty'
         },

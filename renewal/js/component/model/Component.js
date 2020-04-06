@@ -3,7 +3,8 @@
 import Utils from '../../utils/utils';
 import {
   componentObserver,
-  propObserver
+  propObserver,
+  componentUtilsObserver
 } from '../../observer/observerManager';
 // Observer를 import하여 사용하자
 
@@ -86,6 +87,7 @@ class Component {
       if (this.selected) {
         componentObserver.notify('deSelect');
         propObserver.notify('update', null);
+        componentUtilsObserver.notify('update', null);
       } else {
         componentObserver.notify('deSelect');
         this.dom.setAttribute('draggable', 'true');
@@ -93,6 +95,7 @@ class Component {
         this.selected = true;
 
         propObserver.notify('update', [this.dom, this.property]);
+        componentUtilsObserver.notify('update', this.dom);
       }
       // 클릭되면 property를 수정할 수 있어야 한다.
       evt.stopPropagation();

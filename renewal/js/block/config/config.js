@@ -1,4 +1,4 @@
-//https://developer.mozilla.org/ko/docs/Web/HTML/Element 참고
+// https://developer.mozilla.org/ko/docs/Web/HTML/Element 참고
 
 const category = [{
   name: 'section',
@@ -31,7 +31,7 @@ const category = [{
 ];
 
 const configs = [
-  //section
+  // section
   {
     title: 'Header',
     component: {
@@ -105,7 +105,7 @@ const configs = [
     category: 'section'
   },
 
-  //title
+  // title
   {
     title: 'h1',
     component: {
@@ -185,7 +185,7 @@ const configs = [
     category: 'title'
   },
 
-  //form
+  // form
   {
     title: 'Form',
     component: {
@@ -329,7 +329,7 @@ const configs = [
     category: 'form'
   },
 
-  //text
+  // text
   {
     title: 'P',
     component: {
@@ -344,7 +344,7 @@ const configs = [
     category: 'text'
   },
 
-  //image
+  // image
   {
     title: 'Image',
     component: {
@@ -359,7 +359,7 @@ const configs = [
     category: 'image'
   },
 
-  //table
+  // table
   {
     title: 'Table',
     component: {
@@ -373,7 +373,7 @@ const configs = [
     category: 'table'
   },
 
-  //extra
+  // extra
   {
     title: 'Link',
     component: {

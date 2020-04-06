@@ -1,3 +1,5 @@
+import componentUtilsManager from '../componentUtils/componentUtilsManager';
+
 import Component from './model/Component';
 import Utils from '../utils/utils';
 import {
@@ -81,6 +83,9 @@ const componentManager = {
     // 자기 자신이 frame 이다.
     this.frameComponent = new Component(option, null, true);
     htmlElement.appendChild(this.frameComponent.dom);
+
+    componentUtilsManager.init();
+    componentUtilsManager.render(this.frameComponent.dom);
 
     console.log(this.frameComponent);
   }

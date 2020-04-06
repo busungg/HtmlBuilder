@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import normalizeCss from 'normalize.css';
-import mainCss from './css/main.css';
+import 'normalize.css';
+import './css/main.css';
 
 import Utils from './utils/utils';
 

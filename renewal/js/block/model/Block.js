@@ -1,4 +1,4 @@
-import css from '../css/block.css';
+import '../css/block.css';
 
 import Utils from '../../utils/utils';
 import {
@@ -10,10 +10,10 @@ class Block {
   constructor(config) {
     this.title = config.title;
     this.icon = config.icon;
-    this.component = config.component; //복사 필요
+    this.component = config.component; // 복사 필요
     this.category = config.category;
     this.dom = null;
-  };
+  }
 
   render() {
     const _render = {
@@ -23,18 +23,18 @@ class Block {
         draggable: true
       },
       child: [{
-          element: 'div',
-          attrs: {
-            class: 'hb_img ' + this.icon
-          }
-        },
-        {
-          element: 'div',
-          attrs: {
-            class: 'hb_lbl'
-          },
-          text: this.title
+        element: 'div',
+        attrs: {
+          class: 'hb_img ' + this.icon
         }
+      },
+      {
+        element: 'div',
+        attrs: {
+          class: 'hb_lbl'
+        },
+        text: this.title
+      }
       ]
     }
 
