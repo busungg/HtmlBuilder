@@ -1,7 +1,6 @@
-import './css/componentUtil.css';
+import css from './css/componentUtil.css';
 
 import Utils from '../utils/utils';
-
 import configs from './config/config';
 
 import {
@@ -57,6 +56,12 @@ const componentUtilsManager = {
 
     this.renderUtils(this.dom);
     parent.appendChild(this.dom);
+
+    const style = Utils.builder({
+      element: 'style',
+      text: css
+    });
+    parent.parentNode.parentNode.head.appendChild(style);
   }
 };
 

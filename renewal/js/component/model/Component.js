@@ -123,8 +123,8 @@ class Component {
           dataTransfer의 element와 target이 같을 시 return
           null propagation operatior = ?. if null -> return undefined //Babel에서 안됨
       */
-      const transferComponent = evt.dataTransfer.getTransferElement() ? evt
-        .dataTransfer.getTransferElement().component : undefined;
+      const transferComponent = evt.dataTransfer.getTransferElement() ?
+        evt.dataTransfer.getTransferElement().component : undefined;
       if (transferComponent) { // if not undefined
         if (transferComponent.isContain(clientX, clientY)) {
           return;
@@ -132,7 +132,7 @@ class Component {
       }
 
       const { target } = evt;
-      const targetComponent = evt.target.component;
+      const targetComponent = target.component;
       if (targetComponent.canHaveChild) {
         target.classList.add('hb_border-top-contain');
         if (target.children.length !== 0) {
@@ -167,7 +167,7 @@ class Component {
       */
       evt.preventDefault();
       const { target } = evt;
-      const targetComponent = evt.target.component;
+      const targetComponent = target.component;
 
       if (targetComponent.canHaveChild) {
         let draggedElement = evt.dataTransfer.getTransferElement();
@@ -177,8 +177,7 @@ class Component {
         if (draggedElement) { // Null이 아니면 기존 Layout을 이동 시키는 것
           draggedElement.parentNode.removeChild(draggedElement);
         } else { // Null이면 Block정보로 새로운 Layout을 생성하는 것
-          draggedElement = (new Component(draggedOption, this.getFrame()))
-            .dom;
+          draggedElement = (new Component(draggedOption, this.getFrame())).dom;
         }
         targetComponent.insertChild(draggedElement, dropOrder);
       }
@@ -192,6 +191,9 @@ class Component {
       evt.dataTransfer.setTransferElement(null);
       evt.dataTransfer.setTransferOption(null);
       evt.stopPropagation();
+
+      propObserver.notify('update', null);
+      componentUtilsObserver.notify('update', null);
     };
 
     if (!isFrame) {
@@ -222,7 +224,9 @@ class Component {
   initChildCSS() {
     // eslint-disable-next-line no-restricted-syntax
     for (const child of this.dom.children) {
-      child.component.initCSS();
+      if (child.component) {
+        child.component.initCSS();
+      }
     }
   }
 
@@ -235,11 +239,13 @@ class Component {
 
     let minDistance = Infinity;
     children.forEach((child, idx) => {
-      const distance = child.component.distance(x, y);
-      if (minDistance > distance) {
-        minDistance = distance;
-        result.child = child;
-        result.order = idx;
+      if (child.component) {
+        const distance = child.component.distance(x, y);
+        if (minDistance > distance) {
+          minDistance = distance;
+          result.child = child;
+          result.order = idx;
+        }
       }
     });
 
@@ -551,6 +557,9 @@ class Component {
     const parent = this.dom.parentNode;
     deleteRecursive(dom);
     parent.removeChild(this.dom);
+
+    propObserver.notify('update', null);
+    componentUtilsObserver.notify('update', null);
   }
 }
 

@@ -24,7 +24,8 @@
   "homepage": "https://github.com/busungg/HtmlBuilder#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "to-string-loader": "^1.1.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

@@ -29,7 +29,31 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader']
+        exclude: /componentUtil.css/,
+        use: [
+          'style-loader',
+          'to-string-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: false,
+              sourceMap: true
+            }
+          } // 추후 local로 사용
+        ]
+      },
+      {
+        test: /componentUtil.css/,
+        use: [
+          'to-string-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: false,
+              sourceMap: true
+            }
+          } // 추후 local로 사용
+        ]
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
