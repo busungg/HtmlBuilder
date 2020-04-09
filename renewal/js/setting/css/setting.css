@@ -1,0 +1,99 @@
+/*--------------- SETTING --------------*/
+.hb_setting__body {
+  width: 90%;
+  margin: 10px auto;
+  border: 2px solid #495267;
+}
+
+.hb_setting__body-title {
+  width: 100%;
+  min-height: 15px;
+  margin: 5px, 0px;
+}
+
+.hb_setting__body-title__label {
+  width: 100%;
+  font-weight: bold;
+}
+
+.hb_setting__body-content {
+  width: 100%;
+  min-height: 30px;
+  margin: 5px, 0px;
+}
+
+.hb_setting__btn {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  font-size: 12px;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  width: 90%;
+  height: 20px;
+  margin-top: 3px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hb_setting__btn:hover {
+  background-color: #858f98;
+  border-color: #545b60;
+}
+
+.hb_setting__btn-phone {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  background-image: url("./img/btn-resolution-phone.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70% 70%;
+  user-select: none;
+  border: 1px solid transparent;
+  font-size: 12px;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #9da8b2;
+  border-color: #76818b;
+}
+
+.hb_setting__btn-tablet {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  background-image: url("./img/btn-resolution-tablet.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70% 70%;
+  user-select: none;
+  border: 1px solid transparent;
+  font-size: 12px;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #9da8b2;
+  border-color: #76818b;
+}
+
+.hb_setting__btn-browser {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  background-image: url("./img/btn-resolution-computer.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70% 70%;
+  user-select: none;
+  border: 1px solid transparent;
+  font-size: 12px;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #9da8b2;
+  border-color: #76818b;
+}

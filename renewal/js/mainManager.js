@@ -7,6 +7,7 @@ import Utils from './utils/utils';
 import blockManager from './block/blockManager';
 import componentManager from './component/componentManager';
 import propertyManager from './property/propertyManager';
+import settingManager from './setting/settingManager';
 
 import {
   propObserver
@@ -65,8 +66,7 @@ const mainManager = {
       element: 'iframe',
       attrs: {
         id: config.ids[0],
-        style: `width:${config.width[0]}; height:${config.height[0]}; float:left;`,
-        class: 'hb_content hb_border-basic',
+        style: `width:${config.width[0]}; height:${config.height[0]}; border: 1px solid #000; display:inline-block; transition: all .5s;`,
         allowfullscreen: true
       }
     };
@@ -79,8 +79,7 @@ const mainManager = {
       element: 'div',
       attrs: {
         id: mainManager.config.ids[1],
-        style: `width:${mainManager.config.width[1]}; height:${mainManager.config.height[1]}; float:right; margin-right:15px;`,
-        class: 'hb_main-menu hb_border-basic'
+        style: `width:${mainManager.config.width[1]}; height:${mainManager.config.height[1]}; float:right; margin-right:15px;`
       }
     });
     container.appendChild(menu);
@@ -230,12 +229,9 @@ const mainManager = {
     propertyManager.render(this.navContent.prop);
     propObserver.notify('update', null);
 
-    /*
-    //Setting
-    settingManager.init();
-    settingManager.render(mainManager.nav.setting);
-    mainManager.initSettingEvents();
-    */
+    // Setting
+    settingManager.init(componentManager.frame);
+    settingManager.render(this.navContent.setting);
 
     // Navigation 중 Block 화면을 보여주기 위한 Event 호출
     this.navBtn.block.click();

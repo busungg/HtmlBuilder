@@ -123,8 +123,8 @@ const propertyManager = {
       };
 
       dom = Utils.builder(_category);
-      propertyManager.renderCategoryContent(category[i].name, dom.children[1]);
       parent.appendChild(dom);
+      propertyManager.renderCategoryContent(category[i].name, dom.children[1]);
 
       dom.children[1].style['max-height'] = dom.children[1].scrollHeight + 'px';
       dom.children[1].setAttribute('data-scroll-height', dom.children[1].scrollHeight + 'px');
@@ -268,7 +268,7 @@ const propertyManager = {
       })
     );
     propertyManager.renderCategory(parent);
-  },
+  }
 };
 
 propObserver.register('update', propertyManager.updateProp, propertyManager);

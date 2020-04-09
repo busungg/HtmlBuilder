@@ -26,7 +26,7 @@ var settingManager = {
 
   /**
    * set event
-   * @param {object} event 
+   * @param {object} event
    */
   setEvent: function (event) {
     var configs = settingManager.configs;
@@ -39,7 +39,7 @@ var settingManager = {
 
   /**
    * init setting view
-   * @param {Element} parent 
+   * @param {Element} parent
    */
   render: function (parent) {
     var configs = settingManager.configs;
