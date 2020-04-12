@@ -5,6 +5,7 @@ class Setting {
     const _config = JSON.parse(JSON.stringify(config));
 
     this.title = _config.title;
+    this.category = _config.category;
     this.target = target;
   }
 

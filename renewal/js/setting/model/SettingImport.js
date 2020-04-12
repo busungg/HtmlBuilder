@@ -2,44 +2,38 @@ import Setting from './Setting';
 
 class SettingImport extends Setting {
   event() {
-    const evt = () => {
-    };
+    const evt = () => {};
 
     return evt;
   }
 
   render() {
     return super.render({
-      element: 'div',
+      element: 'fieldset',
       attrs: {
-        class: 'hb_setting__body'
+        class: 'hb_setting__content'
       },
       child: [
         {
-          element: 'div',
+          // div for title
+          element: 'legend',
           attrs: {
-            class: 'hb_setting__body-title'
+            class: 'hb_setting__title'
           },
-          child: [{
-            element: 'label',
-            attrs: {
-              class: 'hb_setting__body-title__label'
-            },
-            text: this.title
-          }]
+          text: this.title
         },
         {
-          element: 'div',
+          element: 'button',
           attrs: {
-            class: 'hb_setting__body-content'
+            class: 'hb_setting__button'
           },
-          child: [{
-            element: 'button',
-            attrs: {
-              class: 'hb_setting__btn'
-            },
-            html: this.title
-          }]
+          html: this.title,
+          event: [
+            {
+              type: 'click',
+              func: this.event()
+            }
+          ]
         }
       ]
     });

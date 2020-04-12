@@ -32,67 +32,52 @@ class SettingResolution extends Setting {
 
   render() {
     return super.render({
-      element: 'div',
+      element: 'fieldset',
       attrs: {
-        class: 'hb_setting__body'
+        class: 'hb_setting__content'
       },
       child: [
         {
-          element: 'div',
+          // div for title
+          element: 'legend',
           attrs: {
-            class: 'hb_setting__body-title'
+            class: 'hb_setting__title'
           },
-          child: [
+          text: this.title
+        },
+        {
+          element: 'button',
+          attrs: {
+            class: 'hb_setting__button--phone'
+          },
+          event: [
             {
-              element: 'label',
-              attrs: {
-                class: 'hb_setting__body-title__label'
-              },
-              text: this.title
+              type: 'click',
+              func: this.phoneEvent()
             }
           ]
         },
         {
-          element: 'div',
+          element: 'button',
           attrs: {
-            class: 'hb_setting__body-content'
+            class: 'hb_setting__button--tablet'
           },
-          child: [
+          event: [
             {
-              element: 'button',
-              attrs: {
-                class: 'hb_setting__btn-phone'
-              },
-              event: [
-                {
-                  type: 'click',
-                  func: this.phoneEvent()
-                }
-              ]
-            },
+              type: 'click',
+              func: this.tabletEvent()
+            }
+          ]
+        },
+        {
+          element: 'button',
+          attrs: {
+            class: 'hb_setting__button--browser'
+          },
+          event: [
             {
-              element: 'button',
-              attrs: {
-                class: 'hb_setting__btn-tablet'
-              },
-              event: [
-                {
-                  type: 'click',
-                  func: this.tabletEvent()
-                }
-              ]
-            },
-            {
-              element: 'button',
-              attrs: {
-                class: 'hb_setting__btn-browser'
-              },
-              event: [
-                {
-                  type: 'click',
-                  func: this.browserEvent()
-                }
-              ]
+              type: 'click',
+              func: this.browserEvent()
             }
           ]
         }

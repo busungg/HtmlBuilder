@@ -14,64 +14,85 @@ const codeEditor = {
       title = 'Export';
     }
 
-    const popup = {
+    let popup;
+    const _popup = {
       element: 'div',
-      attrs: {
-        class: 'hb_setting__popup'
-      },
-      child: []
+      attrs: { class: 'hb_setting__popup' },
+      child: [
+        {
+          element: 'div',
+          attrs: { class: 'hb_setting__popup__title' },
+          html: title,
+          child: [
+            {
+              element: 'button',
+              attrs: { class: 'hb_setting-popup__button--close' },
+              event: [
+                {
+                  type: 'click',
+                  func: () => {
+                    popup.remove();
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          element: 'div',
+          attrs: {
+            class: 'hb_setting-popup__code'
+          },
+          child: [
+            {
+              element: 'div',
+              attrs: { class: 'hb_setting-popup__code__editor-wrap' },
+              child: [
+                {
+                  element: 'div',
+                  attrs: {
+                    class: 'hb_setting-popup__code__editor',
+                    'data-type': 'html'
+                  }
+                }
+              ]
+            },
+            {
+              element: 'div',
+              attrs: { class: 'hb_setting-popup__code__editor-wrap' },
+              child: [
+                {
+                  element: 'div',
+                  attrs: {
+                    class: 'hb_setting-popup__code__editor',
+                    'data-type': 'css'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     };
+    popup = Utils.builder(_popup);
+    document.body.appendChild(popup);
 
-    const popupDiv = document.createElement('div');
-    popupDiv.setAttribute('class', 'hb_setting__popup');
-
-    const titleDiv = document.createElement('div');
-    titleDiv.setAttribute('class', 'hb_setting__popup__title');
-    titleDiv.appendChild(document.createTextNode(title));
-
-    const buttonCancel = document.createElement('button');
-    buttonCancel.setAttribute('class', 'hb_setting-popup__button--close');
-    buttonCancel.addEventListener('click', () => {
-      popupDiv.remove();
-    });
-    titleDiv.appendChild(buttonCancel);
-
-    const codeDiv = document.createElement('div');
-    codeDiv.setAttribute('class', 'hb_setting-popup__code');
-
-    const htmlDiv = document.createElement('div');
-    htmlDiv.setAttribute('class', 'hb_setting-popup__code__editor-wrap');
-    const htmlEditor = document.createElement('div');
-    htmlEditor.setAttribute('class', 'hb_setting-popup__code__editor');
-    htmlDiv.appendChild(htmlEditor);
-
-    const cssDiv = document.createElement('div');
-    cssDiv.setAttribute('class', 'hb_setting-popup__code__editor-wrap');
-    const cssEditor = document.createElement('div');
-    cssEditor.setAttribute('class', 'hb_setting-popup__code__editor');
-    cssDiv.appendChild(cssEditor);
-
-    codeDiv.appendChild(htmlDiv);
-    codeDiv.appendChild(cssDiv);
-
-    popupDiv.appendChild(titleDiv);
-    popupDiv.appendChild(codeDiv);
-
-    document.body.appendChild(popupDiv);
+    const codeHtmlBody = popup.querySelector('[data-type="html"]');
+    const codeCssBody = popup.querySelector('[data-type="css"]');
 
     const codMirrorOption = {
       lineNumbers: true,
-      // lineWrapping: true,
+      lineWrapping: true,
       matchBrackets: true,
       mode: 'htmlmixed',
       theme: 'ayu-mirage'
     };
 
     codMirrorOption.value = html;
-    const htmlCode = CodeMirror(htmlEditor, codMirrorOption);
+    const htmlCode = CodeMirror(codeHtmlBody, codMirrorOption);
 
     codMirrorOption.value = css;
-    const cssCode = CodeMirror(cssEditor, codMirrorOption);
+    const cssCode = CodeMirror(codeCssBody, codMirrorOption);
 
     htmlCode.setSize('100%', '100%');
     cssCode.setSize('100%', '100%');

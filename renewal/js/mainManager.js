@@ -9,9 +9,7 @@ import componentManager from './component/componentManager';
 import propertyManager from './property/propertyManager';
 import settingManager from './setting/settingManager';
 
-import {
-  propObserver
-} from './observer/observerManager';
+import { propObserver } from './observer/observerManager';
 
 /**
  * set main view and manages all manager
@@ -124,10 +122,12 @@ const mainManager = {
               name: '#main-nav',
               value: 'block'
             },
-            event: [{
-              type: 'click',
-              func: click
-            }]
+            event: [
+              {
+                type: 'click',
+                func: click
+              }
+            ]
           },
           {
             element: 'button',
@@ -136,10 +136,12 @@ const mainManager = {
               name: '#main-nav',
               value: 'prop'
             },
-            event: [{
-              type: 'click',
-              func: click
-            }]
+            event: [
+              {
+                type: 'click',
+                func: click
+              }
+            ]
           },
           {
             element: 'button',
@@ -148,20 +150,18 @@ const mainManager = {
               name: '#main-nav',
               value: 'setting'
             },
-            event: [{
-              type: 'click',
-              func: click
-            }]
+            event: [
+              {
+                type: 'click',
+                func: click
+              }
+            ]
           }
         ]
       };
 
       const navBtn = Utils.builder(_navBtn);
-      const {
-        0: block,
-        1: prop,
-        2: setting
-      } = {
+      const { 0: block, 1: prop, 2: setting } = {
         ...navBtn.children
       };
       this.navBtn = {
@@ -209,7 +209,7 @@ const mainManager = {
       const _navContentSetting = {
         element: 'div',
         attrs: {
-          class: 'hb_nav_content-prop'
+          class: 'hb_main-nav_content--setting'
         }
       };
       this.navContent.setting = Utils.builder(_navContentSetting);
@@ -227,23 +227,27 @@ const mainManager = {
     // Prop
     propertyManager.init();
     propertyManager.render(this.navContent.prop);
-    propObserver.notify('update', null);
 
     // Setting
     settingManager.init(componentManager.frame);
     settingManager.render(this.navContent.setting);
 
     // Navigation 중 Block 화면을 보여주기 위한 Event 호출
+    propObserver.notify('update', null);
     this.navBtn.block.click();
   }
 };
 
-propObserver.register('update', function (target) {
-  if (target) {
-    this.navBtn.prop.click();
-  } else {
-    this.navBtn.block.click();
-  }
-}, mainManager);
+propObserver.register(
+  'update',
+  function (target) {
+    if (target) {
+      this.navBtn.prop.click();
+    } else {
+      this.navBtn.block.click();
+    }
+  },
+  mainManager
+);
 
 export default mainManager;
