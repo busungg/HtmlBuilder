@@ -9,5 +9,6 @@
       "source.fixAll.stylelint": true
     }
     */
-  }
+  },
+  "mocha.files.glob": "renewal/**/*.test.js"
 }
