@@ -40,7 +40,8 @@ const blockManager = {
    * @param {Element} parent
    */
   renderCategory(parent) {
-    let _category; let dom;
+    let _category;
+    let dom;
     for (let i = 0, len = category.length; i < len; i++) {
       _category = {
         element: 'section',
@@ -72,7 +73,8 @@ const blockManager = {
                   class: 'hb_block-section__title__label'
                 },
                 html: category[i].title
-              }]
+              }
+            ]
           },
           {
             element: 'div',
@@ -86,7 +88,10 @@ const blockManager = {
       dom = Utils.builder(_category);
       parent.appendChild(dom);
       blockManager.renderCategoryContent(category[i].name, dom.children[1]);
-      dom.children[1].setAttribute('data-scroll-height', `${dom.children[1].scrollHeight}px`);
+      dom.children[1].setAttribute(
+        'data-scroll-height',
+        `${dom.children[1].scrollHeight}px`
+      );
       dom.children[1].style['max-height'] = `${dom.children[1].scrollHeight}px`;
     }
   },

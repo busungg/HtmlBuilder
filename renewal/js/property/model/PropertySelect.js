@@ -3,7 +3,7 @@ import Property from './Property';
 class PropertySelect extends Property {
   event() {
     const event = (evt) => {
-      const targetComponent = this.targetComponent;
+      const { targetComponent } = this;
 
       if (targetComponent) {
         const eventDom = evt.target;
@@ -17,7 +17,7 @@ class PropertySelect extends Property {
     };
 
     return event;
-  };
+  }
 
   update(target, prop) {
     this.targetComponent = target;
@@ -34,12 +34,13 @@ class PropertySelect extends Property {
     }
 
     const valueDom = this.dom.querySelector('[set-type=value]');
-    if (!propContent) { //init property view
+    if (!propContent) {
+      // init property view
       valueDom.value = valueDom.children[0].value;
     } else {
       valueDom.value = propContent;
     }
-  };
+  }
 
   render() {
     const _render = {
@@ -48,7 +49,8 @@ class PropertySelect extends Property {
         class: 'hb_prop__content'
       },
       child: [
-        { //div for title
+        {
+          // div for title
           element: 'legend',
           attrs: {
             class: 'hb_prop__title'
@@ -59,20 +61,22 @@ class PropertySelect extends Property {
           element: 'select',
           attrs: {
             class: 'hb_prop__select',
-            ['set-type']: 'value',
+            'set-type': 'value'
           },
           child: [],
-          event: [{
-            type: 'change',
-            func: this.event()
-          }]
+          event: [
+            {
+              type: 'change',
+              func: this.event()
+            }
+          ]
         }
       ]
     };
 
-    const prop = this.prop;
+    const { prop } = this;
     const _select = _render.child[1];
-    for (let option of prop.options) {
+    for (const option of prop.options) {
       _select.child.push({
         element: 'option',
         attrs: {
@@ -83,7 +87,7 @@ class PropertySelect extends Property {
     }
 
     return super.render(_render);
-  };
-};
+  }
+}
 
 export default PropertySelect;

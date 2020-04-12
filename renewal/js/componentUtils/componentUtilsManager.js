@@ -3,9 +3,7 @@ import css from './css/componentUtil.css';
 import Utils from '../utils/utils';
 import configs from './config/config';
 
-import {
-  componentUtilsObserver
-} from '../observer/observerManager';
+import { componentUtilsObserver } from '../observer/observerManager';
 
 import ComponentUtilCopy from './model/ComponentUtilCopy';
 import ComponentUtilDelete from './model/ComponentUtilDelete';
@@ -65,6 +63,10 @@ const componentUtilsManager = {
   }
 };
 
-componentUtilsObserver.register('update', componentUtilsManager.update, componentUtilsManager);
+componentUtilsObserver.register(
+  'update',
+  componentUtilsManager.update,
+  componentUtilsManager
+);
 
 export default componentUtilsManager;

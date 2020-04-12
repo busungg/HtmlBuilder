@@ -2,9 +2,7 @@ import Setting from './Setting';
 
 class SettingPreview extends Setting {
   event() {
-    const evt = () => {
-
-    };
+    const evt = () => {};
 
     return evt;
   }
@@ -21,26 +19,30 @@ class SettingPreview extends Setting {
           attrs: {
             class: 'hb_setting__body-title'
           },
-          child: [{
-            element: 'label',
-            attrs: {
-              class: 'hb_setting__body-title__label'
-            },
-            text: this.title
-          }]
+          child: [
+            {
+              element: 'label',
+              attrs: {
+                class: 'hb_setting__body-title__label'
+              },
+              text: this.title
+            }
+          ]
         },
         {
           element: 'div',
           attrs: {
             class: 'hb_setting__body-content'
           },
-          child: [{
-            element: 'button',
-            attrs: {
-              class: 'hb_setting__btn'
-            },
-            html: this.title
-          }]
+          child: [
+            {
+              element: 'button',
+              attrs: {
+                class: 'hb_setting__btn'
+              },
+              html: this.title
+            }
+          ]
         }
       ]
     });

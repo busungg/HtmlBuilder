@@ -8,12 +8,12 @@ class Proeprty {
     this.category = _config.category;
     this.prop = _config.prop;
     this.targetComponent;
-  };
+  }
 
   render(option) {
     this.dom = Utils.builder(option);
     return this.dom;
   }
-};
+}
 
 export default Proeprty;

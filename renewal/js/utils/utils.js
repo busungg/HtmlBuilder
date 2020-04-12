@@ -88,7 +88,6 @@ const Utils = {
         }
 
         tags = clone.outerHTML.replace(/\n/g, '').split('</');
-        // eslint-disable-next-line no-param-reassign
         html.result += (`\n ${tab.repeat(tabIdx)}${tags[0]}`);
       }
 

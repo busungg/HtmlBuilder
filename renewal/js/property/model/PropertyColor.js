@@ -3,7 +3,7 @@ import Property from './Property';
 class PropertyColor extends Property {
   event() {
     const event = (evt) => {
-      const targetComponent = this.targetComponent;
+      const { targetComponent } = this;
 
       if (targetComponent) {
         const eventDom = evt.target;
@@ -14,10 +14,10 @@ class PropertyColor extends Property {
           targetComponent.style[this.prop.name] = null;
         }
       }
-    }
+    };
 
     return event;
-  };
+  }
 
   update(target, prop) {
     this.targetComponent = target;
@@ -35,12 +35,13 @@ class PropertyColor extends Property {
 
     const valueDom = this.dom.querySelector('[set-type=value]');
 
-    if (!propContent) { //init property view
+    if (!propContent) {
+      // init property view
       valueDom.value = '#000000';
     } else {
       valueDom.value = propContent;
     }
-  };
+  }
 
   render() {
     return super.render({
@@ -49,7 +50,8 @@ class PropertyColor extends Property {
         class: 'hb_prop__content'
       },
       child: [
-        { //div for title
+        {
+          // div for title
           element: 'legend',
           attrs: {
             class: 'hb_prop__title'
@@ -62,17 +64,18 @@ class PropertyColor extends Property {
           attrs: {
             type: 'color',
             class: 'hb_prop__color',
-            ['set-type']: 'value'
+            'set-type': 'value'
           },
-          event: [{
-            type: 'change',
-            func: this.event()
-          }
+          event: [
+            {
+              type: 'change',
+              func: this.event()
+            }
           ]
         }
       ]
     });
-  };
+  }
 }
 
 export default PropertyColor;

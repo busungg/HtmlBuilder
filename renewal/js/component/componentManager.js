@@ -2,9 +2,7 @@ import componentUtilsManager from '../componentUtils/componentUtilsManager';
 
 import Component from './model/Component';
 import Utils from '../utils/utils';
-import {
-  blockObserver
-} from '../observer/observerManager';
+import { blockObserver } from '../observer/observerManager';
 /**
  * Component Manager(Component을 관리한다)
  */
@@ -27,7 +25,7 @@ const componentManager = {
       * frameLayout은 click이 불가하다.
   */
   initFrameComponent(iframe) {
-    const iframeWindow = (iframe.contentWindow || iframe.contentDocument);
+    const iframeWindow = iframe.contentWindow || iframe.contentDocument;
     const iframeDocument = iframeWindow ? iframeWindow.document : null;
 
     const transferProto = iframeWindow.DataTransfer.prototype;
@@ -58,8 +56,11 @@ const componentManager = {
       return transferProto.transferOption;
     };
 
-    blockObserver.register('setTransferOption', transferProto
-      .setTransferOption, this.iframe);
+    blockObserver.register(
+      'setTransferOption',
+      transferProto.setTransferOption,
+      this.iframe
+    );
 
     // <link rel="stylesheet" type="text/css" href="./css/html_builder.css">
     /**

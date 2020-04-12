@@ -1,39 +1,80 @@
 import './css/codeEditor.css';
 
+import 'codemirror/mode/htmlmixed/htmlmixed';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/ayu-mirage.css';
 import CodeMirror from 'codemirror';
 
+import Utils from '../utils/utils';
+
 const codeEditor = {
-  render(html, css) {
+  render(html, css, isImport = false) {
+    let title = 'Import';
+    if (!isImport) {
+      title = 'Export';
+    }
 
-    const div = document.createElement('div');
-    div.setAttribute('class', 'hb_setting-popup');
+    const popup = {
+      element: 'div',
+      attrs: {
+        class: 'hb_setting__popup'
+      },
+      child: []
+    };
 
-    const divTitle = document.createElement('div');
-    divTitle.setAttribute('class', 'hb_setting-popup-titlediv');
-    divTitle.appendChild(document.createTextNode(''));
+    const popupDiv = document.createElement('div');
+    popupDiv.setAttribute('class', 'hb_setting__popup');
+
+    const titleDiv = document.createElement('div');
+    titleDiv.setAttribute('class', 'hb_setting__popup__title');
+    titleDiv.appendChild(document.createTextNode(title));
 
     const buttonCancel = document.createElement('button');
-    buttonCancel.setAttribute('class', 'hb_setting-popup-clossbutton');
+    buttonCancel.setAttribute('class', 'hb_setting-popup__button--close');
     buttonCancel.addEventListener('click', () => {
-      div.remove();
+      popupDiv.remove();
     });
-    divTitle.appendChild(buttonCancel);
+    titleDiv.appendChild(buttonCancel);
 
-    const divText = document.createElement('div');
-    divText.setAttribute('class', 'hb_setting-popup-textdiv');
+    const codeDiv = document.createElement('div');
+    codeDiv.setAttribute('class', 'hb_setting-popup__code');
 
-    /*
-    const textarea = document.createElement('textarea');
-    textarea.setAttribute('class', 'hb_setting-popup-textarea');
-    textarea.setAttribute('style', 'resize: none');
-    if (text) {
-      textarea.value = text;
-    }
-    divText.appendChild(textarea);
-    */
+    const htmlDiv = document.createElement('div');
+    htmlDiv.setAttribute('class', 'hb_setting-popup__code__editor-wrap');
+    const htmlEditor = document.createElement('div');
+    htmlEditor.setAttribute('class', 'hb_setting-popup__code__editor');
+    htmlDiv.appendChild(htmlEditor);
 
-    div.appendChild(divTitle);
-    div.appendChild(divText);
+    const cssDiv = document.createElement('div');
+    cssDiv.setAttribute('class', 'hb_setting-popup__code__editor-wrap');
+    const cssEditor = document.createElement('div');
+    cssEditor.setAttribute('class', 'hb_setting-popup__code__editor');
+    cssDiv.appendChild(cssEditor);
+
+    codeDiv.appendChild(htmlDiv);
+    codeDiv.appendChild(cssDiv);
+
+    popupDiv.appendChild(titleDiv);
+    popupDiv.appendChild(codeDiv);
+
+    document.body.appendChild(popupDiv);
+
+    const codMirrorOption = {
+      lineNumbers: true,
+      // lineWrapping: true,
+      matchBrackets: true,
+      mode: 'htmlmixed',
+      theme: 'ayu-mirage'
+    };
+
+    codMirrorOption.value = html;
+    const htmlCode = CodeMirror(htmlEditor, codMirrorOption);
+
+    codMirrorOption.value = css;
+    const cssCode = CodeMirror(cssEditor, codMirrorOption);
+
+    htmlCode.setSize('100%', '100%');
+    cssCode.setSize('100%', '100%');
 
     /*
     if (applyFunc) {
@@ -44,14 +85,6 @@ const codeEditor = {
       div.appendChild(button_apply);
     }
     */
-
-    document.body.appendChild(div);
-
-    CodeMirror(divText, {
-      value: '',
-      lineNumbers: true,
-      mod: 'htmlmixed'
-    });
   }
 };
 

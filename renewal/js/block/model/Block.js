@@ -22,21 +22,22 @@ class Block {
         class: 'hb_btn-block hb_cursor-move',
         draggable: true
       },
-      child: [{
-        element: 'div',
-        attrs: {
-          class: 'hb_img ' + this.icon
-        }
-      },
-      {
-        element: 'div',
-        attrs: {
-          class: 'hb_lbl'
+      child: [
+        {
+          element: 'div',
+          attrs: {
+            class: `hb_img ${this.icon}`
+          }
         },
-        text: this.title
-      }
+        {
+          element: 'div',
+          attrs: {
+            class: 'hb_lbl'
+          },
+          text: this.title
+        }
       ]
-    }
+    };
 
     this.dom = Utils.builder(_render);
     const mouseDown = (evt) => {
@@ -50,8 +51,7 @@ class Block {
     this.dom.addEventListener('dragstart', dragStart);
 
     return this.dom;
-  };
-
-};
+  }
+}
 
 export default Block;

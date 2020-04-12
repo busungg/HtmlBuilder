@@ -1,79 +1,77 @@
 /*--------------- SETTING POPUP --------------*/
-.hb_setting-popup {
+.hb_setting__popup {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
-  width: 70%;
+  width: 80%;
   height: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
-  border: 2px solid #495267;
-  background-color: #3b4251;
+  margin: auto;
+  border: 2px solid #131014;
+  background-color: #211b23;
 }
 
-.hb_setting-popup div {
+.hb_setting__popup__title {
+  width: 100%;
+  height: 40px;
   box-sizing: border-box;
-  border-bottom: 1px solid #66728d;
-}
-
-.hb_setting-popup-titlediv {
-  width: 100%;
-  height: 10%;
-  color: #c3cee2;
-  font: 15px;
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: #332c36;
+  color: #b9a5a6;
+  font-size: 20px;
   font-weight: bold;
-  padding-left: 10px;
+  box-shadow: 0px 2px #131014;
 }
 
-.hb_setting-popup-textdiv {
-  width: 100%;
-  height: 80%;
-  padding: 10px;
-}
-
-.hb_setting-popup-textarea {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.hb_setting-popup-applybutton {
-  margin: 10px;
-
-  user-select: none;
-  font-weight: bold;
-  font-size: 13px;
-  color: #2d2d2d;
-  border: 1px solid #76818b;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  background-color: #9da8b2;
-}
-
-.hb_setting-popup-applybutton:hover {
-  background-color: #b5c1cc;
-}
-
-.hb_setting-popup-clossbutton {
+.hb_setting-popup__button--close {
   width: 25px;
   height: 25px;
   float: right;
-  margin: 10px;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
   background-image: url("./img/btn-cancel.svg");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 80% 80%;
-  user-select: none;
-  border: 1px solid #76818b;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  background-color: #9da8b2;
+  background-size: 100% 100%;
+  border: none;
+  transition: all 0.15s ease-in-out;
 }
 
-.hb_setting-popup-clossbutton:hover {
+.hb_setting-popup__button--close:hover {
+  background-image: url("./img/btn-cancel-hover.svg");
+}
+
+.hb_setting-popup__code {
+  display: flex;
+  width: 100%;
+  height: calc(100% - 80px);
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.hb_setting-popup__code__editor-wrap {
+  width: 50%;
+  height: 100%;
+}
+
+.hb_setting-popup__code__editor {
+  width: 95%;
+  height: 100%;
+  margin: 0px auto;
+  overflow: hidden;
+}
+
+.hb_setting-popup__button--apply {
+  user-select: none;
+  border: 1px solid #b9a5a6;
+  border-radius: 0.25rem;
+  background-color: #9da8b2;
+  transition: all 0.15s ease-in-out;
+}
+
+.hb_setting-popup__button--apply:hover {
   background-color: #b5c1cc;
 }

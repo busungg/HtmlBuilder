@@ -1,4 +1,5 @@
-// test용
+import Utils from '../../utils/utils';
+
 import codeEditor from '../../codeEditor/codeEditor';
 
 import Setting from './Setting';
@@ -6,7 +7,13 @@ import Setting from './Setting';
 class SettingExport extends Setting {
   event() {
     const evt = () => {
-      codeEditor.render('', '');
+      const { document } = this.target.contentWindow;
+      const { body, head } = document;
+
+      const html = { result: '' };
+      Utils.beautifyHtml(body, ' ', 4, html);
+
+      codeEditor.render(html.result, head.innerHTML);
     };
 
     return evt;

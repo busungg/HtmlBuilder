@@ -2,14 +2,9 @@ import './css/property.css';
 
 import Utils from '../utils/utils';
 
-import {
-  category,
-  configs
-} from './config/config';
+import { category, configs } from './config/config';
 
-import {
-  propObserver
-} from '../observer/observerManager';
+import { propObserver } from '../observer/observerManager';
 import PropertyClass from './model/PropertyClass';
 import PropertyColor from './model/PropertyColor';
 import PropertyOption from './model/PropertyOption';
@@ -34,21 +29,21 @@ const PropertyType = {
 const propertyManager = {
   propInfos: [],
 
-  init: function () {
-    for (let config of configs) {
-      let propInfo = {
+  init() {
+    for (const config of configs) {
+      const propInfo = {
         prop: null,
         child: null
       };
-      let prop = new PropertyType[config.class](config);
+      const prop = new PropertyType[config.class](config);
       propObserver.register('update', prop.update, prop);
       propInfo.prop = prop;
 
       if (config.child) {
         propInfo.child = [];
 
-        for (let childConfig of config.child) {
-          let childProp = new PropertyType[childConfig.class](childConfig);
+        for (const childConfig of config.child) {
+          const childProp = new PropertyType[childConfig.class](childConfig);
           propObserver.register('update', childProp.update, childProp);
           propInfo.child.push(childProp);
         }
@@ -62,11 +57,11 @@ const propertyManager = {
    * category, sub category toggle event
    * @param {event} e
    */
-  eventToggle: function (e) {
-    let target = e.target;
+  eventToggle(e) {
+    const { target } = e;
     target.classList.toggle('hide');
 
-    let content = target.parentElement.nextElementSibling;
+    const content = target.parentElement.nextElementSibling;
 
     if (content.classList.contains('hide')) {
       content.style['max-height'] = content.dataset.scrollHeight;
@@ -80,8 +75,9 @@ const propertyManager = {
    * set category element
    * @param {Element} parent
    */
-  renderCategory: function (parent) {
-    var _category, dom;
+  renderCategory(parent) {
+    let _category;
+    let dom;
     for (let i = 0, leni = category.length; i < leni; i++) {
       _category = {
         element: 'section',
@@ -89,36 +85,40 @@ const propertyManager = {
           class: 'hb_prop-section',
           'data-type': 'prop-content'
         },
-        child: [{
-          element: 'div',
-          attrs: {
-            class: 'hb_prop-section__title'
-          },
-          child: [{
-            element: 'button',
+        child: [
+          {
+            element: 'div',
             attrs: {
-              class: 'hb_nav-icon'
+              class: 'hb_prop-section__title'
             },
-            event: [{
-              type: 'click',
-              func: this.eventToggle
-            }]
+            child: [
+              {
+                element: 'button',
+                attrs: {
+                  class: 'hb_nav-icon'
+                },
+                event: [
+                  {
+                    type: 'click',
+                    func: this.eventToggle
+                  }
+                ]
+              },
+              {
+                element: 'label',
+                attrs: {
+                  class: 'hb_prop-section__title__label'
+                },
+                html: category[i].title
+              }
+            ]
           },
           {
-            element: 'label',
+            element: 'div',
             attrs: {
-              class: 'hb_prop-section__title__label'
-            },
-            html: category[i].title
+              class: 'hb_prop-section__content'
+            }
           }
-          ]
-        },
-        {
-          element: 'div',
-          attrs: {
-            class: 'hb_prop-section__content'
-          }
-        }
         ]
       };
 
@@ -126,8 +126,11 @@ const propertyManager = {
       parent.appendChild(dom);
       propertyManager.renderCategoryContent(category[i].name, dom.children[1]);
 
-      dom.children[1].style['max-height'] = dom.children[1].scrollHeight + 'px';
-      dom.children[1].setAttribute('data-scroll-height', dom.children[1].scrollHeight + 'px');
+      dom.children[1].style['max-height'] = `${dom.children[1].scrollHeight}px`;
+      dom.children[1].setAttribute(
+        'data-scroll-height',
+        `${dom.children[1].scrollHeight}px`
+      );
     }
   },
 
@@ -136,32 +139,36 @@ const propertyManager = {
    * @param {string} category
    * @param {Dom Element} categoryDom
    */
-  renderCategoryContent: function (category, categoryDom) {
-    for (let propInfo of this.propInfos) {
+  renderCategoryContent(category, categoryDom) {
+    for (const propInfo of this.propInfos) {
       if (propInfo.prop.category === category) {
-        let propDom = propInfo.prop.render();
+        const propDom = propInfo.prop.render();
         categoryDom.appendChild(propDom);
 
         if (propInfo.child) {
-          let childCategoryTitleDom = Utils.builder({
+          const childCategoryTitleDom = Utils.builder({
             element: 'div',
             attrs: {
               class: 'hb_prop-sub__title'
             },
-            child: [{
-              element: 'button',
-              attrs: {
-                class: 'hb_nav-icon'
-              },
-              event: [{
-                type: 'click',
-                func: this.eventToggle
-              }]
-            }]
+            child: [
+              {
+                element: 'button',
+                attrs: {
+                  class: 'hb_nav-icon'
+                },
+                event: [
+                  {
+                    type: 'click',
+                    func: this.eventToggle
+                  }
+                ]
+              }
+            ]
           });
           propDom.appendChild(childCategoryTitleDom);
 
-          let childCategoryDom = Utils.builder({
+          const childCategoryDom = Utils.builder({
             element: 'div',
             attrs: {
               class: 'hb_prop-sub__content'
@@ -169,12 +176,17 @@ const propertyManager = {
           });
           propDom.appendChild(childCategoryDom);
 
-          for (let childProp of propInfo.child) {
+          for (const childProp of propInfo.child) {
             childCategoryDom.appendChild(childProp.render());
           }
 
-          childCategoryDom.style['max-height'] = childCategoryDom.scrollHeight + 'px';
-          childCategoryDom.setAttribute('data-scroll-height', childCategoryDom.scrollHeight + 'px');
+          childCategoryDom.style[
+            'max-height'
+          ] = `${childCategoryDom.scrollHeight}px`;
+          childCategoryDom.setAttribute(
+            'data-scroll-height',
+            `${childCategoryDom.scrollHeight}px`
+          );
         }
       }
     }
@@ -185,12 +197,12 @@ const propertyManager = {
     const empty = document.querySelector('[data-type=prop-empty]');
 
     if (isVisible) {
-      for (let content of contents) {
+      for (const content of contents) {
         content.style.display = 'block';
       }
       empty.style.display = 'none';
     } else {
-      for (let content of contents) {
+      for (const content of contents) {
         content.style.display = 'none';
       }
       empty.style.display = 'block';
@@ -203,46 +215,46 @@ const propertyManager = {
     // initScrollHeight(target);
 
     if (target) {
-      let tagName = target.tagName;
+      const { tagName } = target;
 
-      for (let propInfo of this.propInfos) {
-        let prop = propInfo.prop;
+      for (const propInfo of this.propInfos) {
+        const { prop } = propInfo;
         if (prop.prop.name === 'src') {
           if (tagName === 'IMG') {
-            prop.dom.parentElement.style['display'] = 'block';
+            prop.dom.parentElement.style.display = 'block';
             prop.dom.parentElement.removeAttribute('prop-hidden');
           } else {
-            prop.dom.parentElement.style['display'] = 'none';
+            prop.dom.parentElement.style.display = 'none';
             prop.dom.parentElement.setAttribute('prop-hidden', true);
           }
         }
 
         if (prop.prop.name === 'href') {
           if (tagName === 'A') {
-            prop.dom.parentElement.style['display'] = 'block';
+            prop.dom.parentElement.style.display = 'block';
             prop.dom.parentElement.removeAttribute('prop-hidden');
           } else {
-            prop.dom.parentElement.style['display'] = 'none';
+            prop.dom.parentElement.style.display = 'none';
             prop.dom.parentElement.setAttribute('prop-hidden', true);
           }
         }
 
         if (prop.prop.name === 'option') {
           if (tagName === 'SELECT') {
-            prop.dom.style['display'] = 'block';
+            prop.dom.style.display = 'block';
             prop.dom.removeAttribute('prop-hidden');
           } else {
-            prop.dom.style['display'] = 'none';
+            prop.dom.style.display = 'none';
             prop.dom.setAttribute('prop-hidden', true);
           }
         }
 
         if (prop.prop.name === 'table') {
           if (tagName === 'TABLE') {
-            prop.dom.parentElement.style['display'] = 'block';
+            prop.dom.parentElement.style.display = 'block';
             prop.dom.parentElement.removeAttribute('prop-hidden');
           } else {
-            prop.dom.parentElement.style['display'] = 'none';
+            prop.dom.parentElement.style.display = 'none';
             prop.dom.parentElement.setAttribute('prop-hidden', true);
           }
         }
@@ -264,7 +276,8 @@ const propertyManager = {
                   font-size: 14px; font-weight: bold; color: #b9a5a6; padding: 5px`,
           'data-type': 'prop-empty'
         },
-        html: 'There is no selected Block</br></br>Please select at least 1 block'
+        html:
+          'There is no selected Block</br></br>Please select at least 1 block'
       })
     );
     propertyManager.renderCategory(parent);

@@ -3,7 +3,6 @@ import Setting from './Setting';
 class SettingImport extends Setting {
   event() {
     const evt = () => {
-
     };
 
     return evt;

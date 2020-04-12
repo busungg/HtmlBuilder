@@ -3,7 +3,7 @@ import Property from './Property';
 class PropertyTextNode extends Property {
   event() {
     const event = (evt) => {
-      const targetComponent = this.targetComponent;
+      const { targetComponent } = this;
 
       if (targetComponent) {
         const eventDom = evt.target;
@@ -11,19 +11,25 @@ class PropertyTextNode extends Property {
         if (eventDom.value) {
           if (targetComponent.firstChild) {
             if (targetComponent.firstChild.nodeType != Node.TEXT_NODE) {
-              targetComponent.insertBefore(document.createTextNode(eventDom.value), targetComponent.firstChild);
+              targetComponent.insertBefore(
+                document.createTextNode(eventDom.value),
+                targetComponent.firstChild
+              );
             } else {
               targetComponent.firstChild.textContent = eventDom.value;
             }
           } else {
-            targetComponent.insertBefore(document.createTextNode(eventDom.value), targetComponent.firstChild);
+            targetComponent.insertBefore(
+              document.createTextNode(eventDom.value),
+              targetComponent.firstChild
+            );
           }
         }
       }
     };
 
     return event;
-  };
+  }
 
   update(target, prop) {
     this.targetComponent = target;
@@ -38,7 +44,7 @@ class PropertyTextNode extends Property {
     } else {
       valueDom.value = '';
     }
-  };
+  }
 
   render() {
     return super.render({
@@ -47,7 +53,8 @@ class PropertyTextNode extends Property {
         class: 'hb_prop__content'
       },
       child: [
-        { //div for title
+        {
+          // div for title
           element: 'legend',
           attrs: {
             class: 'hb_prop__title'
@@ -60,16 +67,18 @@ class PropertyTextNode extends Property {
           attrs: {
             type: 'text',
             class: 'hb_prop__text',
-            ['set-type']: 'value'
+            'set-type': 'value'
           },
-          event: [{
-            type: 'change',
-            func: this.event()
-          }]
+          event: [
+            {
+              type: 'change',
+              func: this.event()
+            }
+          ]
         }
       ]
     });
-  };
-};
+  }
+}
 
 export default PropertyTextNode;

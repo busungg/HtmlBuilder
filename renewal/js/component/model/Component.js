@@ -8,7 +8,6 @@ import {
 } from '../../observer/observerManager';
 // Observer를 import하여 사용하자
 
-
 // 단일 Dom처럼 사용하기 위해 생성한 Class
 class Component {
   constructor(option, frame, isFrame = false) {
@@ -123,9 +122,11 @@ class Component {
           dataTransfer의 element와 target이 같을 시 return
           null propagation operatior = ?. if null -> return undefined //Babel에서 안됨
       */
-      const transferComponent = evt.dataTransfer.getTransferElement() ?
-        evt.dataTransfer.getTransferElement().component : undefined;
-      if (transferComponent) { // if not undefined
+      const transferComponent = evt.dataTransfer.getTransferElement()
+        ? evt.dataTransfer.getTransferElement().component
+        : undefined;
+      if (transferComponent) {
+        // if not undefined
         if (transferComponent.isContain(clientX, clientY)) {
           return;
         }
@@ -138,8 +139,12 @@ class Component {
         if (target.children.length !== 0) {
           targetComponent.initChildCSS();
           const result = targetComponent.getNearChild(clientX, clientY);
-          const dropOrder = targetComponent.getDropOrder(result.child,
-            result.order, clientX, clientY);
+          const dropOrder = targetComponent.getDropOrder(
+            result.child,
+            result.order,
+            clientX,
+            clientY
+          );
           evt.dataTransfer.setTransferOrder(dropOrder);
         }
       } else {
@@ -174,10 +179,12 @@ class Component {
         const draggedOption = evt.dataTransfer.getTransferOption();
         const dropOrder = evt.dataTransfer.getTransferOrder();
 
-        if (draggedElement) { // Null이 아니면 기존 Layout을 이동 시키는 것
+        if (draggedElement) {
+          // Null이 아니면 기존 Layout을 이동 시키는 것
           draggedElement.parentNode.removeChild(draggedElement);
-        } else { // Null이면 Block정보로 새로운 Layout을 생성하는 것
-          draggedElement = (new Component(draggedOption, this.getFrame())).dom;
+        } else {
+          // Null이면 Block정보로 새로운 Layout을 생성하는 것
+          draggedElement = new Component(draggedOption, this.getFrame()).dom;
         }
         targetComponent.insertChild(draggedElement, dropOrder);
       }
@@ -255,17 +262,17 @@ class Component {
   getDropOrder(nearChild, childOrder, x, y) {
     let dropOrder = 0;
     const { pos } = nearChild.component;
-    if (pos.y < y && (pos.y + pos.height) > y) {
+    if (pos.y < y && pos.y + pos.height > y) {
       if (pos.x > x) {
         nearChild.classList.add('hb_border-left-move');
-        dropOrder = ((childOrder - 1) < 0) ? 0 : childOrder;
+        dropOrder = childOrder - 1 < 0 ? 0 : childOrder;
       } else {
         nearChild.classList.add('hb_border-right-move');
         dropOrder = childOrder + 1;
       }
     } else if (pos.y > y) {
       nearChild.classList.add('hb_border-top-move');
-      dropOrder = ((childOrder - 1) < 0) ? 0 : childOrder;
+      dropOrder = childOrder - 1 < 0 ? 0 : childOrder;
     } else {
       nearChild.classList.add('hb_border-bottom-move');
       dropOrder = childOrder + 1;
@@ -303,8 +310,12 @@ class Component {
       }
 
       const { pos } = this;
-      if (pos.x <= x && x <= (pos.x + pos.width) &&
-        pos.y <= y && y <= (pos.y + pos.height)) {
+      if (
+        pos.x <= x &&
+        x <= pos.x + pos.width &&
+        pos.y <= y &&
+        y <= pos.y + pos.height
+      ) {
         return true;
       }
 
@@ -318,7 +329,7 @@ class Component {
     const { pos } = this;
     const distance = Math.sqrt(
       Math.pow(x - (pos.x + pos.width * 0.5), 2) +
-      Math.pow(y - (pos.y + pos.height * 0.5), 2)
+        Math.pow(y - (pos.y + pos.height * 0.5), 2)
     );
 
     return distance;
@@ -346,24 +357,30 @@ class Component {
                 height = 30 + 20 * 2; 이다.
       */
       if (offsetParent) {
-        pos.x = dom.offsetLeft + (offsetParent.layout ? offsetParent.layout
-          .pos.x : offsetParent.offsetLeft);
-        pos.y = dom.offsetTop + (offsetParent.layout ? offsetParent.layout.pos
-          .y : offsetParent.offsetTop);
+        pos.x =
+          dom.offsetLeft +
+          (offsetParent.layout
+            ? offsetParent.layout.pos.x
+            : offsetParent.offsetLeft);
+        pos.y =
+          dom.offsetTop +
+          (offsetParent.layout
+            ? offsetParent.layout.pos.y
+            : offsetParent.offsetTop);
       } else {
         pos.x = dom.offsetLeft;
         pos.y = dom.offsetTop;
       }
 
-      const isScrollX = (dom.scrollWidth - dom.clientWidth);
-      const isScrollY = (dom.scrollHeight - dom.clientHeight);
+      const isScrollX = dom.scrollWidth - dom.clientWidth;
+      const isScrollY = dom.scrollHeight - dom.clientHeight;
 
       /*
           1. 사용이유
               - getBoundingClientRect를 사용하는 이유 -> inline 요소의 width, height값을 확인하기 위함
       */
-      pos.width = (isScrollX ? dom.scrollWidth : rect.width);
-      pos.height = (isScrollY ? dom.scrollHeight : rect.height);
+      pos.width = isScrollX ? dom.scrollWidth : rect.width;
+      pos.height = isScrollY ? dom.scrollHeight : rect.height;
 
       return pos;
     } catch (err) {
@@ -376,9 +393,9 @@ class Component {
       const { dom } = this;
       const property = {};
 
-      property.id = (dom.id || null);
-      property.name = (dom.getAttribute('name') || null);
-      property.title = (dom.title || null);
+      property.id = dom.id || null;
+      property.name = dom.getAttribute('name') || null;
+      property.title = dom.title || null;
 
       if (dom.firstChild) {
         if (dom.firstChild.nodeType === Node.TEXT_NODE) {
@@ -391,22 +408,25 @@ class Component {
       }
 
       if (dom.nodeName === 'INPUT' || dom.nodeName === 'TEXTAREA') {
-        property.value = (dom.value || '');
+        property.value = dom.value || '';
       } else {
-        property.value = (dom.getAttribute('value') || '');
+        property.value = dom.getAttribute('value') || '';
       }
 
       if (dom.nodeName === 'IMG') {
-        property.src = (dom.getAttribute('src') || '');
+        property.src = dom.getAttribute('src') || '';
       }
 
       if (dom.nodeName === 'A') {
-        property.href = (dom.getAttribute('href') || '');
+        property.href = dom.getAttribute('href') || '';
       }
 
       property.class = [];
       for (let i = 0, len = dom.classList.length; i < len; i++) {
-        if (dom.classList[i].indexOf('hb_selectable') === -1 && dom.classList[i].indexOf('hb_selected') === -1) {
+        if (
+          dom.classList[i].indexOf('hb_selectable') === -1 &&
+          dom.classList[i].indexOf('hb_selected') === -1
+        ) {
           property.class.push(dom.classList[i]);
         }
       }
@@ -454,7 +474,11 @@ class Component {
 
       // eslint-disable-next-line no-unused-vars
       const direction = ['-left', '-right', '-top', '-bottom'];
-      let i; let len; let groupName; let propertyName; let propertyValue;
+      let i;
+      let len;
+      let groupName;
+      let propertyName;
+      let propertyValue;
       for (i = 0, len = domStyle.length; i < len; i++) {
         propertyName = domStyle.item(i);
         propertyValue = domStyle[propertyName];
@@ -544,9 +568,16 @@ class Component {
         deleteRecursive(child);
       }
 
-      const handlers = componentObserver.getHandlers('deSelect', parentDom.layout);
+      const handlers = componentObserver.getHandlers(
+        'deSelect',
+        parentDom.layout
+      );
       for (const handler of handlers) {
-        componentObserver.unRegister('deSelect', handler.handler, handler.context);
+        componentObserver.unRegister(
+          'deSelect',
+          handler.handler,
+          handler.context
+        );
       }
 
       // eslint-disable-next-line no-param-reassign

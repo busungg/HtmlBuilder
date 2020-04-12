@@ -3,11 +3,12 @@ import Property from './Property';
 class PropertyTextUnit extends Property {
   event() {
     const event = (evt) => {
-      const targetComponent = this.targetComponent;
+      const { targetComponent } = this;
 
       if (targetComponent) {
         const eventDom = evt.target;
-        let valueDom, unitDom;
+        let valueDom;
+        let unitDom;
         if (eventDom.getAttribute('set-type') === 'value') {
           valueDom = eventDom;
           unitDom = eventDom.nextSibling;
@@ -18,18 +19,16 @@ class PropertyTextUnit extends Property {
 
         if (unitDom.value != 'auto') {
           if (valueDom.value !== null && valueDom.value !== '') {
-            let value = valueDom.value + unitDom.value;
+            const value = valueDom.value + unitDom.value;
             if (this.prop.attr_type === 'style') {
               targetComponent.style[this.prop.name] = value;
             } else {
               targetComponent.setAttribute(this.prop.name, value);
             }
+          } else if (this.prop.attr_type === 'style') {
+            targetComponent.style[this.prop.name] = null;
           } else {
-            if (this.prop.attr_type === 'style') {
-              targetComponent.style[this.prop.name] = null;
-            } else {
-              targetComponent.removeAttribute(this.prop.name);
-            }
+            targetComponent.removeAttribute(this.prop.name);
           }
         } else {
           /*
@@ -45,7 +44,7 @@ class PropertyTextUnit extends Property {
     };
 
     return event;
-  };
+  }
 
   update(target, prop) {
     this.targetComponent = target;
@@ -64,12 +63,13 @@ class PropertyTextUnit extends Property {
     const valueDom = this.dom.querySelector('[set-type=value]');
     const unitDom = this.dom.querySelector('[set-type=unit]');
 
-    if (!propContent) { //init property view
+    if (!propContent) {
+      // init property view
       valueDom.value = '';
       unitDom.value = unitDom.children[0].value;
     } else {
-      var unit = null;
-      for (var i = 0, len = unitDom.children.length; i < len; i++) {
+      let unit = null;
+      for (let i = 0, len = unitDom.children.length; i < len; i++) {
         unit = unitDom.children[i];
 
         if (propContent.indexOf(unit.value) != -1) {
@@ -79,16 +79,17 @@ class PropertyTextUnit extends Property {
         }
       }
     }
-  };
+  }
 
   render() {
-    var _render = {
+    const _render = {
       element: 'fieldset',
       attrs: {
         class: 'hb_prop__content'
       },
       child: [
-        { //div for title
+        {
+          // div for title
           element: 'legend',
           attrs: {
             class: 'hb_prop__title'
@@ -101,31 +102,35 @@ class PropertyTextUnit extends Property {
           attrs: {
             type: 'text',
             class: 'hb_prop__text',
-            ['set-type']: 'value',
+            'set-type': 'value'
           },
-          event: [{
-            type: 'change',
-            func: this.event()
-          }]
+          event: [
+            {
+              type: 'change',
+              func: this.event()
+            }
+          ]
         },
 
         {
           element: 'select',
           attrs: {
             class: 'hb_prop__unit',
-            ['set-type']: 'unit',
+            'set-type': 'unit'
           },
           child: [],
-          event: [{
-            type: 'change',
-            func: this.event()
-          }]
+          event: [
+            {
+              type: 'change',
+              func: this.event()
+            }
+          ]
         }
       ]
     };
 
     const _select = _render.child[2];
-    for (let unit of this.prop.units) {
+    for (const unit of this.prop.units) {
       _select.child.push({
         element: 'option',
         attrs: {
@@ -136,7 +141,7 @@ class PropertyTextUnit extends Property {
     }
 
     return super.render(_render);
-  };
-};
+  }
+}
 
 export default PropertyTextUnit;

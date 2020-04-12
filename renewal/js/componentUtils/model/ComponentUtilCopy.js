@@ -24,10 +24,12 @@ class ComponentUtilCopy extends ComponentUtil {
         title: this.title,
         class: `hb_component-util__btn ${this.icon}`
       },
-      event: [{
-        type: 'click',
-        func: this.event()
-      }]
+      event: [
+        {
+          type: 'click',
+          func: this.event()
+        }
+      ]
     });
   }
 }

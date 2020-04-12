@@ -3,14 +3,14 @@ import Property from './Property';
 class PropertyClass extends Property {
   addEvent() {
     const event = () => {
-      const targetComponent = this.targetComponent;
+      const { targetComponent } = this;
 
       if (targetComponent) {
         const inputDom = this.dom.querySelector('[set-type=input]');
         const valueDom = this.dom.querySelector('[set-type=value]');
 
         if (inputDom.value !== '') {
-          var option = document.createElement('option');
+          const option = document.createElement('option');
           option.setAttribute('value', inputDom.value);
           option.appendChild(document.createTextNode(inputDom.value));
           valueDom.appendChild(option);
@@ -21,11 +21,11 @@ class PropertyClass extends Property {
     };
 
     return event;
-  };
+  }
 
   removeEvent() {
     const event = () => {
-      const targetComponent = this.targetComponent;
+      const { targetComponent } = this;
 
       if (targetComponent) {
         const valueDom = this.dom.querySelector('[set-type=value]');
@@ -41,7 +41,7 @@ class PropertyClass extends Property {
     };
 
     return event;
-  };
+  }
 
   update(target, prop) {
     this.targetComponent = target;
@@ -60,9 +60,12 @@ class PropertyClass extends Property {
         valueDom.options[0].remove();
       }
 
-      var option;
-      for (var i = 0, len = prop.class.length; i < len; i++) {
-        if (prop.class[i].indexOf('hb_selectable') === -1 && prop.class[i].indexOf('hb_selected') === -1) {
+      let option;
+      for (let i = 0, len = prop.class.length; i < len; i++) {
+        if (
+          prop.class[i].indexOf('hb_selectable') === -1 &&
+          prop.class[i].indexOf('hb_selected') === -1
+        ) {
           option = document.createElement('option');
           option.setAttribute('value', prop.class[i]);
           option.appendChild(document.createTextNode(prop.class[i]));
@@ -71,7 +74,7 @@ class PropertyClass extends Property {
         }
       }
     }
-  };
+  }
 
   render() {
     return super.render({
@@ -80,7 +83,8 @@ class PropertyClass extends Property {
         class: 'hb_prop__content'
       },
       child: [
-        { //div for title
+        {
+          // div for title
           element: 'legend',
           attrs: {
             class: 'hb_prop__title'
@@ -99,25 +103,29 @@ class PropertyClass extends Property {
           element: 'button',
           attrs: {
             class: 'hb_prop__button',
-            title: 'Add class',
+            title: 'Add class'
           },
           text: 'Add class',
-          event: [{
-            type: 'click',
-            func: this.addEvent()
-          }]
+          event: [
+            {
+              type: 'click',
+              func: this.addEvent()
+            }
+          ]
         },
         {
           element: 'button',
           attrs: {
             class: 'hb_prop__button',
-            title: 'Delete class',
+            title: 'Delete class'
           },
           text: 'Delete class',
-          event: [{
-            type: 'click',
-            func: this.removeEvent()
-          }]
+          event: [
+            {
+              type: 'click',
+              func: this.removeEvent()
+            }
+          ]
         },
         {
           element: 'select',
@@ -130,6 +138,6 @@ class PropertyClass extends Property {
       ]
     });
   }
-};
+}
 
 export default PropertyClass;
