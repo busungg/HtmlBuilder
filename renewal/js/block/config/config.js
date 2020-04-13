@@ -1,33 +1,34 @@
 // https://developer.mozilla.org/ko/docs/Web/HTML/Element 참고
 
-const category = [{
-  name: 'section',
-  title: 'Section'
-},
-{
-  name: 'title',
-  title: 'Title'
-},
-{
-  name: 'form',
-  title: 'Form'
-},
-{
-  name: 'text',
-  title: 'Text'
-},
-{
-  name: 'image',
-  title: 'Image'
-},
-{
-  name: 'table',
-  title: 'Table'
-},
-{
-  name: 'extra',
-  title: 'Extra'
-}
+const category = [
+  {
+    name: 'section',
+    title: 'Section'
+  },
+  {
+    name: 'title',
+    title: 'Title'
+  },
+  {
+    name: 'form',
+    title: 'Form'
+  },
+  {
+    name: 'text',
+    title: 'Text'
+  },
+  {
+    name: 'image',
+    title: 'Image'
+  },
+  {
+    name: 'table',
+    title: 'Table'
+  },
+  {
+    name: 'extra',
+    title: 'Extra'
+  }
 ];
 
 const configs = [
@@ -37,7 +38,12 @@ const configs = [
     component: {
       element: 'header',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ]
       },
       canHaveChild: true
     },
@@ -49,7 +55,12 @@ const configs = [
     component: {
       element: 'main',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ]
       },
       canHaveChild: true
     },
@@ -61,7 +72,12 @@ const configs = [
     component: {
       element: 'footer',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ]
       },
       canHaveChild: true
     },
@@ -73,7 +89,12 @@ const configs = [
     component: {
       element: 'article',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ]
       },
       canHaveChild: true
     },
@@ -85,7 +106,12 @@ const configs = [
     component: {
       element: 'section',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ]
       },
       canHaveChild: true
     },
@@ -97,7 +123,12 @@ const configs = [
     component: {
       element: 'div',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ]
       },
       canHaveChild: true
     },
@@ -191,7 +222,12 @@ const configs = [
     component: {
       element: 'form',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px'],
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ],
         action: 'javascript:void(0);'
       },
       canHaveChild: true
@@ -204,7 +240,12 @@ const configs = [
     component: {
       element: 'fieldset',
       attrs: {
-        class: ['block_half', 'block_border-basic', 'block_padding-10px', 'block_margin-10px']
+        class: [
+          'block_half',
+          'block_border-basic',
+          'block_padding-10px',
+          'block_margin-10px'
+        ]
       },
       canHaveChild: true
     },
