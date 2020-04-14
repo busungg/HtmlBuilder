@@ -12,8 +12,8 @@ class Observer {
       }
 
       handlers.push({
-        handler: handler,
-        context: context
+        handler,
+        context
       });
     } catch (err) {
       console.log(err);
@@ -22,13 +22,13 @@ class Observer {
 
   getHandlers(eventName, context) {
     try {
-      let handlers = this.handlers[eventName];
+      const handlers = this.handlers[eventName];
 
       if (!handlers) {
         return [];
       } else {
-        let contextHandlers = [];
-        for (let currentHandler of handlers) {
+        const contextHandlers = [];
+        for (const currentHandler of handlers) {
           if (currentHandler.context === context) {
             contextHandlers.push(currentHandler);
           }
@@ -51,9 +51,11 @@ class Observer {
       }
 
       for (let idx = 0, len = handlers.length; idx < len; idx++) {
-        let currentHandler = handlers[idx];
-        if (currentHandler.handler === handler &&
-          currentHandler.context === context) {
+        const currentHandler = handlers[idx];
+        if (
+          currentHandler.handler === handler &&
+          currentHandler.context === context
+        ) {
           handlers.splice(idx, 1);
           return;
         }
@@ -72,18 +74,17 @@ class Observer {
         return;
       }
 
-      for (let currentHandler of handlers) {
+      for (const currentHandler of handlers) {
         if (Array.isArray(parameters)) {
           currentHandler.handler.call(currentHandler.context, ...parameters);
         } else {
           currentHandler.handler.call(currentHandler.context, parameters);
         }
       }
-
     } catch (err) {
       console.log(err);
     }
   }
-};
+}
 
 export default Observer;

@@ -31,9 +31,9 @@ class Component {
 
     /*
         1. Dom마다 event 생성 이유
-            - Memory가 많이 든다 하더라고 어디에서 생성하더라도 단일로 관리 할 수 있도록 event를 각각 생성한다.
-        2. 주의 사항
-            - method의 this는 현재 scope로 정해지기 때문에 this를 사용할 수 있다.
+            - Memory 사용량 < Event 단일 관리
+            - Arrow function -> this 정적으로 고정
+        결론: Event를 각각 생성
     */
 
     /*
@@ -83,20 +83,19 @@ class Component {
         1. for select
     */
     const click = (evt) => {
+      componentObserver.notify('deSelect');
+      let eventParam;
       if (this.selected) {
-        componentObserver.notify('deSelect');
-        propObserver.notify('update', null);
-        componentUtilsObserver.notify('update', null);
+        eventParam = [null, null];
       } else {
-        componentObserver.notify('deSelect');
+        eventParam = [this.dom, this.property];
         this.dom.setAttribute('draggable', 'true');
         this.dom.classList.add('hb_selected');
         this.selected = true;
-
-        propObserver.notify('update', [this.dom, this.property]);
-        componentUtilsObserver.notify('update', this.dom);
       }
-      // 클릭되면 property를 수정할 수 있어야 한다.
+
+      propObserver.notify('update', eventParam);
+      componentUtilsObserver.notify('update', eventParam[0]);
       evt.stopPropagation();
     };
 
@@ -190,7 +189,7 @@ class Component {
       }
 
       // drop이 모두 잘 끝나게 되면 parent, child의 css를 init해야한다.
-      target.classList.remove('hb_border-top-contain');
+      // target.classList.remove('hb_border-top-contain');
       targetComponent.initChildCSS();
 
       componentObserver.notify('deSelect');
