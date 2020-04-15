@@ -84,6 +84,9 @@ class Component {
     */
     const click = (evt) => {
       componentObserver.notify('deSelect');
+
+      console.log(this.selected); //jsdom에서 this를 call 함수를 이용하여 변경했다.
+
       let eventParam;
       if (this.selected) {
         eventParam = [null, null];

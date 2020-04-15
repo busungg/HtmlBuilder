@@ -1,3 +1,7 @@
+// 테스트 코드 mocha-loader 사용
+import './component/test';
+
+// 실제 코드
 /* eslint-disable no-unused-vars */
 import 'normalize.css';
 import './css/main.css';
