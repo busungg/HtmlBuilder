@@ -10,7 +10,7 @@
     }
     */
   },
-  "mocha.files.glob": "renewal/**/*.test.js",
+  "mocha.files.glob": "renewal/test/**/*.test.js",
   "mocha.requires": [
     "@babel/register"
   ]

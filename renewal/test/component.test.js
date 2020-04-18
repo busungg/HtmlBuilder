@@ -1,11 +1,5 @@
-// Test Class
-import componentManager from '../componentManager';
-import Component from '../model/Component';
-import {
-  componentObserver,
-  propObserver,
-  componentUtilsObserver
-} from '../../observer/observerManager';
+import 'jsdom-global/register';
+import Component from '../js/component/model/Component';
 
 // Assertion Styles
 const assert = require('assert');
@@ -70,7 +64,7 @@ describe('Component', function () {
         },
         canHaveChild: true
       };
-      div = new Component(_option, componentManager.frameComponent.dom);
+      div = new Component(_option, domc.body);
     });
 
     describe('Component click event 테스트', function () {

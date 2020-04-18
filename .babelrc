@@ -1,4 +1,16 @@
 {
-  "presets": ["@babel/preset-env"],
-  "plugins": ["import-directory"]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": {
+          "version": 2
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "import-directory"
+  ]
 }

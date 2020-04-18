@@ -7,7 +7,7 @@
     "build": "webpack",
     "devserver": "webpack-dev-server --config renewal/webpack.config.js --open --progress",
     "test:run": "webpack-dev-server --config renewal/webpack.development.config.js --open --progress",
-    "test:debug": "mocha --config '.mocharc.js' './renewal/**/*.test.js'"
+    "test:debug": "mocha --config '.mocharc.js' './renewal/test/**/*.test.js'"
   },
   "repository": {
     "type": "git",
@@ -48,6 +48,7 @@
     "jsdom-global": "3.0.2",
     "mocha": "*",
     "mocha-loader": "^5.0.0",
+    "nyc": "^15.0.1",
     "prettier": "2.0.4",
     "style-loader": "^1.1.3",
     "webpack": "^4.42.1",

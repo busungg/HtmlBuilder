@@ -1,0 +1,6 @@
+# Browsers that we support
+
+> 0.1%
+current node
+not ie <= 8
+not Firefox ESR
