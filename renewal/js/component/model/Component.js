@@ -17,8 +17,6 @@ class Component {
     */
     const _option = JSON.parse(JSON.stringify(option));
     this.getOption = () => _option;
-
-    // Dom Class
     this.getFrame = () => {
       if (!frame) return this.dom;
       return frame;
@@ -27,7 +25,7 @@ class Component {
     this.dom = Utils.builder(option);
     this.dom.component = this;
     this.canHaveChild = option.canHaveChild;
-    this.selected = false;
+    let selected = false;
 
     /*
         1. Dom마다 event 생성 이유
@@ -35,19 +33,6 @@ class Component {
             - Arrow function -> this 정적으로 고정
         결론: Event를 각각 생성
     */
-
-    /*
-        1. 사용 목적
-          - Component click 시 전에 선택 되었던 component를 초기화한다.
-    */
-    const deSelect = () => {
-      if (this.selected) {
-        this.dom.removeAttribute('draggable');
-        this.dom.classList.remove('hb_selected');
-        this.selected = false;
-      }
-    };
-    componentObserver.register('deSelect', deSelect, this);
 
     /*
         1. 사용 목적
@@ -80,26 +65,38 @@ class Component {
     };
 
     /*
+        1. Component click 시 전에 선택 되었던 component를 초기화한다.
+    */
+    const deSelect = () => {
+      if (selected) {
+        this.dom.removeAttribute('draggable');
+        this.dom.classList.remove('hb_selected');
+        selected = false;
+      }
+    };
+    componentObserver.register('deSelect', deSelect, this);
+
+    /*
         1. for select
     */
     const click = (evt) => {
-      componentObserver.notify('deSelect');
-
-      console.log(this.selected); //jsdom에서 this를 call 함수를 이용하여 변경했다.
+      evt.preventDefault();
+      evt.stopPropagation();
 
       let eventParam;
-      if (this.selected) {
+      if (selected) {
         eventParam = [null, null];
+        componentObserver.notify('deSelect');
       } else {
+        componentObserver.notify('deSelect');
         eventParam = [this.dom, this.property];
         this.dom.setAttribute('draggable', 'true');
         this.dom.classList.add('hb_selected');
-        this.selected = true;
+        selected = true;
       }
 
       propObserver.notify('update', eventParam);
-      componentUtilsObserver.notify('update', eventParam[0]);
-      evt.stopPropagation();
+      componentUtilsObserver.notify('update', eventParam);
     };
 
     /*
@@ -173,6 +170,8 @@ class Component {
           by cancelling both the dragenter and dragover events - From MDN
       */
       evt.preventDefault();
+      evt.stopPropagation();
+
       const { target } = evt;
       const targetComponent = target.component;
 
@@ -191,16 +190,12 @@ class Component {
         targetComponent.insertChild(draggedElement, dropOrder);
       }
 
-      // drop이 모두 잘 끝나게 되면 parent, child의 css를 init해야한다.
-      // target.classList.remove('hb_border-top-contain');
       targetComponent.initChildCSS();
-
-      componentObserver.notify('deSelect');
 
       evt.dataTransfer.setTransferElement(null);
       evt.dataTransfer.setTransferOption(null);
-      evt.stopPropagation();
 
+      componentObserver.notify('deSelect');
       propObserver.notify('update', null);
       componentUtilsObserver.notify('update', null);
     };
@@ -231,12 +226,11 @@ class Component {
   }
 
   initChildCSS() {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const child of this.dom.children) {
+    [...this.dom.children].forEach((child) => {
       if (child.component) {
         child.component.initCSS();
       }
-    }
+    });
   }
 
   getNearChild(x, y) {
@@ -563,8 +557,7 @@ class Component {
     function deleteRecursive(parentDom) {
       /*
           1. 사용이유
-           -  순환참조로 인하여 dom이 삭제되도 layout에서 참조되어 메모리에서
-              삭제되지 않을까봐 layout부터 null로 처리한다.
+           -  Observer의 evnet 삭제 필요
       */
       for (const child of parentDom.children) {
         deleteRecursive(child);
