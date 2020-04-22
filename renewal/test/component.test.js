@@ -15,7 +15,8 @@ describe('Component', function () {
     _option = {
       element: 'div',
       attrs: {
-        class: ['class1', 'class2']
+        class: ['class1', 'class2'],
+        style: 'width: 100px; height:100px;'
       },
       canHaveChild: true
     };
@@ -47,7 +48,7 @@ describe('Component', function () {
     });
   });
 
-  describe('Component click event 테스트', function () {
+  describe('click event 테스트', function () {
     it('두번 click', function () {
       if (div) {
         div.dom.click();
@@ -67,10 +68,64 @@ describe('Component', function () {
       assert.notEqual([...div.dom.classList].indexOf('hb_selected'), -1);
     });
 
-    it('InitChildCss', function () {
+    it('click 시 prop 전달', function () {});
+
+    it('두번 click 시 prop 전달', function () {});
+  });
+
+  describe('내부 함수 테스트', function () {
+    before(function () {
+      const _option = {
+        element: 'div',
+        attrs: {
+          class: [
+            'hb_border-contain',
+            'hb_border-top-contain',
+            'hb_border-top-move',
+            'hb_border-bottom-move',
+            'hb_border-left-move',
+            'hb_border-right-move'
+          ],
+          style: 'width: 50px; height: 50px; margin: 20px;'
+        },
+        canHaveChild: true
+      };
+
+      const div1 = new Component(_option, document.body);
+
       div.dom.appendChild(document.createElement('div'));
+      div.dom.appendChild(div1.dom);
+    });
+
+    it('InitChildCss', function () {
+      [...div.dom.children].forEach((child) => {
+        console.log(`InitChildCss test ${child.getAttribute('class')}`);
+      });
 
       expect(div.initChildCSS.bind(div)).to.not.throw();
+      [...div.dom.children].forEach((child) => {
+        const classList = [...child.classList];
+        classList.indexOf('hb_border-contain').should.equal(-1);
+        classList.indexOf('hb_border-top-contain').should.equal(-1);
+        classList.indexOf('hb_border-top-move').should.equal(-1);
+        classList.indexOf('hb_border-bottom-move').should.equal(-1);
+        classList.indexOf('hb_border-left-move').should.equal(-1);
+        classList.indexOf('hb_border-right-move').should.equal(-1);
+      });
+    });
+
+    it('getNearChild', function () {
+      expect(function () {
+        div.getNearChild.bind(div)(0, 0);
+      }).to.not.throw();
+
+      const near = div.getNearChild.bind(div)(60, 80);
+      console.log(`getNearChild ${[...div.dom.children]}`);
+
+      expect(near.child.construct).to.deep.equal(
+        div.dom.children[1].component.construct
+      );
+      expect(near.order).to.equal(1);
     });
   });
 });
