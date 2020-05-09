@@ -43,23 +43,27 @@ const componentUtilsManager = {
     });
   },
 
-  render(parent) {
+  render(parentBody, parentHead) {
     this.dom = Utils.builder({
       element: 'div',
       attrs: {
         style: `position: absolute; left: ${-100}px; top: ${-100}px;`,
-        class: 'hb_component-util__menu'
+        class: 'hb_component-util__menu',
+        'data-include': 'N'
       }
     });
 
     this.renderUtils(this.dom);
-    parent.appendChild(this.dom);
+    parentBody.appendChild(this.dom);
 
     const style = Utils.builder({
       element: 'style',
-      text: css
+      text: css,
+      attrs: {
+        'data-include': 'N'
+      }
     });
-    parent.parentNode.parentNode.head.appendChild(style);
+    parentHead.appendChild(style);
   }
 };
 

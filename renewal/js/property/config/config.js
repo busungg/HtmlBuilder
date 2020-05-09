@@ -17,10 +17,12 @@ const category = [
     title: 'Href'
   },
 
+  /*
   {
     name: 'table',
     title: 'Table'
   },
+  */
 
   {
     name: 'style2css',

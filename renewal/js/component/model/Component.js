@@ -8,6 +8,8 @@ import {
 } from '../../observer/observerManager';
 // Observer를 import하여 사용하자
 
+import componentUtilsManager from '../../componentUtils/componentUtilsManager';
+
 // 단일 Dom처럼 사용하기 위해 생성한 Class
 class Component {
   constructor(option, frame, isFrame = false) {
@@ -135,7 +137,14 @@ class Component {
       const targetComponent = target.component;
       if (targetComponent.canHaveChild) {
         target.classList.add('hb_border-top-contain');
-        if (target.children.length !== 0) {
+
+        //targetComponent
+        //hb_component-util__menu 만약 component util이라면 무시한다.
+        let childrenLength = target.children.length;
+        if ([...target.children].indexOf(componentUtilsManager.dom) !== -1) {
+          childrenLength -= 1;
+        }
+        if (childrenLength !== 0) {
           targetComponent.initChildCSS();
           const result = targetComponent.getNearChild(clientX, clientY);
           const dropOrder = targetComponent.getDropOrder(
@@ -190,6 +199,7 @@ class Component {
         targetComponent.insertChild(draggedElement, dropOrder);
       }
 
+      targetComponent.initCSS();
       targetComponent.initChildCSS();
 
       evt.dataTransfer.setTransferElement(null);

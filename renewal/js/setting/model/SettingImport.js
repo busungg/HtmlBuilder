@@ -1,8 +1,18 @@
+import Utils from '../../utils/utils';
 import Setting from './Setting';
+import codeEditor from '../../codeEditor/codeEditor';
 
 class SettingImport extends Setting {
   event() {
-    const evt = () => {};
+    const evt = () => {
+      const { document } = this.target.contentWindow;
+      const { body, head } = document;
+
+      const html = { result: '' };
+      Utils.beautifyHtml(body, ' ', 4, html);
+
+      codeEditor.render(html.result, head.innerHTML, true);
+    };
 
     return evt;
   }

@@ -1,4 +1,5 @@
 import componentUtilsManager from '../componentUtils/componentUtilsManager';
+import cssUtilsManager from '../cssUtils/cssUtilsManager';
 
 import Component from './model/Component';
 import Utils from '../utils/utils';
@@ -66,13 +67,6 @@ const componentManager = {
     /**
      * css 추후 수정
      */
-    const headElement = iframeDocument.head;
-    const linkTag = document.createElement('link');
-    linkTag.setAttribute('rel', 'stylesheet');
-    linkTag.setAttribute('type', 'text/css');
-    linkTag.setAttribute('href', './css/html_builder.css');
-    headElement.appendChild(linkTag);
-
     const htmlElement = iframeDocument.body.parentElement;
     htmlElement.removeChild(iframeDocument.body);
 
@@ -85,8 +79,15 @@ const componentManager = {
     this.frameComponent = new Component(option, null, true);
     htmlElement.appendChild(this.frameComponent.dom);
 
+    const headElement = iframeDocument.head;
+    const bodyElement = iframeDocument.body;
+
+    //component util body에 적용
     componentUtilsManager.init();
-    componentUtilsManager.render(this.frameComponent.dom);
+    componentUtilsManager.render(bodyElement, headElement);
+
+    //default css body에 적용
+    cssUtilsManager.render(headElement);
 
     console.log(this.frameComponent);
   }

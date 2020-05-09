@@ -1,0 +1,52 @@
+/*--------------- builder  -------------- */
+.hb_cursor-move {
+  cursor: move;
+}
+
+.hb_outline-solid {
+  outline: 1px solid #000000;
+}
+
+.hb_outline-dashed {
+  outline: 2px dashed #248f24;
+}
+
+.hb_border-basic {
+  border: 1px solid #000000;
+}
+
+.hb_border-dashed {
+  border: 1px dashed #000000;
+}
+
+.hb_border-contain {
+  border: 2px dashed #248f24 !important;
+}
+
+.hb_border-top-contain {
+  border-top: 7px solid #f4aa42 !important;
+}
+
+.hb_border-top-move {
+  box-shadow: 0px -3px 0px #f4aa42 !important;
+}
+
+.hb_border-bottom-move {
+  box-shadow: 0px 3px 0px #f4aa42 !important;
+}
+
+.hb_border-left-move {
+  box-shadow: -3px 0px 0px #f4aa42 !important;
+}
+
+.hb_border-right-move {
+  box-shadow: 3px 0px 0px #f4aa42 !important;
+}
+
+.hb_selectable {
+  outline: 3px dashed #1da57a !important;
+}
+
+.hb_selected {
+  outline: 3px solid #1da57a !important;
+}

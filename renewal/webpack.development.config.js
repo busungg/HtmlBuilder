@@ -36,7 +36,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        exclude: /componentUtil.css/,
+        exclude: /(componentUtil.css|default.css|html_builder.css)/,
         use: [
           'style-loader',
           'to-string-loader',
@@ -50,7 +50,7 @@ module.exports = {
         ]
       },
       {
-        test: /componentUtil.css/,
+        test: /(componentUtil.css|default.css|html_builder.css)/,
         exclude: /(node_modules|bower_components)/,
         use: [
           'to-string-loader',

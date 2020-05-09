@@ -13,5 +13,6 @@
   "mocha.files.glob": "renewal/test/**/*.test.js",
   "mocha.requires": [
     "@babel/register"
-  ]
+  ],
+  "editor.renderWhitespace": "all"
 }

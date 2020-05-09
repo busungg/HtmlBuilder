@@ -1,7 +1,5 @@
 import Utils from '../../utils/utils';
-
 import codeEditor from '../../codeEditor/codeEditor';
-
 import Setting from './Setting';
 
 class SettingExport extends Setting {
