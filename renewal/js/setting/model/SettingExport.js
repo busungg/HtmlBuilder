@@ -8,10 +8,32 @@ class SettingExport extends Setting {
       const { document } = this.target.contentWindow;
       const { body, head } = document;
 
-      const html = { result: '' };
-      Utils.beautifyHtml(body, ' ', 4, html);
+      const tempBody = document.createElement('body');
+      const tempHead = document.createElement('head');
 
-      codeEditor.render(html.result, head.innerHTML);
+      tempBody.innerHTML = body.innerHTML;
+      tempHead.innerHTML = head.innerHTML;
+
+      [...tempBody.children]
+        .filter((child) => {
+          return child.dataset.include === 'N';
+        })
+        .forEach((child) => {
+          child.remove();
+        });
+
+      [...tempHead.children]
+        .filter((child) => {
+          return child.dataset.include === 'N';
+        })
+        .forEach((child) => {
+          child.remove();
+        });
+
+      // const html = { result: '' };
+      // Utils.beautifyHtml(tempBody, ' ', 4, html);
+
+      codeEditor.render(tempBody.innerHTML, tempHead.innerHTML);
     };
 
     return evt;
