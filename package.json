@@ -24,7 +24,7 @@
   "homepage": "https://github.com/busungg/HtmlBuilder#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.19"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
