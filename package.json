@@ -28,6 +28,7 @@
     "@babel/polyfill": "^7.8.7",
     "backbone": "^1.4.1",
     "codemirror": "^5.52.2",
+    "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
     "to-string-loader": "^1.1.6"
   },

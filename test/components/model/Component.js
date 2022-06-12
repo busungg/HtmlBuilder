@@ -9,15 +9,18 @@ describe('Component', () => {
   let component;
   before(() => {
     component = new Component();
+    console.log(component);
+    component.set('value', '1');
+    component.set('name', 'component');
   });
 
   describe('attribute', function () {
-    it('should return value', function () {
-      assert.equal(component.value, -1);
+    it('should return value "1"', function () {
+      assert.equal(component.attributes.value, '1');
     });
 
     it('should return name', function () {
-      assert.equal(component.name, undefined);
+      assert.equal(component.attributes.name, 'component');
     });
   });
 });
