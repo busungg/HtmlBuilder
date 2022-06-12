@@ -9,6 +9,4 @@ module.exports = {
   timeout: 2000,
   ui: 'bdd',
   require: ['@babel/register']
-  //'watch-files': ['renewal/test/*.js']
-  //'watch-ignore': ['lib/vendor']
 };

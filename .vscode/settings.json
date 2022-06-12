@@ -1,6 +1,6 @@
 {
   "[javascript]": {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": true
     /*
     "editor.codeActionsOnSave": {
       // For ESLint
@@ -10,9 +10,7 @@
     }
     */
   },
-  "mocha.files.glob": "renewal/test/**/*.test.js",
-  "mocha.requires": [
-    "@babel/register"
-  ],
+  "mocha.files.glob": "./test/**/*.js",
+  "mocha.requires": ["@babel/register"],
   "editor.renderWhitespace": "all"
 }

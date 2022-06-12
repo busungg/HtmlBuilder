@@ -7,7 +7,7 @@
     "build": "webpack",
     "devserver": "webpack-dev-server --config renewal/webpack.config.js --open --progress",
     "test:run": "webpack-dev-server --config renewal/webpack.development.config.js --open --progress",
-    "test:debug": "mocha --config '.mocharc.js' './renewal/test/**/*.test.js'"
+    "test:debug": "mocha --config '.mocharc.js' './test/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/busungg/HtmlBuilder#readme",
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
+    "backbone": "^1.4.1",
     "codemirror": "^5.52.2",
     "normalize.css": "^8.0.1",
     "to-string-loader": "^1.1.6"
