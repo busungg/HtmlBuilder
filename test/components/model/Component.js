@@ -16,11 +16,11 @@ describe('Component', () => {
 
   describe('attribute', function () {
     it('should return value "1"', function () {
-      assert.equal(component.attributes.value, '1');
+      assert.equal(component.value, '1');
     });
 
     it('should return name', function () {
-      assert.equal(component.attributes.name, 'component');
+      assert.equal(component.name, 'component');
     });
   });
 });
