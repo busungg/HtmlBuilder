@@ -9,7 +9,6 @@ describe('Component', () => {
   let component;
   before(() => {
     component = new Component();
-    console.log(component);
     component.set('value', '1');
     component.set('name', 'component');
   });
