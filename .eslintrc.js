@@ -12,7 +12,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
-  plugins: ['prettier'],
+  plugins: ['prettier', 'mocha'],
   rules: {
     'no-underscore-dangle': 'off',
     'no-plusplus': 'off',

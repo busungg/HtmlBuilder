@@ -1,14 +1,12 @@
 {
   "[javascript]": {
-    "editor.formatOnSave": true
-    /*
+    "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       // For ESLint
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": true,
       // For Stylelint
       "source.fixAll.stylelint": true
     }
-    */
   },
   "mocha.files.glob": "./test/**/*.js",
   "mocha.requires": ["@babel/register"],
