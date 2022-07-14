@@ -8,11 +8,7 @@ describe('Component', () => {
   let component;
   before(() => {
     component = new Component();
-<<<<<<< HEAD
-    component.set('value', 1);
-=======
     component.set('value', '1');
->>>>>>> 71d477d171d19e7c9579cf9012e2a5e2a302350b
     component.set('name', 'component');
   });
 
