@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 export default class Component extends Model {
   constructor() {
     super();
+    this._classList = [];
   }
 
   get value() {
@@ -23,4 +24,8 @@ export default class Component extends Model {
   }
 
   get classList() {}
+
+  set classList(list = []) {
+    this._classList.push(class);
+  }
 }

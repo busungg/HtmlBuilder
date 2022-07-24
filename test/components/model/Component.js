@@ -1,19 +1,19 @@
 import chai from 'chai';
-import Component from '../../../src/components/model/Component';
+import Component from '../../../src/dom_components/model/Component';
 
 const { assert } = chai;
 chai.should();
 
 describe('Component', () => {
-  let component;
-  before(() => {
-    component = new Component();
-    component.value = '1';
-    component.name = 'component';
-    component.id = 'c1';
-  });
-
   describe('attributes', () => {
+    let component;
+    before(() => {
+      component = new Component();
+      component.value = '1';
+      component.name = 'component';
+      component.id = 'c1';
+    });
+
     describe('properties', () => {
       it('should return attributes { value: 1, name: "component"}', () => {
         const expectResult = {
@@ -62,6 +62,11 @@ describe('Component', () => {
   });
 
   describe('classList', () => {
+    let component;
+    before(() => {
+      component = new Component();
+    });
+
     describe('properties', () => {
       it('should return length 1', () => {});
 
