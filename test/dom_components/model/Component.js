@@ -60,33 +60,4 @@ describe('Component', () => {
       });
     });
   });
-
-  describe('classList', () => {
-    let component;
-    before(() => {
-      component = new Component();
-    });
-
-    describe('properties', () => {
-      it('should return length 1', () => {});
-
-      it(('should return value "test1"', function () {}));
-    });
-
-    describe('methods', () => {
-      it('should return "test1" item()', () => {});
-
-      it('should return ture contains()', () => {});
-
-      it('should add class "test2"', () => {});
-
-      it('should remove class "test2"', () => {});
-
-      it('should replace class "test1" to "replaceTest1"', () => {});
-
-      it('should return keys, keys()', () => {});
-
-      if (('should return values, values()', function () {}));
-    });
-  });
 });
