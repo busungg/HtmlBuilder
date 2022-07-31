@@ -66,7 +66,8 @@ export default class TokenList {
       key = inArray(this, tokens[i]);
 
       if (key !== -1) {
-        tmpArray.splice.call(key, -1);
+        console.log(key);
+        tmpArray.splice.call(this, [key, 1]);
       }
     }
   }
