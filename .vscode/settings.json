@@ -10,5 +10,8 @@
   },
   "mocha.files.glob": "./test/**/*.js",
   "mocha.requires": ["@babel/register"],
-  "editor.renderWhitespace": "all"
+  "editor.renderWhitespace": "all",
+  "code-runner.executorMap": {
+    "javascript": "node -r esm $fullFileName"
+  }
 }

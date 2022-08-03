@@ -47,34 +47,38 @@ describe('TokenList', () => {
     });
 
     describe('remove()', () => {
-      let tokenList = new TokenList(['test1', 'test2', 'test3']);
-      tokenList.remove('test1');
+      let tokenList;
+      beforeEach(() => {
+        tokenList = new TokenList(['test1', 'test2', 'test3']);
+      });
 
       it('should return item(0) "test2"', () => {
+        tokenList.remove('test1');
+
         assert.equal(tokenList.item(0), 'test2');
       });
 
       it('should return length 2', () => {
+        tokenList.remove('test1');
         assert.equal(tokenList.length, 2);
       });
 
-      //tokenList.remove('test2', 'test3');
-
       it('should item(0) return undefined', () => {
+        tokenList.remove('test1', 'test2', 'test3');
         assert.equal(tokenList.item(0), undefined);
       });
 
       it('should return length 0', () => {
+        tokenList.remove('test1', 'test2', 'test3');
         assert.equal(tokenList.length, 0);
       });
     });
 
     describe('replace()', () => {
       let tokenList = new TokenList(['test1']);
+      tokenList.replace('test1', 'replaceTest1');
 
       it('should replace class "test1" to "replaceTest1"', () => {
-        tokenList.add('test1');
-        tokenList.replace('test1', 'replaceTest1');
         assert.equal(tokenList.item(0), 'replaceTest1');
       });
     });

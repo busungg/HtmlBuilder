@@ -1,4 +1,4 @@
-const tmpArray = [];
+import { isArray } from 'lodash';
 
 const validateToken = function (token) {
   var whitespace = /[\u0009\u000A\u000C\u000D\u0020]/;
@@ -8,30 +8,15 @@ const validateToken = function (token) {
   }
 };
 
-const inArray = function (array, value) {
-  var i;
+export default class TokenList extends Array {
+  constructor(tokens = []) {
+    super();
 
-  if (tmpArray.indexOf) {
-    return tmpArray.indexOf.call(array, value);
-  }
-
-  for (i = 0; i < array.length; i++) {
-    if (array[i] === value) {
-      return i;
-    }
-  }
-
-  return -1;
-};
-
-export default class TokenList {
-  constructor(values = []) {
-    if (values) {
-      values.forEach((value, idx) => {
-        this[idx] = value;
+    if (tokens && isArray(tokens)) {
+      tokens.forEach((value) => {
+        this.push(value);
       });
     }
-    this.length = values.length;
   }
 
   add() {
@@ -39,9 +24,8 @@ export default class TokenList {
     for (let i = 0; i < tokens.length; i++) {
       validateToken(tokens[i]);
 
-      if (!this.contains(tokens[i])) {
-        this[this.length] = tokens[i];
-        this.length++;
+      if (!this.includes(tokens[i])) {
+        this.push(tokens[i]);
       }
     }
   }
@@ -49,7 +33,7 @@ export default class TokenList {
   contains(token) {
     validateToken(token);
 
-    return inArray(this, token) !== -1;
+    return this.includes(token);
   }
 
   item(index) {
@@ -63,11 +47,10 @@ export default class TokenList {
     for (let i = 0; i < tokens.length; i++) {
       validateToken(tokens[i]);
 
-      key = inArray(this, tokens[i]);
+      key = this.indexOf(tokens[i]);
 
       if (key !== -1) {
-        console.log(key);
-        tmpArray.splice.call(this, [key, 1]);
+        this.splice(key, 1);
       }
     }
   }
@@ -93,6 +76,15 @@ export default class TokenList {
   }
 
   toString() {
-    return tmpArray.join.call(this, ' ');
+    return this.join(' ');
+  }
+
+  replace(oldToken, newToken) {
+    if (this.contains(oldToken)) {
+      this[this.indexOf(oldToken)] = newToken;
+      return true;
+    }
+
+    return false;
   }
 }
